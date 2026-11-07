@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -41,12 +40,14 @@ button{cursor:pointer}
 .btn.secondary{background:#171e15;border-color:#394634;color:#d9dfd2}
 .btn.ghost{background:transparent;border-color:var(--line);color:var(--muted)}
 .btn.danger{background:#241614;border-color:#5b302c;color:#e5b4ae}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .btn:active{transform:scale(.985)}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
 .notice{background:#1b2118;border:1px solid #46533d;color:#cbd4c1;padding:13px;border-radius:12px;font-size:12px;line-height:1.6;margin:13px 0}
 .notice.warning{background:#211e14;border-color:#625536;color:#e8d8a9}
 .card{background:#151b13;border:1px solid var(--line);padding:13px;border-radius:14px;margin:11px 0}
 .card img{width:100%;max-height:190px;object-fit:contain;border-radius:10px;background:#0b0e0a;margin-bottom:9px}
+.card video,.vout video{width:100%;max-width:260px;display:block;margin:0 auto;border-radius:12px;background:#000}
 .result{white-space:pre-wrap;line-height:1.7;background:#0b0f0a;border:1px solid #303b2b;padding:15px;border-radius:12px;margin-top:12px;font-size:13px;overflow-wrap:anywhere}
 .hidden{display:none!important}
 .video-layout{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:18px;align-items:start}
@@ -54,6 +55,11 @@ button{cursor:pointer}
 .preview{width:100%;max-width:180px;aspect-ratio:9/16;border:1px dashed #69785c;border-radius:11px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);background:#171d15;padding:10px;font-size:12px}
 .preview img{width:100%;height:100%;object-fit:cover}
 .empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
+.status{font-size:13px;color:var(--sage);margin-top:12px;overflow-wrap:anywhere}
+.status.err{color:#e5b4ae}
+.vout{margin-top:14px;text-align:center}
+details{margin-top:14px;border:1px solid var(--line);border-radius:12px;padding:4px 13px 13px;background:#0f130e}
+summary{cursor:pointer;font-size:13px;font-weight:700;padding:10px 0;color:#d9dfd2}
 footer{text-align:center;color:#788071;font-size:11px;padding:20px}
 @media(max-width:620px){main{padding:14px 12px 40px}.video-layout{grid-template-columns:1fr}.preview{max-width:160px}.grid{gap:8px}.panel{padding:16px!important}.header-note{margin-top:18px}}
 </style>
@@ -126,32 +132,49 @@ footer{text-align:center;color:#788071;font-size:11px;padding:20px}
 
 <section id="videos" class="panel hidden">
 <h2>Estúdio de vídeos IA</h2>
-<p class="muted">Prepare as referências e as instruções de geração em um só fluxo.</p>
-<div class="notice warning"><b>Atenção:</b> a geração do arquivo MP4 ainda depende de conectar um serviço de IA de vídeo. Esta página organiza e prepara os dados, mas não finge renderizar um vídeo.</div>
+<p class="muted">Gere o vídeo em um gerador web gratuito a partir das suas fotos e guarde o resultado aqui.</p>
+
+<div class="notice"><b>Gerador web embutido:</b> a moldura abaixo carrega um site gratuito de imagem para vídeo. Sites de terceiros podem bloquear a exibição dentro de outra página ou mudar os limites gratuitos. Se a área ficar em branco, use "Abrir em nova aba". O resultado você importa no passo final.</div>
+
 <div class="video-layout">
 <div>
 <label>1. Produto</label>
 <select id="videoProduct" onchange="syncVideoScripts()"></select>
 <label>2. Roteiro salvo para este produto</label>
 <select id="videoScript"></select>
-<p class="small">O roteiro escolhido será incluído nas instruções do vídeo.</p>
 <label>3. Foto de referência do cenário</label>
 <input id="scenePhoto" type="file" accept="image/*">
-<p class="small">A ferramenta de vídeo deverá usar esta imagem para recriar o ambiente. Máximo 2 MB.</p>
-<label>4. Estilo</label>
+<p class="small">Máximo 2 MB.</p>
+<label>4. Qual foto a IA vai animar?</label>
+<select id="sourceImage">
+<option value="product">Foto do produto</option>
+<option value="scene">Foto do cenário</option>
+</select>
+<label>5. Estilo</label>
 <select id="videoStyle">
 <option value="anuncio">Anúncio de produto</option>
 <option value="demonstracao">Demonstração do produto</option>
 <option value="cinematico">Apresentação cinematográfica</option>
 <option value="ugc">Estilo criador de conteúdo</option>
 </select>
-<label>5. Duração</label>
-<select id="videoDuration">
-<option>15 segundos</option>
-<option>30 segundos</option>
-<option>60 segundos</option>
-</select>
-<button class="btn" onclick="prepareVideo()">Preparar projeto de vídeo 9:16</button>
+
+<label>Instrução extra de movimento (opcional)</label>
+<input id="extraPrompt" placeholder="Ex.: câmera girando devagar ao redor do produto">
+<button class="btn" onclick="copyAiPrompt()">1. Copiar prompt</button>
+<button class="btn secondary" onclick="saveSourceImage()">2. Salvar a foto escolhida</button>
+<label>3. Gerador de vídeo (site gratuito)</label>
+<input id="genUrl" type="url" placeholder="https://...">
+<button class="btn" onclick="loadGenerator()">Carregar gerador aqui</button>
+<button class="btn secondary" onclick="openGenerator()">Abrir em nova aba</button>
+<div id="genFrameWrap" class="hidden" style="margin-top:12px">
+<iframe id="genFrame" title="Gerador de vídeo" style="width:100%;height:560px;border:1px solid #35412f;border-radius:12px;background:#0b0e0a" allow="clipboard-write; clipboard-read" referrerpolicy="no-referrer"></iframe>
+<p class="small">Em branco ou com erro? O site bloqueia incorporação. Use "Abrir em nova aba". Envie a foto salva no passo 2 e cole o prompt do passo 1.</p>
+</div>
+<label>4. Importar o vídeo gerado</label>
+<input id="importVid" type="file" accept="video/*" onchange="importVideo(this)">
+<button class="btn secondary" onclick="prepareVideo()">Só preparar instruções</button>
+<div id="videoStatus" class="status hidden"></div>
+<div id="videoOutput" class="vout"></div>
 <div id="videoResult" class="result hidden"></div>
 <button id="copyVideoPrompt" class="btn secondary hidden" onclick="copyVideoPrompt()">Copiar instruções</button>
 <button id="videoCaptionButton" class="btn secondary hidden" onclick="makeCaptionFromVideo()">Gerar legenda deste vídeo</button>
@@ -161,7 +184,7 @@ footer{text-align:center;color:#788071;font-size:11px;padding:20px}
 <div class="preview-wrap">
 <div class="preview" id="videoPreview">A foto do cenário aparecerá aqui.</div>
 </div>
-<p class="small">Prévia da imagem enviada, não é um vídeo renderizado.</p>
+<p class="small">Prévia da imagem enviada.</p>
 </div>
 </div>
 </section>
@@ -192,7 +215,7 @@ footer{text-align:center;color:#788071;font-size:11px;padding:20px}
 
 <section id="library" class="panel hidden">
 <h2>Sua biblioteca</h2>
-<p class="muted">Roteiros e legendas salvos neste aparelho.</p>
+<p class="muted">Roteiros, legendas e vídeos salvos neste aparelho.</p>
 <div id="libraryList"></div>
 </section>
 
@@ -205,6 +228,7 @@ let products=readStore('motor_products',[]);
 let rawScripts=readStore('motor_scripts',[]);
 let scripts=rawScripts.map((s,i)=>typeof s==='string'?{id:'legacy-'+i,productIndex:null,productName:'Produto não identificado',text:s,createdAt:Date.now()}:s);
 let captions=readStore('motor_captions',[]);
+let videos=readStore('motor_videos',[]);
 let currentScript=null,currentVideoPrompt='',currentCaption='';
 let sceneData='';
 
@@ -212,6 +236,7 @@ function persist(){
  localStorage.setItem('motor_products',JSON.stringify(products));
  localStorage.setItem('motor_scripts',JSON.stringify(scripts));
  localStorage.setItem('motor_captions',JSON.stringify(captions));
+ localStorage.setItem('motor_videos',JSON.stringify(videos));
  update();
 }
 
@@ -243,10 +268,12 @@ function update(){
 
  updateScriptSelectors();
 
- document.getElementById('libraryList').innerHTML=
+ const lib=
+ videos.map((v,i)=>`<div class="card"><b>Vídeo ${i+1} · ${esc(v.productName)}</b><div class="vout"><video data-vid="${esc(v.id)}" controls playsinline></video></div><a class="btn secondary" style="display:inline-block;text-decoration:none" data-dl="${esc(v.id)}" download="video-motoria.mp4">Baixar</a><button class="btn danger" onclick="removeVideo(${i})">Excluir</button></div>`).join('')+
  scripts.map((s,i)=>`<div class="card"><b>Roteiro ${i+1} · ${esc(s.productName||'Produto')}</b><div class="result">${esc(s.text)}</div><button class="btn secondary" onclick="copyText(${i})">Copiar roteiro</button><button class="btn danger" onclick="removeScript(${i})">Excluir</button></div>`).join('')+
- captions.map((c,i)=>`<div class="card"><b>Legenda ${i+1} · ${esc(c.productName)}</b><div class="result">${esc(c.text)}</div><button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar legenda</button><button class="btn danger" onclick="removeCaption(${i})">Excluir</button></div>`).join('')||
- '<div class="empty">Nenhum roteiro ou legenda salvo.</div>';
+ captions.map((c,i)=>`<div class="card"><b>Legenda ${i+1} · ${esc(c.productName)}</b><div class="result">${esc(c.text)}</div><button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar legenda</button><button class="btn danger" onclick="removeCaption(${i})">Excluir</button></div>`).join('');
+ document.getElementById('libraryList').innerHTML=lib||'<div class="empty">Nenhum item salvo.</div>';
+ hydrateVideos();
 }
 
 function updateScriptSelectors(){
@@ -347,6 +374,13 @@ function removeScript(i){
  persist();
 }
 
+function removeVideo(i){
+ if(!confirm('Excluir este vídeo da biblioteca?'))return;
+ idbDel(videos[i].id);
+ videos.splice(i,1);
+ persist();
+}
+
 async function copyText(i){copy(scripts[i].text);}
 
 function copy(text){
@@ -367,7 +401,25 @@ function fallbackCopy(text){
  t.remove();
 }
 
-function prepareVideo(){
+function readFile(file){
+ return new Promise((res,rej)=>{
+  const r=new FileReader();
+  r.onload=()=>res(r.result);
+  r.onerror=()=>rej(new Error('Falha ao ler a imagem.'));
+  r.readAsDataURL(file);
+ });
+}
+
+function showPreview(src){
+ const preview=document.getElementById('videoPreview');
+ preview.innerHTML='';
+ const img=document.createElement('img');
+ img.src=src;
+ img.alt='Cenário enviado';
+ preview.appendChild(img);
+}
+
+async function prepareVideo(){
  const idx=Number(document.getElementById('videoProduct').value),p=products[idx];
  if(!p){alert('Cadastre um produto primeiro.');return;}
  if(!p.photo){alert('Este produto não tem foto cadastrada. Adicione uma foto em Produtos.');return;}
@@ -376,29 +428,107 @@ function prepareVideo(){
  if(file.size>2*1024*1024){alert('A foto do cenário deve ter no máximo 2 MB.');return;}
  if(!file.type.startsWith('image/')){alert('Escolha uma imagem para o cenário.');return;}
 
- const r=new FileReader();
- r.onload=()=>{
-  sceneData=r.result;
-  const scriptIdx=document.getElementById('videoScript').value;
-  const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
-  const style=document.getElementById('videoStyle').selectedOptions[0].text;
-  const duration=document.getElementById('videoDuration').value;
+ sceneData=await readFile(file);
+ const scriptIdx=document.getElementById('videoScript').value;
+ const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
+ const style=document.getElementById('videoStyle').selectedOptions[0].text;
+ const duration='curta (conforme o gerador permitir)';
 
-  currentVideoPrompt=`PROJETO DE VÍDEO MOTOR IA\n\nFORMATO: vertical 9:16 · 1080 × 1920 · MP4\nDURAÇÃO: ${duration}\nESTILO: ${style}\n\nPRODUTO: ${p.name}\nDESCRIÇÃO: ${p.description||'Usar somente características visíveis e confirmadas.'}\nPREÇO: ${p.price||'Não informado'}\n\nROTEIRO PARA SEGUIR:\n${script?script.text:'Não foi selecionado roteiro. Criar uma apresentação breve usando apenas os dados confirmados do produto.'}\n\nINSTRUÇÕES VISUAIS:\nUsar a foto do produto como referência principal e preservar formato, cor, estampa, logotipo, embalagem e detalhes. Recriar o ambiente da foto de cenário enviada, adaptando a composição para 9:16. Não substituir nem inventar características do produto. Usar movimentos suaves de câmera e iluminação natural. Não inserir preço ou texto promocional que não esteja confirmado.\n\nARQUIVOS DE REFERÊNCIA NECESSÁRIOS:\n1. Foto original do produto.\n2. Foto de referência do cenário.\n\nOBSERVAÇÃO: estas instruções e imagens ainda precisam ser enviadas a um serviço de geração de vídeo conectado para renderizar o MP4.`;
+ currentVideoPrompt=`PROJETO DE VÍDEO MOTOR IA\n\nFORMATO: vertical 9:16 · 1080 × 1920 · MP4\nDURAÇÃO: ${duration}\nESTILO: ${style}\n\nPRODUTO: ${p.name}\nDESCRIÇÃO: ${p.description||'Usar somente características visíveis e confirmadas.'}\nPREÇO: ${p.price||'Não informado'}\n\nROTEIRO PARA SEGUIR:\n${script?script.text:'Não foi selecionado roteiro. Criar uma apresentação breve usando apenas os dados confirmados do produto.'}\n\nINSTRUÇÕES VISUAIS:\nUsar a foto do produto como referência principal e preservar formato, cor, estampa, logotipo, embalagem e detalhes. Recriar o ambiente da foto de cenário enviada, adaptando a composição para 9:16. Não substituir nem inventar características do produto. Usar movimentos suaves de câmera e iluminação natural. Não inserir preço ou texto promocional que não esteja confirmado.\n\nARQUIVOS DE REFERÊNCIA:\n1. Foto original do produto.\n2. Foto de referência do cenário.`;
 
-  document.getElementById('videoResult').textContent=currentVideoPrompt;
-  document.getElementById('videoResult').classList.remove('hidden');
-  document.getElementById('copyVideoPrompt').classList.remove('hidden');
-  document.getElementById('videoCaptionButton').classList.remove('hidden');
+ document.getElementById('videoResult').textContent=currentVideoPrompt;
+ document.getElementById('videoResult').classList.remove('hidden');
+ document.getElementById('copyVideoPrompt').classList.remove('hidden');
+ document.getElementById('videoCaptionButton').classList.remove('hidden');
+ showPreview(sceneData);
+}
 
-  const preview=document.getElementById('videoPreview');
-  preview.innerHTML='';
-  const img=document.createElement('img');
-  img.src=sceneData;
-  img.alt='Cenário enviado';
-  preview.appendChild(img);
+/* ===== Fluxo do gerador externo + armazenamento local de vídeos ===== */
+function setStatus(msg,isErr){
+ const el=document.getElementById('videoStatus');
+ el.textContent=msg;
+ el.classList.toggle('err',!!isErr);
+ el.classList.remove('hidden');
+}
+
+function buildAiPrompt(p,styleKey,extra){
+ const styles={
+  anuncio:'clean commercial product advertisement, smooth camera push-in',
+  demonstracao:'product demonstration, steady camera showing the product from its best angles',
+  cinematico:'cinematic product reveal, shallow depth of field, slow elegant camera movement',
+  ugc:'handheld creator-style video, natural lighting, casual authentic feel'
  };
- r.readAsDataURL(file);
+ let t=`Vertical 9:16 video. ${styles[styleKey]||styles.anuncio}. Product: ${p.name}.`;
+ if(p.description)t+=` Real details: ${p.description.slice(0,300)}.`;
+ t+=' Keep the product shape, color, print, logo and packaging exactly as in the image. Do not invent features, text or prices. Soft natural light, smooth motion.';
+ if(extra)t+=' '+extra.slice(0,200);
+ return t;
+}
+
+function currentProduct(){
+ const p=products[Number(document.getElementById('videoProduct').value)];
+ if(!p)alert('Cadastre um produto primeiro.');
+ return p;
+}
+
+function copyAiPrompt(){
+ const p=currentProduct();if(!p)return;
+ copy(buildAiPrompt(p,document.getElementById('videoStyle').value,document.getElementById('extraPrompt').value.trim()));
+}
+
+async function saveSourceImage(){
+ const p=currentProduct();if(!p)return;
+ let src=p.photo;
+ if(document.getElementById('sourceImage').value==='scene'){
+  const f=document.getElementById('scenePhoto').files[0];
+  if(!f){alert('Envie primeiro a foto do cenário.');return;}
+  src=await readFile(f);
+ }
+ if(!src){alert('Este produto não tem foto cadastrada.');return;}
+ const blob=await (await fetch(src)).blob();
+ const ext=(blob.type.split('/')[1]||'jpg').replace('jpeg','jpg');
+ const file=new File([blob],'motoria-foto.'+ext,{type:blob.type});
+ if(navigator.canShare&&navigator.canShare({files:[file]})){
+  try{await navigator.share({files:[file],title:'Foto para o gerador'});return;}catch(e){if(e.name==='AbortError')return;}
+ }
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download=file.name;
+ document.body.appendChild(a);a.click();a.remove();
+}
+
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('motoria',1);r.onupgradeneeded=()=>r.result.createObjectStore('v');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
+async function idbSet(k,b){const d=await idb();return new Promise((res,rej)=>{const t=d.transaction('v','readwrite');t.objectStore('v').put(b,k);t.oncomplete=()=>res();t.onerror=()=>rej(t.error);});}
+async function idbGet(k){const d=await idb();return new Promise((res,rej)=>{const q=d.transaction('v').objectStore('v').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
+async function idbDel(k){try{const d=await idb();d.transaction('v','readwrite').objectStore('v').delete(k);}catch(e){}}
+
+async function importVideo(inp){
+ const f=inp.files[0];
+ if(!f)return;
+ if(!f.type.startsWith('video/')){alert('Escolha um arquivo de vídeo.');inp.value='';return;}
+ const p=products[Number(document.getElementById('videoProduct').value)];
+ const id='vid-'+Date.now();
+ try{await idbSet(id,f);}
+ catch(e){setStatus('Não foi possível salvar o vídeo neste aparelho (sem espaço ou navegação privada).',true);return;}
+ videos.push({id,productName:p?p.name:'Produto',createdAt:Date.now()});
+ persist();
+ inp.value='';
+ const url=URL.createObjectURL(f);
+ document.getElementById('videoOutput').innerHTML=`<video src="${url}" controls playsinline muted loop></video>`;
+ setStatus('Vídeo importado e salvo na Biblioteca!');
+ document.getElementById('videoCaptionButton').classList.remove('hidden');
+}
+
+async function hydrateVideos(){
+ for(const el of document.querySelectorAll('video[data-vid]')){
+  try{
+   const b=await idbGet(el.dataset.vid);
+   if(!b)continue;
+   const u=URL.createObjectURL(b);
+   el.src=u;
+   const a=document.querySelector('a[data-dl="'+el.dataset.vid+'"]');
+   if(a)a.href=u;
+  }catch(e){}
+ }
 }
 
 function copyVideoPrompt(){copy(currentVideoPrompt);}
@@ -466,23 +596,35 @@ function removeCaption(i){
  persist();
 }
 
-document.getElementById('scenePhoto').addEventListener('change',function(){
+document.getElementById('scenePhoto').addEventListener('change',async function(){
  const file=this.files[0];
  if(!file)return;
  if(file.size>2*1024*1024){alert('A foto do cenário deve ter no máximo 2 MB.');this.value='';return;}
  if(!file.type.startsWith('image/')){alert('Escolha um arquivo de imagem.');this.value='';return;}
- const r=new FileReader();
- r.onload=()=>{
-  sceneData=r.result;
-  const preview=document.getElementById('videoPreview');
-  preview.innerHTML='';
-  const img=document.createElement('img');
-  img.src=sceneData;
-  img.alt='Cenário enviado';
-  preview.appendChild(img);
- };
- r.readAsDataURL(file);
+ sceneData=await readFile(file);
+ showPreview(sceneData);
 });
+
+
+const GEN_DEFAULT='https://aiimagetovideo.pro/pt/unlimited-genv-ai-video-generator-free';
+function genUrl(){
+ const el=document.getElementById('genUrl');
+ let u=el.value.trim()||GEN_DEFAULT;
+ if(!/^https:\/\//i.test(u)){alert('Use um endereço que comece com https://');return null;}
+ el.value=u;
+ try{localStorage.setItem('motor_genurl',u);}catch(e){}
+ return u;
+}
+function loadGenerator(){
+ const u=genUrl();if(!u)return;
+ document.getElementById('genFrameWrap').classList.remove('hidden');
+ document.getElementById('genFrame').src=u;
+}
+function openGenerator(){
+ const u=genUrl();if(!u)return;
+ window.open(u,'_blank','noopener');
+}
+document.getElementById('genUrl').value=localStorage.getItem('motor_genurl')||GEN_DEFAULT;
 
 update();
 show('products');
