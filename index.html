@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MotorIA - Central de Afiliados</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#10101c;color:#fff;font-family:Arial,sans-serif}
+header{padding:24px 18px;background:#19192b;border-bottom:1px solid #34344b}
+h1{color:#a78bfa;margin:0;font-size:27px}
+header p{color:#aaa;font-size:13px}
+main{padding:18px;max-width:850px;margin:auto}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+button{background:#7954df;color:white;border:0;padding:12px 15px;border-radius:9px;font-weight:bold;cursor:pointer}
+button:active{opacity:.7}
+section{background:#19192b;padding:18px;border-radius:14px;margin-bottom:18px}
+h2{font-size:19px;margin-top:0}
+input,textarea{width:100%;padding:13px;margin:7px 0 13px;background:#292940;border:1px solid #45455f;border-radius:8px;color:white;font-size:15px}
+label{font-size:13px;color:#ccc}
+.product{background:#292940;padding:12px;border-radius:10px;margin:10px 0}
+.product img{width:100%;max-height:180px;object-fit:contain;border-radius:8px}
+.result{white-space:pre-wrap;line-height:1.6;background:#292940;padding:15px;border-radius:9px;margin-top:12px}
+.small{font-size:12px;color:#aaa}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+<h1>✦ MOTOR IA</h1>
+<p>Central inteligente de afiliados | Modo gratuito</p>
+</header>
+
+<main>
+<nav>
+<button onclick="show('home')">Início</button>
+<button onclick="show('products')">Produtos</button>
+<button onclick="show('scripts')">Criar roteiros</button>
+<button onclick="show('library')">Biblioteca</button>
+</nav>
+
+<section id="home">
+<h2>Bem-vinda à MotorIA!</h2>
+<p>Sua central de criação de conteúdo para afiliados.</p>
+<p>Produtos cadastrados: <b id="total">0</b></p>
+<p>Roteiros salvos: <b id="saved">0</b></p>
+<button onclick="show('products')">Cadastrar produto</button>
+<button onclick="show('scripts')">Criar conteúdo</button>
+</section>
+
+<section id="products" class="hidden">
+<h2>📦 Cadastro de produtos</h2>
+<label>Nome do produto</label>
+<input id="name" placeholder="Ex.: Vestido feminino">
+<label>Preço</label>
+<input id="price" placeholder="Ex.: 59,90">
+<label>Descrição e características</label>
+<textarea id="description" placeholder="Descreva o produto"></textarea>
+<label>Link de afiliado</label>
+<input id="link" placeholder="Cole o link do produto">
+<label>Foto do produto</label>
+<input id="photo" type="file" accept="image/*">
+<button onclick="addProduct()">Salvar produto</button>
+<div id="productList"></div>
+</section>
+
+<section id="scripts" class="hidden">
+<h2>🎬 Gerador de roteiros</h2>
+<label>Produto</label>
+<select id="productSelect" style="width:100%;padding:12px;background:#292940;color:white;border-radius:8px"></select>
+<label>Tipo de vídeo</label>
+<select id="style" style="width:100%;padding:12px;background:#292940;color:white;border-radius:8px;margin:8px 0 14px">
+<option value="curioso">Vídeo com curiosidade</option>
+<option value="oferta">Vídeo de oferta</option>
+<option value="demonstracao">Vídeo demonstrativo</option>
+<option value="emocional">Vídeo emocional</option>
+</select>
+<label>Duração</label>
+<select id="duration" style="width:100%;padding:12px;background:#292940;color:white;border-radius:8px;margin:8px 0 14px">
+<option>15 segundos</option>
+<option>30 segundos</option>
+<option>60 segundos</option>
+</select>
+<button onclick="generate()">Gerar roteiro</button>
+<div id="result" class="result hidden"></div>
+<button id="saveButton" class="hidden" onclick="saveScript()">Salvar roteiro</button>
+</section>
+
+<section id="library" class="hidden">
+<h2>📚 Biblioteca</h2>
+<div id="libraryList"></div>
+</section>
+
+</main>
+
+<script>
+let products=JSON.parse(localStorage.getItem('motor_products')||'[]');
+let scripts=JSON.parse(localStorage.getItem('motor_scripts')||'[]');
+let currentScript='';
+
+function persist(){
+ localStorage.setItem('motor_products',JSON.stringify(products));
+ localStorage.setItem('motor_scripts',JSON.stringify(scripts));
+ update();
+}
+
+function show(id){
+ document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+ update();
+}
+
+function update(){
+ document.getElementById('total').textContent=products.length;
+ document.getElementById('saved').textContent=scripts.length;
+ document.getElementById('productList').innerHTML=products.map((p,i)=>`
+ <div class="product">
+ ${p.photo?`<img src="${p.photo}">`:''}
+ <b>${escapeHTML(p.name)}</b>
+ <p>${escapeHTML(p.price)}</p>
+ <p class="small">${escapeHTML(p.description)}</p>
+ <button onclick="removeProduct(${i})">Excluir</button>
+ </div>`).join('');
+ document.getElementById('productSelect').innerHTML=
+ products.map((p,i)=>`<option value="${i}">${escapeHTML(p.name)}</option>`).join('');
+ document.getElementById('libraryList').innerHTML=
+ scripts.map((s,i)=>`<div class="product"><b>Roteiro ${i+1}</b><div class="result">${escapeHTML(s)}</div><button onclick="copyText(${i})">Copiar</button><button onclick="removeScript(${i})">Excluir</button></div>`).join('') || '<p>Nenhum roteiro salvo.</p>';
+}
+
+function escapeHTML(s){
+ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function addProduct(){
+ let name=document.getElementById('name').value.trim();
+ if(!name){alert('Digite o nome do produto.');return;}
+ let file=document.getElementById('photo').files[0];
+ let save=photo=>{
+ products.push({
+ name,
+ price:document.getElementById('price').value,
+ description:document.getElementById('description').value,
+ link:document.getElementById('link').value,
+ photo
+ });
+ persist();
+ ['name','price','description','link','photo'].forEach(id=>document.getElementById(id).value='');
+ alert('Produto cadastrado!');
+ };
+ if(file){
+ let reader=new FileReader();
+ reader.onload=()=>save(reader.result);
+ reader.readAsDataURL(file);
+ }else save('');
+}
+
+function removeProduct(i){
+ if(confirm('Excluir este produto?')){products.splice(i,1);persist();}
+}
+
+function generate(){
+ let p=products[Number(document.getElementById('productSelect').value)];
+ if(!p){alert('Cadastre um produto primeiro.');return;}
+ let duration=document.getElementById('duration').value;
+ let type=document.getElementById('style').value;
+ let opening={
+ curioso:`Você já conhecia ${p.name}? Olha só essa opção!`,
+ oferta:`Está procurando ${p.name}? Dá uma olhada nessa oportunidade!`,
+ demonstracao:`Hoje vamos conhecer melhor ${p.name}.`,
+ emocional:`Às vezes, um pequeno detalhe faz diferença. Conheça ${p.name}.`
+ };
+ currentScript=`ROTEIRO PARA ${duration.toUpperCase()}
+
+🎬 ABERTURA:
+${opening[type]}
+
+📦 APRESENTAÇÃO:
+${p.description||'Apresente o produto e suas características reais.'}
+
+💰 PREÇO:
+${p.price||'Consulte o preço atualizado.'}
+
+📢 CHAMADA PARA AÇÃO:
+Confira os detalhes e veja se esse produto combina com você!
+
+#Shopee #Achadinhos #Ofertas #DicasDeCompra`;
+ document.getElementById('result').textContent=currentScript;
+ document.getElementById('result').classList.remove('hidden');
+ document.getElementById('saveButton').classList.remove('hidden');
+}
+
+function saveScript(){
+ scripts.push(currentScript);
+ persist();
+ alert('Roteiro salvo na biblioteca!');
+}
+
+function removeScript(i){
+ scripts.splice(i,1);persist();
+}
+
+function copyText(i){
+ navigator.clipboard.writeText(scripts[i]).then(()=>alert('Copiado!')).catch(()=>alert('Não foi possível copiar.'));
+}
+
+update();
+</script>
+</body>
+</html>
