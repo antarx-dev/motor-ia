@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,324 +6,1044 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080a08">
 <title>MotorIA — Estúdio de Afiliados</title>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
-:root{--bg:#080a08;--panel:#111510;--panel2:#171d15;--line:#2a3426;--moss:#252d20;--olive:#3d4a32;--sage:#aab59a;--text:#eef0e9;--muted:#a3aa9b;--accent:#899b76;--danger:#bd7770;--radius:18px}
+
+:root{
+--bg:#080a08;--panel:#111510;--panel2:#171d15;
+--line:#2a3426;--moss:#252d20;--sage:#aab59a;
+--text:#eef0e9;--muted:#a3aa9b;--accent:#899b76;
+--danger:#bd7770;--radius:18px
+}
+
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.5}
 button,input,textarea,select{font:inherit}
-header{padding:25px 18px 20px;background:linear-gradient(135deg,#141b12,#080a08 72%);border-bottom:1px solid var(--line)}
+button{cursor:pointer}
+
+header{
+padding:25px 18px 20px;
+background:linear-gradient(135deg,#141b12,#080a08 72%);
+border-bottom:1px solid var(--line)
+}
+
 .header-inner,main{max-width:980px;margin:auto}
 .brand{display:flex;align-items:center;gap:11px}
-.logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#526347,#252d20);display:grid;place-items:center;color:#f1f3ec;font-size:21px}
-h1,h2,h3,.brand-name{font-family:Manrope,Inter,sans-serif}
-.brand-name{font-weight:800;font-size:23px;letter-spacing:-.8px}
+.logo{
+width:40px;height:40px;border-radius:13px;
+background:linear-gradient(145deg,#526347,#252d20);
+display:grid;place-items:center;color:#f1f3ec;font-size:21px
+}
+.brand-name{font-weight:800;font-size:23px;letter-spacing:-.8px;font-family:Manrope}
 .tagline{color:var(--muted);font-size:12px;margin:3px 0 0}
-.header-note{margin:22px 0 0;font:700 clamp(22px,5vw,32px)/1.2 Manrope,sans-serif;letter-spacing:-.8px;max-width:620px}
+.header-note{
+margin:22px 0 0;font:700 clamp(22px,5vw,32px)/1.2 Manrope;
+letter-spacing:-.8px;max-width:620px
+}
 .header-note span{color:var(--sage)}
+
 main{padding:18px 14px 50px}
-nav{display:flex;gap:8px;overflow-x:auto;padding:3px 1px 14px;margin-bottom:8px;scrollbar-width:none}
+
+nav{
+display:flex;gap:8px;overflow-x:auto;padding:3px 1px 14px;
+margin-bottom:8px;scrollbar-width:none
+}
 nav::-webkit-scrollbar{display:none}
-.nav-btn{white-space:nowrap;background:transparent;border:1px solid var(--line);color:var(--muted);padding:10px 13px;border-radius:999px;font-size:12px;font-weight:700}
+
+.nav-btn{
+white-space:nowrap;background:transparent;border:1px solid var(--line);
+color:var(--muted);padding:10px 13px;border-radius:999px;
+font-size:12px;font-weight:700
+}
 .nav-btn.active{background:var(--moss);border-color:#526247;color:#f1f3ec}
-section.panel{background:var(--panel);border:1px solid var(--line);padding:19px;border-radius:var(--radius);margin:0 0 16px;box-shadow:0 10px 35px #0003}
+
+section.panel{
+background:var(--panel);border:1px solid var(--line);
+padding:19px;border-radius:var(--radius);margin:0 0 16px;
+box-shadow:0 10px 35px #0003
+}
+
+h2,h3{font-family:Manrope}
 h2{font-size:19px;letter-spacing:-.4px;margin:0 0 7px}
 h3{font-size:15px;margin:0 0 9px}
 p{margin:7px 0;color:#d5d9cf}
 .muted,.small{color:var(--muted);font-size:12px}
-label{display:block;font-size:12px;font-weight:600;color:#c5cdbd;margin:13px 0 6px}
-input,textarea,select{width:100%;padding:13px 14px;background:#0c100b;border:1px solid #35412f;border-radius:11px;color:var(--text);font-size:14px;outline:none}
-input:focus,textarea:focus,select:focus{border-color:#81936f;box-shadow:0 0 0 3px #81936f22}
+
+label{
+display:block;font-size:12px;font-weight:600;
+color:#c5cdbd;margin:13px 0 6px
+}
+
+input,textarea,select{
+width:100%;padding:13px 14px;background:#0c100b;
+border:1px solid #35412f;border-radius:11px;
+color:var(--text);font-size:14px;outline:none
+}
+input:focus,textarea:focus,select:focus{
+border-color:#81936f;box-shadow:0 0 0 3px #81936f22
+}
 input::placeholder,textarea::placeholder{color:#727b6d}
 textarea{min-height:100px;resize:vertical}
-button{cursor:pointer}
-.btn{border:1px solid #526247;background:linear-gradient(135deg,#45543a,#293324);color:#f5f6f1;padding:12px 16px;border-radius:11px;font-weight:700;font-size:13px;margin:9px 5px 0 0}
+
+.btn{
+border:1px solid #526247;
+background:linear-gradient(135deg,#45543a,#293324);
+color:#f5f6f1;padding:12px 16px;border-radius:11px;
+font-weight:700;font-size:13px;margin:9px 5px 0 0
+}
 .btn.secondary{background:#171e15;border-color:#394634;color:#d9dfd2}
-.btn.ghost{background:transparent;border-color:var(--line);color:var(--muted)}
 .btn.danger{background:#241614;border-color:#5b302c;color:#e5b4ae}
-.btn:active{transform:scale(.985)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.stat,.tile{background:var(--panel2);border:1px solid var(--line);padding:15px;border-radius:14px}
-.stat strong{display:block;font:800 25px Manrope;color:#e8eddf}
-.stat span,.tile span{font-size:11px;color:var(--muted)}
-.tile{min-height:105px;text-align:left;color:var(--text);width:100%}
-.tile b{display:block;margin:7px 0 3px;font:700 14px Manrope}
-.tile .tile-icon{font-size:20px;color:var(--sage)}
-.notice{background:#1b2118;border:1px solid #46533d;color:#cbd4c1;padding:13px;border-radius:12px;font-size:12px;line-height:1.6;margin:13px 0}
+.card{
+background:#151b13;border:1px solid var(--line);
+padding:13px;border-radius:14px;margin:11px 0
+}
+.card img{
+width:100%;max-height:190px;object-fit:contain;
+border-radius:10px;background:#0b0e0a;margin-bottom:9px
+}
+.notice{
+background:#1b2118;border:1px solid #46533d;
+color:#cbd4c1;padding:13px;border-radius:12px;
+font-size:12px;line-height:1.6;margin:13px 0
+}
 .notice.warning{background:#211e14;border-color:#625536;color:#e8d8a9}
-.card{background:#151b13;border:1px solid var(--line);padding:13px;border-radius:14px;margin:11px 0}
-.card img{width:100%;max-height:190px;object-fit:contain;border-radius:10px;background:#0b0e0a;margin-bottom:9px}
-.result{white-space:pre-wrap;line-height:1.7;background:#0b0f0a;border:1px solid #303b2b;padding:15px;border-radius:12px;margin-top:12px;font-size:13px;overflow-wrap:anywhere}
+.result{
+white-space:pre-wrap;line-height:1.7;background:#0b0f0a;
+border:1px solid #303b2b;padding:15px;border-radius:12px;
+margin-top:12px;font-size:13px;overflow-wrap:anywhere
+}
 .hidden{display:none!important}
-.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
-.row>*{flex:1}
-.video-layout{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:18px;align-items:start}
-.preview-wrap{display:flex;justify-content:center;background:#0b0e0a;border:1px solid var(--line);border-radius:14px;padding:10px}
-.preview{width:100%;max-width:180px;aspect-ratio:9/16;border:1px dashed #69785c;border-radius:11px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);background:#171d15;padding:10px;font-size:12px}
-.preview img{width:100%;height:100%;object-fit:cover}
 .empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
-.muse-frame{width:100%;height:780px;border:1px solid var(--line);border-radius:14px;background:#0b0e0a;display:block}
-.muse-actions{display:flex;gap:8px;flex-wrap:wrap}
-.muse-actions .btn{flex:1;text-align:center;text-decoration:none}
+
+.video-layout{
+display:grid;grid-template-columns:minmax(0,1fr) 200px;
+gap:18px;align-items:start
+}
+.preview-wrap{
+display:flex;justify-content:center;background:#0b0e0a;
+border:1px solid var(--line);border-radius:14px;padding:10px
+}
+.preview{
+width:100%;max-width:180px;aspect-ratio:9/16;
+border:1px dashed #69785c;border-radius:11px;
+overflow:hidden;display:flex;align-items:center;
+justify-content:center;text-align:center;
+color:var(--muted);background:#171d15;
+padding:10px;font-size:12px
+}
+.preview img{width:100%;height:100%;object-fit:contain}
+video{max-width:100%}
 footer{text-align:center;color:#788071;font-size:11px;padding:20px}
+
 @media(max-width:620px){
- main{padding:14px 12px 40px}
- .video-layout{grid-template-columns:1fr}
- .preview{max-width:160px}
- .grid{gap:8px}
- .panel{padding:16px!important}
- .header-note{margin-top:18px}
- .muse-frame{height:700px}
+main{padding:14px 12px 40px}
+.video-layout{grid-template-columns:1fr}
+.preview{max-width:160px}
+.grid{gap:8px}
+.panel{padding:16px!important}
+.header-note{margin-top:18px}
 }
 </style>
 </head>
+
 <body>
-<header><div class="header-inner">
-  <div class="brand"><div class="logo">✦</div><div><div class="brand-name">MotorIA</div><div class="tagline">ESTÚDIO INTELIGENTE DE AFILIADOS</div></div></div>
-  <div class="header-note">Seu produto. Sua criatividade.<br><span>Conteúdo pronto para vender.</span></div>
-</div></header>
+
+<header>
+<div class="header-inner">
+<div class="brand">
+<div class="logo">✦</div>
+<div>
+<div class="brand-name">MotorIA</div>
+<div class="tagline">ESTÚDIO INTELIGENTE DE AFILIADOS</div>
+</div>
+</div>
+<div class="header-note">
+Seu produto. Sua criatividade.<br>
+<span>Conteúdo pronto para vender.</span>
+</div>
+</div>
+</header>
+
 <main>
+
 <nav aria-label="Navegação">
-<button class="nav-btn active" data-page="home" onclick="show('home',this)">Início</button>
-<button class="nav-btn" data-page="products" onclick="show('products',this)">Produtos</button>
+<button class="nav-btn active" data-page="products" onclick="show('products',this)">Produtos</button>
 <button class="nav-btn" data-page="scripts" onclick="show('scripts',this)">Roteiros</button>
 <button class="nav-btn" data-page="videos" onclick="show('videos',this)">Vídeos IA</button>
 <button class="nav-btn" data-page="captions" onclick="show('captions',this)">Legendas</button>
 <button class="nav-btn" data-page="library" onclick="show('library',this)">Biblioteca</button>
 </nav>
 
-<section id="home" class="panel">
-  <h2>Bem-vinda à MotorIA</h2><p class="muted">Seu espaço para organizar produtos e criar conteúdo de afiliados.</p>
-  <div class="grid" style="margin:16px 0"><div class="stat"><strong id="total">0</strong><span>Produtos cadastrados</span></div><div class="stat"><strong id="saved">0</strong><span>Roteiros salvos</span></div></div>
-  <div class="grid">
-    <button class="tile" onclick="show('products')"><span class="tile-icon">▣</span><b>Cadastrar produto</b><span>Fotos, detalhes e link de afiliado</span></button>
-    <button class="tile" onclick="show('scripts')"><span class="tile-icon">✎</span><b>Criar roteiro</b><span>Ideias de vídeos para seu produto</span></button>
-    <button class="tile" onclick="show('videos')"><span class="tile-icon">▷</span><b>Preparar vídeo</b><span>Roteiro e cenário na mesma criação</span></button>
-    <button class="tile" onclick="show('captions')"><span class="tile-icon">#</span><b>Gerar legenda</b><span>Descrição, emojis e hashtags</span></button>
-  </div>
+<!-- PRODUTOS -->
+
+<section id="products" class="panel">
+<h2>Cadastro de produtos</h2>
+<p class="muted">Guarde as informações usadas nos roteiros, vídeos e legendas.</p>
+
+<label>Nome do produto</label>
+<input id="name" placeholder="Ex.: Bolsa feminina transversal">
+
+<label>Preço</label>
+<input id="price" placeholder="Ex.: R$ 59,90">
+
+<label>Descrição e características reais</label>
+<textarea id="description" placeholder="Material, tamanho, benefícios, cores e detalhes..."></textarea>
+
+<label>Link de afiliado</label>
+<input id="link" type="url" placeholder="Cole seu link de afiliado">
+
+<label>Foto do produto (máximo 2 MB)</label>
+<input id="photo" type="file" accept="image/*">
+
+<button class="btn" onclick="addProduct()">Salvar produto</button>
+<div id="productList"></div>
 </section>
 
-<section id="products" class="panel hidden">
-<h2>Cadastro de produtos</h2><p class="muted">Guarde as informações que serão usadas nos roteiros, vídeos e legendas.</p>
-<label>Nome do produto</label><input id="name" placeholder="Ex.: Bolsa feminina transversal">
-<label>Preço</label><input id="price" placeholder="Ex.: R$ 59,90">
-<label>Descrição e características reais</label><textarea id="description" placeholder="Material, tamanho, benefícios, cores e detalhes..."></textarea>
-<label>Link de afiliado</label><input id="link" type="url" placeholder="Cole seu link de afiliado">
-<label>Foto do produto (máximo 2 MB)</label><input id="photo" type="file" accept="image/*">
-<button class="btn" onclick="addProduct()">Salvar produto</button><div id="productList"></div>
-</section>
+<!-- ROTEIROS -->
 
 <section id="scripts" class="panel hidden">
-<h2>Gerador de roteiros</h2><p class="muted">Escolha o produto. O roteiro ficará vinculado a ele para usar na criação do vídeo.</p>
-<label>Produto</label><select id="productSelect"></select>
-<label>Tipo de vídeo</label><select id="style"><option value="curioso">Curiosidade / descoberta</option><option value="oferta">Oferta / oportunidade</option><option value="demonstracao">Demonstração</option><option value="emocional">Emocional</option></select>
-<label>Duração</label><select id="duration"><option>15 segundos</option><option>30 segundos</option><option>60 segundos</option></select>
+<h2>Gerador de roteiros</h2>
+<p class="muted">Crie roteiros vinculados aos produtos cadastrados.</p>
+
+<label>Produto</label>
+<select id="productSelect"></select>
+
+<label>Tipo de vídeo</label>
+<select id="style">
+<option value="curioso">Curiosidade / descoberta</option>
+<option value="oferta">Oferta / oportunidade</option>
+<option value="demonstracao">Demonstração</option>
+<option value="emocional">Emocional</option>
+</select>
+
+<label>Duração</label>
+<select id="duration">
+<option>15 segundos</option>
+<option>30 segundos</option>
+<option>60 segundos</option>
+</select>
+
 <button class="btn" onclick="generate()">Gerar roteiro</button>
+
 <div id="result" class="result hidden"></div>
-<div id="scriptActions" class="hidden"><button class="btn" onclick="saveScript()">Salvar roteiro</button><button class="btn secondary" onclick="useScriptInVideo()">Usar este roteiro no vídeo</button></div>
+
+<div id="scriptActions" class="hidden">
+<button class="btn" onclick="saveScript()">Salvar roteiro</button>
+<button class="btn secondary" onclick="useScriptInVideo()">Usar no vídeo</button>
+</div>
 </section>
+
+<!-- VÍDEOS IA -->
 
 <section id="videos" class="panel hidden">
+
 <h2>Estúdio de vídeos IA</h2>
-<p class="muted">Acesse o Muse AI do SnapGen diretamente nesta área da MotorIA.</p>
+<p class="muted">Gere vídeos reais a partir da imagem do seu produto.</p>
+
+<div class="notice">
+<b>Motor de geração: LTX-2.5</b><br>
+Conexão direta com o Space oficial do Hugging Face, usando a API Gradio.
+A disponibilidade depende da fila pública.
+</div>
+
+<label>1. Produto principal</label>
+<select id="videoProduct" onchange="syncVideoScripts();showProductPreview()"></select>
+
+<div id="mainProductPreview" class="card">
+A foto do produto aparecerá aqui.
+</div>
+
+<label>2. Roteiro salvo</label>
+<select id="videoScript">
+<option value="">Sem roteiro selecionado</option>
+</select>
+
+<label>3. Foto do cenário</label>
+<input id="scenePhoto" type="file" accept="image/*">
+
+<p class="small">A foto do produto será o elemento principal da composição. A foto do cenário será usada para compor o ambiente.</p>
+
+<label>4. Estilo do vídeo</label>
+<select id="videoStyle">
+<option value="commercial product advertisement">Anúncio de produto</option>
+<option value="realistic product demonstration">Demonstração do produto</option>
+<option value="cinematic product presentation">Apresentação cinematográfica</option>
+<option value="UGC creator style product presentation">Estilo criador de conteúdo</option>
+</select>
+
+<label>5. Duração</label>
+<select id="videoDuration">
+<option value="2">2 segundos</option>
+<option value="3">3 segundos</option>
+<option value="4">4 segundos</option>
+<option value="5">5 segundos</option>
+</select>
+
+<label>6. Movimento da câmera</label>
+<select id="cameraMotion">
+<option value="slow push-in">Aproximação suave</option>
+<option value="orbit">Movimento ao redor do produto</option>
+<option value="tracking shot">Câmera acompanhando o produto</option>
+<option value="gentle pan">Movimento lateral suave</option>
+</select>
+
+<button class="btn" id="generateRealVideo" onclick="generateRealVideo()">
+Gerar vídeo com IA
+</button>
+
+<div id="generationStatus" class="notice hidden"></div>
+<div id="videoError" class="notice warning hidden"></div>
+
+<div id="videoResult" class="hidden">
+<h3>Vídeo gerado</h3>
+<video id="generatedVideo" controls playsinline style="width:100%;border-radius:14px;background:#000"></video>
+<br>
+<a id="downloadVideo" class="btn secondary" download="MotorIA-video.mp4">Salvar vídeo</a>
+</div>
 
 <div class="card">
-<h3>✦ Muse AI — Gerador de vídeos</h3>
-<p class="small">A ferramenta será exibida abaixo, dentro da MotorIA, se o SnapGen permitir carregamento incorporado.</p>
-<iframe
- class="muse-frame"
- src="https://snapgen.ai/app/video-gen/muse"
- title="Muse AI — SnapGen"
- allow="camera; clipboard-read; clipboard-write; fullscreen"
- allowfullscreen
- loading="lazy">
-</iframe>
-<div class="muse-actions">
-<a class="btn" href="https://snapgen.ai/app/video-gen/muse" target="_blank" rel="noopener noreferrer">Abrir Muse AI</a>
+<h3>Prévia da referência</h3>
+<div class="preview-wrap">
+<div class="preview" id="videoPreview">Aguardando imagens.</div>
 </div>
-<div class="notice warning">
-<b>Importante:</b> a incorporação depende das permissões do SnapGen. Se aparecer uma tela vazia ou uma mensagem de bloqueio, use o botão “Abrir Muse AI”. O acesso gratuito, limites de geração e login são controlados pelo SnapGen. A MotorIA não consegue garantir nem alterar esses limites.
-</div>
+<p class="small">Esta é a imagem composta enviada ao gerador, não o vídeo renderizado.</p>
 </div>
 
-<h2>Preparador de vídeos da MotorIA</h2>
-<p class="muted">Organize os dados e as referências do produto para usar na criação.</p>
-<div class="video-layout"><div>
-<label>1. Produto</label><select id="videoProduct" onchange="syncVideoScripts()"></select>
-<label>2. Roteiro salvo para este produto</label><select id="videoScript"></select><p class="small">O roteiro escolhido será incluído nas instruções do vídeo.</p>
-<label>3. Foto de referência do cenário</label><input id="scenePhoto" type="file" accept="image/*"><p class="small">A ferramenta de vídeo deverá usar esta imagem para recriar o ambiente. Máximo 2 MB.</p>
-<label>4. Estilo</label><select id="videoStyle"><option value="anuncio">Anúncio de produto</option><option value="demonstracao">Demonstração do produto</option><option value="cinematico">Apresentação cinematográfica</option><option value="ugc">Estilo criador de conteúdo</option></select>
-<label>5. Duração</label><select id="videoDuration"><option>15 segundos</option><option>30 segundos</option><option>60 segundos</option></select>
-<button class="btn" onclick="prepareVideo()">Preparar projeto de vídeo 9:16</button>
-<div id="videoResult" class="result hidden"></div><button id="copyVideoPrompt" class="btn secondary hidden" onclick="copyVideoPrompt()">Copiar instruções</button>
-<button id="videoCaptionButton" class="btn secondary hidden" onclick="makeCaptionFromVideo()">Gerar legenda deste vídeo</button>
-</div><div><label>Prévia do cenário</label><div class="preview-wrap"><div class="preview" id="videoPreview">A foto do cenário aparecerá aqui.</div></div><p class="small">Prévia da imagem enviada, não é um vídeo renderizado.</p></div></div>
 </section>
+
+<!-- LEGENDAS -->
 
 <section id="captions" class="panel hidden">
-<h2>Legenda para publicação</h2><p class="muted">Gere uma descrição comercial com emojis, hashtags e o link de afiliado do produto.</p>
-<label>Produto</label><select id="captionProduct" onchange="captionProductChanged()"></select>
-<label>Roteiro (opcional)</label><select id="captionScript"></select>
-<label>Tom da legenda</label><select id="captionTone"><option value="natural">Natural e próximo</option><option value="oferta">Oferta e urgência moderada</option><option value="curioso">Curioso e chamativo</option><option value="elegante">Elegante e direto</option></select>
+<h2>Legenda para publicação</h2>
+<p class="muted">Gere descrições comerciais com emojis, hashtags e link de afiliado.</p>
+
+<label>Produto</label>
+<select id="captionProduct" onchange="captionProductChanged()"></select>
+
+<label>Roteiro (opcional)</label>
+<select id="captionScript"></select>
+
+<label>Tom da legenda</label>
+<select id="captionTone">
+<option value="natural">Natural e próximo</option>
+<option value="oferta">Oferta e urgência moderada</option>
+<option value="curioso">Curioso e chamativo</option>
+<option value="elegante">Elegante e direto</option>
+</select>
+
 <button class="btn" onclick="generateCaption()">Gerar legenda automática</button>
-<label>Edite sua legenda, se desejar</label><textarea id="captionResult" class="hidden" rows="10" placeholder="Sua legenda aparecerá aqui..."></textarea>
-<div id="captionActions" class="hidden"><button class="btn" onclick="copyCaption()">Copiar legenda</button><button class="btn secondary" onclick="saveCaption()">Salvar na biblioteca</button></div>
-<div class="notice">A legenda usa os dados cadastrados. Confira preço, disponibilidade e link antes de publicar. A ferramenta não inventa avaliações, descontos ou características.</div>
+
+<label>Edite sua legenda</label>
+<textarea id="captionResult" class="hidden" rows="10"></textarea>
+
+<div id="captionActions" class="hidden">
+<button class="btn" onclick="copyCaption()">Copiar legenda</button>
+<button class="btn secondary" onclick="saveCaption()">Salvar na biblioteca</button>
+</div>
+
+<div class="notice">
+Confira preço, disponibilidade e link antes de publicar.
+</div>
 </section>
 
+<!-- BIBLIOTECA -->
+
 <section id="library" class="panel hidden">
-<h2>Sua biblioteca</h2><p class="muted">Roteiros e legendas salvos neste aparelho.</p><div id="libraryList"></div>
+<h2>Sua biblioteca</h2>
+<p class="muted">Roteiros e legendas salvos neste aparelho.</p>
+<div id="libraryList"></div>
 </section>
+
 <footer>MotorIA · Seu estúdio criativo</footer>
+
 </main>
+
 <script>
-const readStore=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}catch(e){return fallback}};
+const readStore=(key,fallback)=>{
+try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}
+catch(e){return fallback}
+};
+
 let products=readStore('motor_products',[]);
 let rawScripts=readStore('motor_scripts',[]);
-let scripts=rawScripts.map((s,i)=>typeof s==='string'?{id:'legacy-'+i,productIndex:null,productName:'Produto não identificado',text:s,createdAt:Date.now()}:s);
+let scripts=rawScripts.map((s,i)=>typeof s==='string'
+?{id:'legacy-'+i,productIndex:null,productName:'Produto não identificado',text:s,createdAt:Date.now()}
+:s);
 let captions=readStore('motor_captions',[]);
-let currentScript=null,currentVideoPrompt='',currentCaption='';
+
+let currentScript=null;
+let currentVideoPrompt='';
+let currentCaption='';
 let sceneData='';
 
 function persist(){
- localStorage.setItem('motor_products',JSON.stringify(products));
- localStorage.setItem('motor_scripts',JSON.stringify(scripts));
- localStorage.setItem('motor_captions',JSON.stringify(captions));
- update();
+localStorage.setItem('motor_products',JSON.stringify(products));
+localStorage.setItem('motor_scripts',JSON.stringify(scripts));
+localStorage.setItem('motor_captions',JSON.stringify(captions));
+update();
 }
+
 function show(id,button){
- document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
- document.getElementById(id).classList.remove('hidden');
- document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
- update();
+document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+update();
 }
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+function esc(s){
+return String(s??'').replace(/[&<>"']/g,c=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+}
+
 function productOptions(selected){
- return products.map((p,i)=>`<option value="${i}" ${String(selected)===String(i)?'selected':''}>${esc(p.name)}</option>`).join('');
+return products.map((p,i)=>
+`<option value="${i}" ${String(selected)===String(i)?'selected':''}>${esc(p.name)}</option>`
+).join('');
 }
+
 function update(){
- document.getElementById('total').textContent=products.length;
- document.getElementById('saved').textContent=scripts.length;
- document.getElementById('productList').innerHTML=products.map((p,i)=>`<div class="card">${p.photo?`<img src="${p.photo}" alt="Foto do produto">`:''}<b>${esc(p.name)}</b><p>${esc(p.price||'Preço não informado')}</p><p class="small">${esc(p.description||'Sem descrição')}</p><p class="small">${p.link?'Link de afiliado cadastrado':'Sem link de afiliado'}</p><button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button></div>`).join('')||'<div class="empty">Nenhum produto cadastrado ainda.</div>';
- const opts=productOptions();
- ['productSelect','videoProduct','captionProduct'].forEach(id=>{const el=document.getElementById(id);const old=el.value;el.innerHTML=opts||'<option value="">Cadastre um produto primeiro</option>';if(old!==''&&products[Number(old)])el.value=old;});
- updateScriptSelectors();
- document.getElementById('libraryList').innerHTML=
- scripts.map((s,i)=>`<div class="card"><b>Roteiro ${i+1} · ${esc(s.productName||'Produto')}</b><div class="result">${esc(s.text)}</div><button class="btn secondary" onclick="copyText(${i})">Copiar roteiro</button><button class="btn danger" onclick="removeScript(${i})">Excluir</button></div>`).join('')+
- captions.map((c,i)=>`<div class="card"><b>Legenda ${i+1} · ${esc(c.productName)}</b><div class="result">${esc(c.text)}</div><button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar legenda</button><button class="btn danger" onclick="removeCaption(${i})">Excluir</button></div>`).join('')||
- '<div class="empty">Nenhum roteiro ou legenda salvo.</div>';
+document.getElementById('productList').innerHTML=
+products.map((p,i)=>`
+<div class="card">
+${p.photo?`<img src="${p.photo}" alt="Foto do produto">`:''}
+<b>${esc(p.name)}</b>
+<p>${esc(p.price||'Preço não informado')}</p>
+<p class="small">${esc(p.description||'Sem descrição')}</p>
+<p class="small">${p.link?'Link de afiliado cadastrado':'Sem link de afiliado'}</p>
+<button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button>
+</div>`).join('')||
+'<div class="empty">Nenhum produto cadastrado ainda.</div>';
+
+const opts=productOptions();
+
+['productSelect','videoProduct','captionProduct'].forEach(id=>{
+const el=document.getElementById(id);
+const old=el.value;
+el.innerHTML=opts||'<option value="">Cadastre um produto primeiro</option>';
+if(old!==''&&products[Number(old)])el.value=old;
+});
+
+updateScriptSelectors();
+
+document.getElementById('libraryList').innerHTML=
+scripts.map((s,i)=>`
+<div class="card">
+<b>Roteiro ${i+1} · ${esc(s.productName||'Produto')}</b>
+<div class="result">${esc(s.text)}</div>
+<button class="btn secondary" onclick="copyText(${i})">Copiar roteiro</button>
+<button class="btn danger" onclick="removeScript(${i})">Excluir</button>
+</div>`).join('')+
+captions.map((c,i)=>`
+<div class="card">
+<b>Legenda ${i+1} · ${esc(c.productName)}</b>
+<div class="result">${esc(c.text)}</div>
+<button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar legenda</button>
+<button class="btn danger" onclick="removeCaption(${i})">Excluir</button>
+</div>`).join('')||
+'<div class="empty">Nenhum roteiro ou legenda salvo.</div>';
+
+showProductPreview();
 }
+
 function updateScriptSelectors(){
- const vi=Number(document.getElementById('videoProduct').value);
- const ci=Number(document.getElementById('captionProduct').value);
- const videoList=scripts.map((s,i)=>({s,i})).filter(x=>x.s.productIndex===vi || (x.s.productIndex==null && x.s.productName==='Produto não identificado'));
- const captionList=scripts.map((s,i)=>({s,i})).filter(x=>x.s.productIndex===ci || x.s.productIndex==null);
- document.getElementById('videoScript').innerHTML='<option value="">Sem roteiro selecionado</option>'+videoList.map(x=>`<option value="${x.i}">Roteiro ${x.i+1} · ${esc(x.s.productName)}</option>`).join('');
- document.getElementById('captionScript').innerHTML='<option value="">Sem roteiro selecionado</option>'+captionList.map(x=>`<option value="${x.i}">Roteiro ${x.i+1}</option>`).join('');
+const vi=Number(document.getElementById('videoProduct').value);
+const ci=Number(document.getElementById('captionProduct').value);
+
+const videoList=scripts.map((s,i)=>({s,i})).filter(x=>
+x.s.productIndex===vi||x.s.productIndex==null
+);
+
+const captionList=scripts.map((s,i)=>({s,i})).filter(x=>
+x.s.productIndex===ci||x.s.productIndex==null
+);
+
+document.getElementById('videoScript').innerHTML=
+'<option value="">Sem roteiro selecionado</option>'+
+videoList.map(x=>
+`<option value="${x.i}">Roteiro ${x.i+1} · ${esc(x.s.productName)}</option>`
+).join('');
+
+document.getElementById('captionScript').innerHTML=
+'<option value="">Sem roteiro selecionado</option>'+
+captionList.map(x=>
+`<option value="${x.i}">Roteiro ${x.i+1}</option>`
+).join('');
 }
+
 function syncVideoScripts(){updateScriptSelectors();}
 function captionProductChanged(){updateScriptSelectors();}
+
+function showProductPreview(){
+const idx=Number(document.getElementById('videoProduct').value);
+const p=products[idx];
+const box=document.getElementById('mainProductPreview');
+
+if(!p||!p.photo){
+box.innerHTML='A foto do produto aparecerá aqui.';
+return;
+}
+
+box.innerHTML=`<img src="${p.photo}" alt="Produto principal" style="width:100%;max-height:220px;object-fit:contain;border-radius:10px"><b>${esc(p.name)}</b>`;
+}
+
 function addProduct(){
- const name=document.getElementById('name').value.trim();if(!name){alert('Digite o nome do produto.');return;}
- const file=document.getElementById('photo').files[0];
- const save=photo=>{products.push({name,price:document.getElementById('price').value.trim(),description:document.getElementById('description').value.trim(),link:document.getElementById('link').value.trim(),photo});try{persist();}catch(e){alert('O armazenamento do navegador ficou cheio. Tente uma foto menor.');products.pop();return;}['name','price','description','link','photo'].forEach(id=>document.getElementById(id).value='');alert('Produto cadastrado!');};
- if(file){if(!file.type.startsWith('image/')){alert('Escolha um arquivo de imagem.');return;}if(file.size>2*1024*1024){alert('A foto deve ter no máximo 2 MB.');return;}const r=new FileReader();r.onload=()=>save(r.result);r.readAsDataURL(file);}else save('');
-}
-function removeProduct(i){
- if(!confirm('Excluir este produto? Os roteiros já salvos serão mantidos.'))return;
- products.splice(i,1);
- scripts=scripts.map(s=>({...s,productIndex:s.productIndex===i?null:(s.productIndex>i?s.productIndex-1:s.productIndex)}));
- persist();
-}
-function generate(){
- const idx=Number(document.getElementById('productSelect').value),p=products[idx];
- if(!p){alert('Cadastre um produto primeiro.');return;}
- const duration=document.getElementById('duration').value,type=document.getElementById('style').value;
- const opening={curioso:`Você já conhecia ${p.name}? Olha só essa opção!`,oferta:`Está procurando ${p.name}? Conheça os detalhes desta opção.`,demonstracao:`Vamos mostrar o que vale a pena conhecer em ${p.name}.`,emocional:`Pequenos detalhes podem facilitar a rotina. Conheça ${p.name}.`};
- currentScript={id:'script-'+Date.now(),productIndex:idx,productName:p.name,text:`ROTEIRO · ${duration.toUpperCase()}\nPRODUTO: ${p.name}\n\n🎬 ABERTURA:\n${opening[type]}\n\n📦 APRESENTAÇÃO:\n${p.description||'Apresente as características reais do produto.'}\n\n💰 PREÇO:\n${p.price||'Consulte o preço atualizado.'}\n\n📢 CHAMADA PARA AÇÃO:\nConfira os detalhes no link do produto e veja se ele combina com você.`,createdAt:Date.now()};
- document.getElementById('result').textContent=currentScript.text;
- document.getElementById('result').classList.remove('hidden');document.getElementById('scriptActions').classList.remove('hidden');
-}
-function saveScript(){
- if(!currentScript){alert('Gere um roteiro primeiro.');return;}
- if(!scripts.some(s=>s.id===currentScript.id)){scripts.push(currentScript);persist();alert('Roteiro salvo e vinculado ao produto!');}
-}
-function useScriptInVideo(){
- if(!currentScript){alert('Gere um roteiro primeiro.');return;}
- saveScript();show('videos');
- document.getElementById('videoProduct').value=String(currentScript.productIndex);
- updateScriptSelectors();
- const found=scripts.findIndex(s=>s.id===currentScript.id);
- document.getElementById('videoScript').value=String(found);
-}
-function removeScript(i){if(!confirm('Excluir este roteiro?'))return;scripts.splice(i,1);persist();}
-async function copyText(i){copy(scripts[i].text);}
-function copy(text){
- if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(()=>alert('Copiado!')).catch(()=>fallbackCopy(text));}
- else fallbackCopy(text);
-}
-function fallbackCopy(text){
- const t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();
- try{document.execCommand('copy');alert('Copiado!');}catch(e){alert('Não foi possível copiar automaticamente. Selecione e copie o texto.');}t.remove();
-}
-function prepareVideo(){
- const idx=Number(document.getElementById('videoProduct').value),p=products[idx];
- if(!p){alert('Cadastre um produto primeiro.');return;}
- if(!p.photo){alert('Este produto não tem foto cadastrada. Adicione uma foto em Produtos.');return;}
- const file=document.getElementById('scenePhoto').files[0];
- if(!file){alert('Envie uma foto de referência do cenário.');return;}
- if(file.size>2*1024*1024){alert('A foto do cenário deve ter no máximo 2 MB.');return;}
- if(!file.type.startsWith('image/')){alert('Escolha uma imagem para o cenário.');return;}
- const r=new FileReader();r.onload=()=>{
- sceneData=r.result;
- const scriptIdx=document.getElementById('videoScript').value;
- const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
- const style=document.getElementById('videoStyle').selectedOptions[0].text,duration=document.getElementById('videoDuration').value;
- currentVideoPrompt=`PROJETO DE VÍDEO MOTOR IA\n\nFORMATO: vertical 9:16 · 1080 × 1920 · MP4\nDURAÇÃO: ${duration}\nESTILO: ${style}\n\nPRODUTO: ${p.name}\nDESCRIÇÃO: ${p.description||'Usar somente características visíveis e confirmadas.'}\nPREÇO: ${p.price||'Não informado'}\n\nROTEIRO PARA SEGUIR:\n${script?script.text:'Não foi selecionado roteiro. Criar uma apresentação breve usando apenas os dados confirmados do produto.'}\n\nINSTRUÇÕES VISUAIS:\nUsar a foto do produto como referência principal e preservar formato, cor, estampa, logotipo, embalagem e detalhes. Recriar o ambiente da foto de cenário enviada, adaptando a composição para 9:16. Não substituir nem inventar características do produto. Usar movimentos suaves de câmera e iluminação natural. Não inserir preço ou texto promocional que não esteja confirmado.\n\nARQUIVOS DE REFERÊNCIA NECESSÁRIOS:\n1. Foto original do produto.\n2. Foto de referência do cenário.\n\nOBSERVAÇÃO: estas instruções e imagens ainda precisam ser enviadas a um serviço de geração de vídeo conectado para renderizar o MP4.`;
- document.getElementById('videoResult').textContent=currentVideoPrompt;document.getElementById('videoResult').classList.remove('hidden');
- document.getElementById('copyVideoPrompt').classList.remove('hidden');document.getElementById('videoCaptionButton').classList.remove('hidden');
- const preview=document.getElementById('videoPreview');preview.innerHTML='';const img=document.createElement('img');img.src=sceneData;img.alt='Cenário enviado';preview.appendChild(img);
- };r.readAsDataURL(file);
-}
-function copyVideoPrompt(){copy(currentVideoPrompt);}
-function makeCaptionFromVideo(){
- const idx=Number(document.getElementById('videoProduct').value);show('captions');document.getElementById('captionProduct').value=String(idx);updateScriptSelectors();
- const s=document.getElementById('videoScript').value;if(s!=='')document.getElementById('captionScript').value=s;
- generateCaption();
-}
-function hashtagsFor(p){
- const words=(p.name+' '+(p.description||'')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().match(/[a-z0-9]+/g)||[];
- const stop=new Set(['para','com','sem','uma','uns','das','dos','que','por','the','and','de','do','da']);
- const tags=[...new Set(words.filter(w=>w.length>3&&!stop.has(w)).slice(0,4))].map(w=>'#'+w);
- return [...tags,'#Achadinhos','#Ofertas','#DicasDeCompra'].slice(0,7).join(' ');
-}
-function generateCaption(){
- const idx=Number(document.getElementById('captionProduct').value),p=products[idx];if(!p){alert('Cadastre um produto primeiro.');return;}
- const scriptIdx=document.getElementById('captionScript').value,script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
- const tone=document.getElementById('captionTone').value;
- const intro={natural:`✨ Olha só este ${p.name}!`,oferta:`🛍️ Está de olho em ${p.name}? Confira esta opção!`,curioso:`👀 Já conhece ${p.name}? Veja os detalhes!`,elegante:`Conheça ${p.name}. ✨`};
- const description=p.description?`\n\n${p.description}`:'';
- const price=p.price?`\n\n💚 Preço informado: ${p.price}`:'';
- const hook=script?`\n\n💡 ${script.text.split('\n').filter(line=>line.trim()&&!/ROTEIRO|PRODUTO:|ABERTURA:|APRESENTAÇÃO:|PREÇO:|CHAMADA PARA AÇÃO:/i.test(line)).slice(0,2).join(' ').slice(0,220)}`:'';
- const affiliate=p.link?`\n\n🔗 Confira aqui: ${p.link}`:'\n\n🔗 Adicione seu link de afiliado no cadastro do produto para incluí-lo aqui.';
- currentCaption=`${intro[tone]}${description}${hook}${price}\n\n💚 Confira os detalhes e veja se combina com você!\n\n${hashtagsFor(p)}${affiliate}`;
- document.getElementById('captionResult').value=currentCaption;document.getElementById('captionResult').classList.remove('hidden');document.getElementById('captionActions').classList.remove('hidden');
-}
-function copyCaption(){currentCaption=document.getElementById('captionResult').value;copy(currentCaption);}
-function saveCaption(){
- const text=document.getElementById('captionResult').value;if(!text.trim()){alert('Gere uma legenda primeiro.');return;}
- const idx=Number(document.getElementById('captionProduct').value),p=products[idx];
- captions.push({productName:p?.name||'Produto',text,createdAt:Date.now()});persist();alert('Legenda salva na biblioteca!');
-}
-function copyCaptionAt(i){copy(captions[i].text);}
-function removeCaption(i){if(!confirm('Excluir esta legenda?'))return;captions.splice(i,1);persist();}
-document.getElementById('scenePhoto').addEventListener('change',function(){
- const file=this.files[0];if(!file)return;
- if(file.size>2*1024*1024){alert('A foto do cenário deve ter no máximo 2 MB.');this.value='';return;}
- if(!file.type.startsWith('image/')){alert('Escolha uma imagem para o cenário.');this.value='';return;}
- const r=new FileReader();r.onload=()=>{sceneData=r.result;const preview=document.getElementById('videoPreview');preview.innerHTML='';const img=document.createElement('img');img.src=sceneData;img.alt='Cenário enviado';preview.appendChild(img);};r.readAsDataURL(file);
+const name=document.getElementById('name').value.trim();
+if(!name){alert('Digite o nome do produto.');return;}
+
+const file=document.getElementById('photo').files[0];
+
+const save=photo=>{
+products.push({
+name,
+price:document.getElementById('price').value.trim(),
+description:document.getElementById('description').value.trim(),
+link:document.getElementById('link').value.trim(),
+photo
 });
+
+try{persist();}
+catch(e){
+alert('O armazenamento ficou cheio. Tente uma foto menor.');
+products.pop();
+return;
+}
+
+['name','price','description','link','photo'].forEach(id=>
+document.getElementById(id).value=''
+);
+
+alert('Produto cadastrado!');
+};
+
+if(file){
+if(!file.type.startsWith('image/')){alert('Escolha uma imagem.');return;}
+if(file.size>2*1024*1024){alert('A foto deve ter no máximo 2 MB.');return;}
+const r=new FileReader();
+r.onload=()=>save(r.result);
+r.readAsDataURL(file);
+}else save('');
+}
+
+function removeProduct(i){
+if(!confirm('Excluir este produto? Os roteiros serão mantidos.'))return;
+
+products.splice(i,1);
+scripts=scripts.map(s=>({
+...s,
+productIndex:s.productIndex===i?null:
+(s.productIndex>i?s.productIndex-1:s.productIndex)
+}));
+persist();
+}
+
+function generate(){
+const idx=Number(document.getElementById('productSelect').value);
+const p=products[idx];
+
+if(!p){alert('Cadastre um produto primeiro.');return;}
+
+const duration=document.getElementById('duration').value;
+const type=document.getElementById('style').value;
+
+const opening={
+curioso:`Você já conhecia ${p.name}? Olha só essa opção!`,
+oferta:`Está procurando ${p.name}? Conheça os detalhes desta opção.`,
+demonstracao:`Vamos mostrar o que vale a pena conhecer em ${p.name}.`,
+emocional:`Pequenos detalhes podem facilitar a rotina. Conheça ${p.name}.`
+};
+
+currentScript={
+id:'script-'+Date.now(),
+productIndex:idx,
+productName:p.name,
+text:`ROTEIRO · ${duration.toUpperCase()}
+PRODUTO: ${p.name}
+
+ABERTURA:
+${opening[type]}
+
+APRESENTAÇÃO:
+${p.description||'Apresente as características reais do produto.'}
+
+PREÇO:
+${p.price||'Consulte o preço atualizado.'}
+
+CHAMADA PARA AÇÃO:
+Confira os detalhes no link do produto e veja se ele combina com você.`,
+createdAt:Date.now()
+};
+
+document.getElementById('result').textContent=currentScript.text;
+document.getElementById('result').classList.remove('hidden');
+document.getElementById('scriptActions').classList.remove('hidden');
+}
+
+function saveScript(){
+if(!currentScript){alert('Gere um roteiro primeiro.');return;}
+
+if(!scripts.some(s=>s.id===currentScript.id)){
+scripts.push(currentScript);
+persist();
+alert('Roteiro salvo!');
+}
+}
+
+function useScriptInVideo(){
+if(!currentScript){alert('Gere um roteiro primeiro.');return;}
+saveScript();
+show('videos');
+document.getElementById('videoProduct').value=String(currentScript.productIndex);
+updateScriptSelectors();
+
+const found=scripts.findIndex(s=>s.id===currentScript.id);
+document.getElementById('videoScript').value=String(found);
+showProductPreview();
+}
+
+function removeScript(i){
+if(!confirm('Excluir este roteiro?'))return;
+scripts.splice(i,1);
+persist();
+}
+
+function copy(text){
+if(navigator.clipboard&&window.isSecureContext){
+navigator.clipboard.writeText(text)
+.then(()=>alert('Copiado!'))
+.catch(()=>fallbackCopy(text));
+}else fallbackCopy(text);
+}
+
+function fallbackCopy(text){
+const t=document.createElement('textarea');
+t.value=text;
+t.style.position='fixed';
+t.style.opacity='0';
+document.body.appendChild(t);
+t.select();
+
+try{
+document.execCommand('copy');
+alert('Copiado!');
+}catch(e){
+alert('Não foi possível copiar automaticamente.');
+}
+t.remove();
+}
+
+async function copyText(i){copy(scripts[i].text);}
+
+/* PREPARAÇÃO DA IMAGEM DE REFERÊNCIA */
+
+function loadImage(src){
+return new Promise((resolve,reject)=>{
+const img=new Image();
+img.onload=()=>resolve(img);
+img.onerror=()=>reject(new Error('Não foi possível carregar uma imagem.'));
+img.src=src;
+});
+}
+
+async function createReference(product,sceneFile){
+const scene=await loadImage(sceneFile);
+const productImg=await loadImage(product.photo);
+
+const canvas=document.createElement('canvas');
+canvas.width=832;
+canvas.height=1472;
+
+const ctx=canvas.getContext('2d');
+
+// Cenário preenchendo o fundo
+const scale=Math.max(
+canvas.width/scene.width,
+canvas.height/scene.height
+);
+
+const sw=scene.width*scale;
+const sh=scene.height*scale;
+
+ctx.drawImage(
+scene,
+(canvas.width-sw)/2,
+(canvas.height-sh)/2,
+sw,
+sh
+);
+
+// Produto em destaque no centro
+const maxW=650;
+const maxH=950;
+
+const ps=Math.min(
+maxW/productImg.width,
+maxH/productImg.height
+);
+
+const pw=productImg.width*ps;
+const ph=productImg.height*ps;
+
+const px=(canvas.width-pw)/2;
+const py=(canvas.height-ph)/2;
+
+// Fundo neutro para preservar a foto original
+ctx.fillStyle='rgba(255,255,255,0.96)';
+ctx.fillRect(px-14,py-14,pw+28,ph+28);
+
+ctx.drawImage(productImg,px,py,pw,ph);
+
+return new Promise((resolve,reject)=>{
+canvas.toBlob(blob=>{
+if(!blob){reject(new Error('Falha ao preparar a imagem.'));return;}
+resolve(new File(
+[blob],
+'motorIA-reference.png',
+{type:'image/png'}
+));
+},'image/png');
+});
+}
+
+/* GERAÇÃO REAL LTX-2.5 */
+
+async function generateRealVideo(){
+
+const button=document.getElementById('generateRealVideo');
+const status=document.getElementById('generationStatus');
+const error=document.getElementById('videoError');
+const resultBox=document.getElementById('videoResult');
+
+error.classList.add('hidden');
+resultBox.classList.add('hidden');
+
+const idx=Number(document.getElementById('videoProduct').value);
+const product=products[idx];
+
+if(!product||!product.photo){
+alert('Cadastre um produto com foto primeiro.');
+return;
+}
+
+const sceneFile=document.getElementById('scenePhoto').files[0];
+
+if(!sceneFile){
+alert('Envie uma foto do cenário.');
+return;
+}
+
+if(!sceneFile.type.startsWith('image/')){
+alert('Escolha uma imagem válida.');
+return;
+}
+
+if(sceneFile.size>2*1024*1024){
+alert('A foto do cenário deve ter no máximo 2 MB.');
+return;
+}
+
+const scriptIndex=document.getElementById('videoScript').value;
+const selectedScript=scriptIndex!==''?scripts[Number(scriptIndex)]:null;
+
+const style=document.getElementById('videoStyle').value;
+const duration=Number(document.getElementById('videoDuration').value);
+const motion=document.getElementById('cameraMotion').value;
+
+button.disabled=true;
+button.textContent='Conectando à IA...';
+
+status.classList.remove('hidden');
+status.textContent='Preparando as imagens...';
+
+let referenceURL=null;
+
+try{
+
+const reference=await createReference(product,sceneFile);
+referenceURL=URL.createObjectURL(reference);
+
+const preview=document.getElementById('videoPreview');
+preview.innerHTML='';
+
+const previewImg=document.createElement('img');
+previewImg.src=referenceURL;
+previewImg.alt='Referência composta do produto e cenário';
+preview.appendChild(previewImg);
+
+const prompt=`
+Create a realistic commercial product video.
+
+MAIN SUBJECT:
+${product.name}
+
+PRODUCT DESCRIPTION:
+${product.description||'Preserve the exact visible characteristics of the product.'}
+
+VISUAL STYLE:
+${style}
+
+SCENE:
+Recreate the environment and atmosphere shown in the background of the reference image.
+
+CAMERA MOVEMENT:
+${motion}.
+
+PRODUCT PRESERVATION:
+The product is the main subject.
+Preserve its exact shape, proportions, colors, patterns,
+packaging, logos and visible details.
+Do not replace, redesign or invent another product.
+Keep the product clearly visible throughout the video.
+
+MOVEMENT:
+Create natural, realistic motion.
+Use professional commercial lighting.
+Keep the composition clean and visually attractive.
+
+FORMAT:
+Vertical 9:16.
+Resolution 832 x 1472.
+Duration approximately ${duration} seconds.
+
+SCRIPT:
+${selectedScript?selectedScript.text:'Create a short commercial presentation using only confirmed product details.'}
+
+IMPORTANT:
+The product photo is the main visual reference.
+Use the scene as the environment reference.
+Do not add unsupported claims or invented product features.
+`;
+
+currentVideoPrompt=prompt;
+
+status.textContent='Conectando ao LTX-2.5...';
+
+const {Client,handle_file}=await import(
+'https://esm.sh/@gradio/client@1.16.0'
+);
+
+const client=await Client.connect('Lightricks/LTX-2.5');
+
+status.textContent='Enviando a imagem e solicitando a geração...';
+
+const job=client.submit('/run',[
+prompt,
+handle_file(reference),
+1472,
+832,
+duration,
+42,
+'conv',
+false,
+true,
+false
+]);
+
+let finalData=null;
+
+for await(const message of job){
+
+if(message.type==='status'){
+const stage=message.stage;
+
+if(stage==='pending'){
+status.textContent='Aguardando disponibilidade na fila gratuita...';
+}else if(stage==='generating'){
+status.textContent='A inteligência artificial está criando seu vídeo. Aguarde...';
+}else{
+status.textContent='Processando o resultado...';
+}
+}
+
+if(message.type==='data'){
+finalData=message.data;
+}
+}
+
+if(!finalData||!finalData[0]){
+throw new Error('O serviço não retornou um vídeo.');
+}
+
+const videoInfo=finalData[0];
+
+const videoURL=videoInfo.url||videoInfo.path;
+
+if(!videoURL){
+throw new Error('O arquivo de vídeo não foi localizado.');
+}
+
+const video=document.getElementById('generatedVideo');
+video.src=videoURL;
+
+const download=document.getElementById('downloadVideo');
+download.href=videoURL;
+
+resultBox.classList.remove('hidden');
+status.textContent='Vídeo recebido com sucesso!';
+
+}catch(err){
+
+console.error(err);
+
+error.classList.remove('hidden');
+error.textContent=
+'Não foi possível gerar o vídeo: '+
+(err.message||'Erro de conexão. Tente novamente.');
+
+status.textContent='Geração não concluída.';
+
+}finally{
+
+button.disabled=false;
+button.textContent='Gerar vídeo com IA';
+
+if(referenceURL){
+URL.revokeObjectURL(referenceURL);
+}
+}
+}
+
+/* LEGENDAS */
+
+function hashtagsFor(p){
+const words=(p.name+' '+(p.description||''))
+.normalize('NFD')
+.replace(/[\u0300-\u036f]/g,'')
+.toLowerCase()
+.match(/[a-z0-9]+/g)||[];
+
+const stop=new Set([
+'para','com','sem','uma','uns','das','dos',
+'que','por','the','and','de','do','da'
+]);
+
+const tags=[...new Set(
+words.filter(w=>w.length>3&&!stop.has(w)).slice(0,4)
+)].map(w=>'#'+w);
+
+return [...tags,'#Achadinhos','#Ofertas','#DicasDeCompra']
+.slice(0,7).join(' ');
+}
+
+function generateCaption(){
+
+const idx=Number(document.getElementById('captionProduct').value);
+const p=products[idx];
+
+if(!p){alert('Cadastre um produto primeiro.');return;}
+
+const scriptIdx=document.getElementById('captionScript').value;
+const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
+
+const tone=document.getElementById('captionTone').value;
+
+const intro={
+natural:`✨ Olha só este ${p.name}!`,
+oferta:`🛍️ Está de olho em ${p.name}? Confira esta opção!`,
+curioso:`👀 Já conhece ${p.name}? Veja os detalhes!`,
+elegante:`Conheça ${p.name}. ✨`
+};
+
+const description=p.description?`\n\n${p.description}`:'';
+const price=p.price?`\n\n💚 Preço informado: ${p.price}`:'';
+
+const hook=script?
+`\n\n💡 ${script.text.split('\n')
+.filter(line=>line.trim()&&!/ROTEIRO|PRODUTO:|ABERTURA:|APRESENTAÇÃO:|PREÇO:|CHAMADA PARA AÇÃO:/i.test(line))
+.slice(0,2).join(' ').slice(0,220)}`:'';
+
+const affiliate=p.link?
+`\n\n🔗 Confira aqui: ${p.link}`:
+'\n\n🔗 Adicione seu link de afiliado no cadastro do produto para incluí-lo aqui.';
+
+currentCaption=
+`${intro[tone]}${description}${hook}${price}
+
+💚 Confira os detalhes e veja se combina com você!
+
+${hashtagsFor(p)}${affiliate}`;
+
+document.getElementById('captionResult').value=currentCaption;
+document.getElementById('captionResult').classList.remove('hidden');
+document.getElementById('captionActions').classList.remove('hidden');
+}
+
+function copyCaption(){
+currentCaption=document.getElementById('captionResult').value;
+copy(currentCaption);
+}
+
+function saveCaption(){
+const text=document.getElementById('captionResult').value;
+
+if(!text.trim()){
+alert('Gere uma legenda primeiro.');
+return;
+}
+
+const idx=Number(document.getElementById('captionProduct').value);
+const p=products[idx];
+
+captions.push({
+productName:p?.name||'Produto',
+text,
+createdAt:Date.now()
+});
+
+persist();
+alert('Legenda salva na biblioteca!');
+}
+
+function copyCaptionAt(i){copy(captions[i].text);}
+
+function removeCaption(i){
+if(!confirm('Excluir esta legenda?'))return;
+captions.splice(i,1);
+persist();
+}
+
+/* PRÉVIA DO CENÁRIO */
+
+document.getElementById('scenePhoto').addEventListener('change',function(){
+
+const file=this.files[0];
+if(!file)return;
+
+if(file.size>2*1024*1024){
+alert('A foto do cenário deve ter no máximo 2 MB.');
+this.value='';
+return;
+}
+
+if(!file.type.startsWith('image/')){
+alert('Escolha uma imagem válida.');
+this.value='';
+return;
+}
+
+const r=new FileReader();
+
+r.onload=()=>{
+sceneData=r.result;
+const preview=document.getElementById('videoPreview');
+preview.innerHTML='';
+
+const img=document.createElement('img');
+img.src=sceneData;
+img.alt='Cenário enviado';
+
+preview.appendChild(img);
+};
+
+r.readAsDataURL(file);
+});
+
 update();
 </script>
+
 </body>
 </html>
