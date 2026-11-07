@@ -1,44 +1,39 @@
 
-const HF_SPACE_BASE = "https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space";
+const HF_SPACE_BASE =
+  "https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space";
+
 const HF_FN_NAME = "generate_video";
 
-// Configure com o endereço do site da MotorIA.
-// Durante a configuração, "*" permite testar de qualquer origem.
-// Depois, recomendo restringir ao domínio da MotorIA.
-const ALLOWED_ORIGINS = "*";
-
-const NEGATIVE_PROMPT =
-  "overexposed, static, blurry details, subtitles, watermark, " +
-  "low quality, deformed objects, distorted shapes, messy background";
+const DEFAULT_NEGATIVE_PROMPT =
+  "色调艳丽, 过曝, 静态, 细节模糊不清, 字幕, 风格, 作品, 画作, 画面, 静止, 整体发灰, " +
+  "最差质量, 低质量, JPEG压缩残留, 丑陋的, 残缺的, 多余的手指, 画得不好的手部, " +
+  "画得不好的脸部, 畸形的, 毁容的, 形态畸形的肢体, 手指融合, 静止不动的画面, " +
+  "杂乱的背景, 三条腿, 背景人很多, 倒着走";
 
 export default {
   async fetch(request) {
     const origin = request.headers.get("Origin") || "";
 
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": ALLOWED_ORIGINS === "*"
-        ? "*"
-        : (origin === ALLOWED_ORIGINS ? origin : "null"),
+    const cors = {
+      "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
-      "Cache-Control": "no-cache"
+      "Access-Control-Max-Age": "86400",
+      "Vary": "Origin"
     };
 
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
-      return new Response(null, {
-        status: 204,
-        headers: corsHeaders
-      });
+      return new Response(null, { status: 204, headers: cors });
     }
 
     if (request.method === "GET" && url.pathname === "/health") {
-      return json({ ok: true, service: "NiftyVid Wan 2.2" }, 200, corsHeaders);
+      return json({ ok: true, service: "MotorIA / NiftyVid / Wan 2.2" }, 200, cors);
     }
 
     if (request.method !== "POST" || url.pathname !== "/generate") {
-      return json({ error: "Endpoint não encontrado." }, 404, corsHeaders);
+      return json({ error: "Endpoint não encontrado." }, 404, cors);
     }
 
     try {
@@ -47,40 +42,46 @@ export default {
       const paramsRaw = form.get("params");
 
       if (!(image instanceof File)) {
-        return json({ error: "Envie a foto do produto." }, 400, corsHeaders);
+        return json({ error: "Envie a foto do produto." }, 400, cors);
       }
 
       if (!image.type.startsWith("image/")) {
-        return json({ error: "O arquivo precisa ser uma imagem." }, 400, corsHeaders);
+        return json({ error: "O arquivo enviado não é uma imagem." }, 400, cors);
       }
 
       if (image.size > 8 * 1024 * 1024) {
-        return json({ error: "A imagem deve ter no máximo 8 MB." }, 413, corsHeaders);
+        return json({ error: "A imagem deve ter no máximo 8 MB." }, 413, cors);
       }
 
       let params = {};
       try {
         params = JSON.parse(paramsRaw || "{}");
       } catch {
-        return json({ error: "Parâmetros inválidos." }, 400, corsHeaders);
+        return json({ error: "Parâmetros inválidos." }, 400, cors);
       }
 
       const prompt = String(params.prompt || "").trim().slice(0, 1500);
+
       if (!prompt) {
-        return json({ error: "Instruções de movimento não informadas." }, 400, corsHeaders);
+        return json({ error: "As instruções de movimento estão vazias." }, 400, cors);
       }
 
-      // Envia a foto para o espaço público do NiftyVid.
+      // 1. Envia a imagem para o NiftyVid / Hugging Face.
       const uploadForm = new FormData();
       uploadForm.append("files", image, image.name || "produto.jpg");
 
       const uploadResponse = await fetch(
         `${HF_SPACE_BASE}/gradio_api/upload`,
-        { method: "POST", body: uploadForm }
+        {
+          method: "POST",
+          body: uploadForm
+        }
       );
 
       if (!uploadResponse.ok) {
-        throw new Error(`Falha no envio da imagem (${uploadResponse.status}).`);
+        throw new Error(
+          `Falha ao enviar a imagem (${uploadResponse.status}). O serviço pode estar iniciando ou ocupado.`
+        );
       }
 
       const uploadedPaths = await uploadResponse.json();
@@ -100,14 +101,13 @@ export default {
         meta: { _type: "gradio.FileData" }
       };
 
-      // Parâmetros do NiftyVid / Wan 2.2.
-      // 4,5 segundos e 12 etapas, conforme configuração definida.
+      // 2. Parâmetros na ordem exigida pelo NiftyVid.
       const data = [
         inputImage,
         null,
         prompt,
         12,
-        NEGATIVE_PROMPT,
+        DEFAULT_NEGATIVE_PROMPT,
         4.5,
         1,
         1,
@@ -121,6 +121,7 @@ export default {
         true
       ];
 
+      // 3. Envia o pedido de geração.
       const submitResponse = await fetch(
         `${HF_SPACE_BASE}/gradio_api/call/${HF_FN_NAME}`,
         {
@@ -131,7 +132,9 @@ export default {
       );
 
       if (!submitResponse.ok) {
-        throw new Error(`Falha ao iniciar a geração (${submitResponse.status}).`);
+        throw new Error(
+          `Não foi possível iniciar a geração (${submitResponse.status}).`
+        );
       }
 
       const submission = await submitResponse.json();
@@ -140,31 +143,36 @@ export default {
         throw new Error("O gerador não retornou o identificador da tarefa.");
       }
 
-      // Transmite os eventos de geração diretamente ao navegador.
+      // 4. Repassa o fluxo SSE ao navegador.
       const streamResponse = await fetch(
         `${HF_SPACE_BASE}/gradio_api/call/${HF_FN_NAME}/${submission.event_id}`,
-        { headers: { Accept: "text/event-stream" } }
+        {
+          method: "GET",
+          headers: { Accept: "text/event-stream" }
+        }
       );
 
       if (!streamResponse.ok || !streamResponse.body) {
-        throw new Error(`Não foi possível acompanhar a geração (${streamResponse.status}).`);
+        throw new Error(
+          `Não foi possível acompanhar a geração (${streamResponse.status}).`
+        );
       }
 
       return new Response(streamResponse.body, {
         status: 200,
         headers: {
-          ...corsHeaders,
+          ...cors,
           "Content-Type": "text/event-stream; charset=utf-8",
-          "X-Accel-Buffering": "no",
-          "Cache-Control": "no-cache, no-transform"
+          "Cache-Control": "no-cache, no-transform",
+          "X-Accel-Buffering": "no"
         }
       });
 
     } catch (error) {
       return json(
-        { error: error.message || "Erro ao gerar vídeo." },
+        { error: error.message || "Erro inesperado na geração." },
         500,
-        corsHeaders
+        cors
       );
     }
   }
