@@ -13,17 +13,23 @@ h1{color:#a78bfa;margin:0;font-size:27px}
 header p{color:#aaa;font-size:13px}
 main{padding:18px;max-width:850px;margin:auto}
 nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
-button{background:#7954df;color:white;border:0;padding:12px 15px;border-radius:9px;font-weight:bold;cursor:pointer}
+button{background:#7954df;color:white;border:0;padding:12px 15px;border-radius:9px;font-weight:bold;cursor:pointer;margin:3px}
 button:active{opacity:.7}
 section{background:#19192b;padding:18px;border-radius:14px;margin-bottom:18px}
 h2{font-size:19px;margin-top:0}
-input,textarea{width:100%;padding:13px;margin:7px 0 13px;background:#292940;border:1px solid #45455f;border-radius:8px;color:white;font-size:15px}
+input,textarea,select{width:100%;padding:13px;margin:7px 0 13px;background:#292940;border:1px solid #45455f;border-radius:8px;color:white;font-size:15px}
 label{font-size:13px;color:#ccc}
 .product{background:#292940;padding:12px;border-radius:10px;margin:10px 0}
 .product img{width:100%;max-height:180px;object-fit:contain;border-radius:8px}
 .result{white-space:pre-wrap;line-height:1.6;background:#292940;padding:15px;border-radius:9px;margin-top:12px}
 .small{font-size:12px;color:#aaa}
-.hidden{display:none}
+.hidden{display:none!important}
+.notice{background:#332b18;border:1px solid #80652b;color:#ffe5a3;padding:12px;border-radius:9px;line-height:1.5;font-size:13px;margin:12px 0}
+.video-layout{display:grid;grid-template-columns:1fr 220px;gap:18px;align-items:start}
+.preview-wrap{display:flex;justify-content:center;background:#11111d;border:1px solid #45455f;border-radius:12px;padding:12px}
+.preview{width:100%;max-width:190px;aspect-ratio:9/16;border:2px dashed #77708f;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;color:#bbb;background:#222238;padding:10px}
+.preview img{width:100%;height:100%;object-fit:cover}
+@media(max-width:600px){.video-layout{grid-template-columns:1fr}.preview{max-width:180px}}
 </style>
 </head>
 <body>
@@ -31,12 +37,12 @@ label{font-size:13px;color:#ccc}
 <h1>✦ MOTOR IA</h1>
 <p>Central inteligente de afiliados | Modo gratuito</p>
 </header>
-
 <main>
 <nav>
 <button onclick="show('home')">Início</button>
 <button onclick="show('products')">Produtos</button>
 <button onclick="show('scripts')">Criar roteiros</button>
+<button onclick="show('videos')">Criar vídeos</button>
 <button onclick="show('library')">Biblioteca</button>
 </nav>
 
@@ -47,6 +53,7 @@ label{font-size:13px;color:#ccc}
 <p>Roteiros salvos: <b id="saved">0</b></p>
 <button onclick="show('products')">Cadastrar produto</button>
 <button onclick="show('scripts')">Criar conteúdo</button>
+<button onclick="show('videos')">Criar vídeo vertical</button>
 </section>
 
 <section id="products" class="hidden">
@@ -68,16 +75,16 @@ label{font-size:13px;color:#ccc}
 <section id="scripts" class="hidden">
 <h2>🎬 Gerador de roteiros</h2>
 <label>Produto</label>
-<select id="productSelect" style="width:100%;padding:12px;background:#292940;color:white;border-radius:8px"></select>
+<select id="productSelect"></select>
 <label>Tipo de vídeo</label>
-<select id="style" style="width:100%;padding:12px;background:#292940;color:white;border-radius:8px;margin:8px 0 14px">
+<select id="style">
 <option value="curioso">Vídeo com curiosidade</option>
 <option value="oferta">Vídeo de oferta</option>
 <option value="demonstracao">Vídeo demonstrativo</option>
 <option value="emocional">Vídeo emocional</option>
 </select>
 <label>Duração</label>
-<select id="duration" style="width:100%;padding:12px;background:#292940;color:white;border-radius:8px;margin:8px 0 14px">
+<select id="duration">
 <option>15 segundos</option>
 <option>30 segundos</option>
 <option>60 segundos</option>
@@ -87,90 +94,159 @@ label{font-size:13px;color:#ccc}
 <button id="saveButton" class="hidden" onclick="saveScript()">Salvar roteiro</button>
 </section>
 
+<section id="videos" class="hidden">
+<h2>🎥 Criar vídeos com IA</h2>
+<p>Prepare seu vídeo de produto com cenário personalizado.</p>
+<div class="notice">
+<b>FORMATO OBRIGATÓRIO: 9:16 VERTICAL</b><br>
+Resolução desejada: 1080 × 1920 pixels.<br>
+Formato de exportação: MP4.
+</div>
+<div class="video-layout">
+<div>
+<label>1. Escolha o produto cadastrado</label>
+<select id="videoProduct"></select>
+<p class="small">A foto original do produto será utilizada como referência principal.</p>
+<label>2. Envie uma foto para escolher o cenário</label>
+<input id="scenePhoto" type="file" accept="image/*">
+<p class="small">A IA deverá recriar o ambiente da foto, preservando o produto original.</p>
+<label>3. Estilo do vídeo</label>
+<select id="videoStyle">
+<option value="anuncio">Anúncio de produto</option>
+<option value="demonstracao">Demonstração do produto</option>
+<option value="cinematico">Apresentação cinematográfica</option>
+<option value="ugc">Estilo criador de conteúdo</option>
+</select>
+<label>4. Duração</label>
+<select id="videoDuration">
+<option value="15 segundos">15 segundos</option>
+<option value="30 segundos">30 segundos</option>
+<option value="60 segundos">60 segundos</option>
+</select>
+<button onclick="prepareVideo()">Preparar meu vídeo 9:16</button>
+<div id="videoResult" class="result hidden"></div>
+<button id="copyVideoPrompt" class="hidden" onclick="copyVideoPrompt()">Copiar instruções</button>
+</div>
+<div>
+<label>Prévia vertical 9:16</label>
+<div class="preview-wrap">
+<div class="preview" id="videoPreview">Sua prévia aparecerá aqui.</div>
+</div>
+<p class="small">Prévia do cenário, não é o vídeo renderizado.</p>
+</div>
+</div>
+<div class="notice">
+A geração real do MP4 ainda precisa de um mecanismo de IA conectado. Esta versão prepara as referências e instruções para essa integração.
+</div>
+</section>
+
 <section id="library" class="hidden">
 <h2>📚 Biblioteca</h2>
 <div id="libraryList"></div>
 </section>
-
 </main>
 
 <script>
 let products=JSON.parse(localStorage.getItem('motor_products')||'[]');
 let scripts=JSON.parse(localStorage.getItem('motor_scripts')||'[]');
 let currentScript='';
+let currentVideoPrompt='';
 
 function persist(){
- localStorage.setItem('motor_products',JSON.stringify(products));
- localStorage.setItem('motor_scripts',JSON.stringify(scripts));
- update();
+localStorage.setItem('motor_products',JSON.stringify(products));
+localStorage.setItem('motor_scripts',JSON.stringify(scripts));
+update();
 }
 
 function show(id){
- document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
- document.getElementById(id).classList.remove('hidden');
- update();
-}
-
-function update(){
- document.getElementById('total').textContent=products.length;
- document.getElementById('saved').textContent=scripts.length;
- document.getElementById('productList').innerHTML=products.map((p,i)=>`
- <div class="product">
- ${p.photo?`<img src="${p.photo}">`:''}
- <b>${escapeHTML(p.name)}</b>
- <p>${escapeHTML(p.price)}</p>
- <p class="small">${escapeHTML(p.description)}</p>
- <button onclick="removeProduct(${i})">Excluir</button>
- </div>`).join('');
- document.getElementById('productSelect').innerHTML=
- products.map((p,i)=>`<option value="${i}">${escapeHTML(p.name)}</option>`).join('');
- document.getElementById('libraryList').innerHTML=
- scripts.map((s,i)=>`<div class="product"><b>Roteiro ${i+1}</b><div class="result">${escapeHTML(s)}</div><button onclick="copyText(${i})">Copiar</button><button onclick="removeScript(${i})">Excluir</button></div>`).join('') || '<p>Nenhum roteiro salvo.</p>';
+document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+update();
 }
 
 function escapeHTML(s){
- return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function update(){
+document.getElementById('total').textContent=products.length;
+document.getElementById('saved').textContent=scripts.length;
+
+document.getElementById('productList').innerHTML=products.map((p,i)=>`
+<div class="product">
+${p.photo?`<img src="${p.photo}">`:''}
+<b>${escapeHTML(p.name)}</b>
+<p>${escapeHTML(p.price)}</p>
+<p class="small">${escapeHTML(p.description)}</p>
+<button onclick="removeProduct(${i})">Excluir</button>
+</div>`).join('');
+
+const options=products.map((p,i)=>`<option value="${i}">${escapeHTML(p.name)}</option>`).join('');
+document.getElementById('productSelect').innerHTML=options;
+document.getElementById('videoProduct').innerHTML=options;
+
+document.getElementById('libraryList').innerHTML=
+scripts.map((s,i)=>`
+<div class="product">
+<b>Roteiro ${i+1}</b>
+<div class="result">${escapeHTML(s)}</div>
+<button onclick="copyText(${i})">Copiar</button>
+<button onclick="removeScript(${i})">Excluir</button>
+</div>`).join('') || '<p>Nenhum roteiro salvo.</p>';
 }
 
 function addProduct(){
- let name=document.getElementById('name').value.trim();
- if(!name){alert('Digite o nome do produto.');return;}
- let file=document.getElementById('photo').files[0];
- let save=photo=>{
- products.push({
- name,
- price:document.getElementById('price').value,
- description:document.getElementById('description').value,
- link:document.getElementById('link').value,
- photo
- });
- persist();
- ['name','price','description','link','photo'].forEach(id=>document.getElementById(id).value='');
- alert('Produto cadastrado!');
- };
- if(file){
- let reader=new FileReader();
- reader.onload=()=>save(reader.result);
- reader.readAsDataURL(file);
- }else save('');
+let name=document.getElementById('name').value.trim();
+if(!name){alert('Digite o nome do produto.');return;}
+
+let file=document.getElementById('photo').files[0];
+
+let save=photo=>{
+products.push({
+name,
+price:document.getElementById('price').value,
+description:document.getElementById('description').value,
+link:document.getElementById('link').value,
+photo
+});
+persist();
+['name','price','description','link','photo'].forEach(id=>document.getElementById(id).value='');
+alert('Produto cadastrado!');
+};
+
+if(file){
+if(file.size>2*1024*1024){
+alert('A foto deve ter no máximo 2 MB.');
+return;
+}
+let reader=new FileReader();
+reader.onload=()=>save(reader.result);
+reader.readAsDataURL(file);
+}else save('');
 }
 
 function removeProduct(i){
- if(confirm('Excluir este produto?')){products.splice(i,1);persist();}
+if(confirm('Excluir este produto?')){
+products.splice(i,1);
+persist();
+}
 }
 
 function generate(){
- let p=products[Number(document.getElementById('productSelect').value)];
- if(!p){alert('Cadastre um produto primeiro.');return;}
- let duration=document.getElementById('duration').value;
- let type=document.getElementById('style').value;
- let opening={
- curioso:`Você já conhecia ${p.name}? Olha só essa opção!`,
- oferta:`Está procurando ${p.name}? Dá uma olhada nessa oportunidade!`,
- demonstracao:`Hoje vamos conhecer melhor ${p.name}.`,
- emocional:`Às vezes, um pequeno detalhe faz diferença. Conheça ${p.name}.`
- };
- currentScript=`ROTEIRO PARA ${duration.toUpperCase()}
+let p=products[Number(document.getElementById('productSelect').value)];
+if(!p){alert('Cadastre um produto primeiro.');return;}
+
+let duration=document.getElementById('duration').value;
+let type=document.getElementById('style').value;
+
+let opening={
+curioso:`Você já conhecia ${p.name}? Olha só essa opção!`,
+oferta:`Está procurando ${p.name}? Dá uma olhada nessa oportunidade!`,
+demonstracao:`Hoje vamos conhecer melhor ${p.name}.`,
+emocional:`Às vezes, um pequeno detalhe faz diferença. Conheça ${p.name}.`
+};
+
+currentScript=`ROTEIRO PARA ${duration.toUpperCase()}
 
 🎬 ABERTURA:
 ${opening[type]}
@@ -185,24 +261,115 @@ ${p.price||'Consulte o preço atualizado.'}
 Confira os detalhes e veja se esse produto combina com você!
 
 #Shopee #Achadinhos #Ofertas #DicasDeCompra`;
- document.getElementById('result').textContent=currentScript;
- document.getElementById('result').classList.remove('hidden');
- document.getElementById('saveButton').classList.remove('hidden');
+
+document.getElementById('result').textContent=currentScript;
+document.getElementById('result').classList.remove('hidden');
+document.getElementById('saveButton').classList.remove('hidden');
 }
 
 function saveScript(){
- scripts.push(currentScript);
- persist();
- alert('Roteiro salvo na biblioteca!');
+scripts.push(currentScript);
+persist();
+alert('Roteiro salvo na biblioteca!');
 }
 
 function removeScript(i){
- scripts.splice(i,1);persist();
+scripts.splice(i,1);
+persist();
 }
 
 function copyText(i){
- navigator.clipboard.writeText(scripts[i]).then(()=>alert('Copiado!')).catch(()=>alert('Não foi possível copiar.'));
+navigator.clipboard.writeText(scripts[i])
+.then(()=>alert('Copiado!'))
+.catch(()=>alert('Não foi possível copiar.'));
 }
+
+function prepareVideo(){
+const p=products[Number(document.getElementById('videoProduct').value)];
+
+if(!p){alert('Cadastre um produto primeiro.');return;}
+if(!p.photo){alert('Este produto não tem foto cadastrada. Adicione uma foto em Produtos.');return;}
+
+const sceneFile=document.getElementById('scenePhoto').files[0];
+if(!sceneFile){alert('Envie uma foto de referência do cenário.');return;}
+if(sceneFile.size>2*1024*1024){
+alert('A foto do cenário deve ter no máximo 2 MB.');
+return;
+}
+
+const reader=new FileReader();
+
+reader.onload=()=>{
+const style=document.getElementById('videoStyle').selectedOptions[0].text;
+const duration=document.getElementById('videoDuration').value;
+
+currentVideoPrompt=`PROJETO DE VÍDEO MOTOR IA
+
+FORMATO OBRIGATÓRIO: vertical 9:16.
+RESOLUÇÃO: 1080 x 1920 pixels.
+FORMATO FINAL: MP4.
+DURAÇÃO: ${duration}.
+ESTILO: ${style}.
+
+PRODUTO: ${p.name}.
+DESCRIÇÃO: ${p.description||'Usar somente características reais e visíveis.'}
+PREÇO: ${p.price||'Não informado'}.
+
+INSTRUÇÕES PARA A IA:
+
+Usar a foto do produto como referência principal.
+Preservar a identidade visual, formato, cor, estampa, logotipo, embalagem e todos os detalhes do produto.
+Recriar o cenário da segunda foto enviada.
+Adaptar o ambiente para uma composição vertical 9:16.
+Não substituir, modificar ou inventar características do produto.
+Criar movimentos de câmera suaves e iluminação natural.
+Entregar vídeo MP4 em 1080 x 1920 pixels.
+
+IMPORTANTE:
+Enviar a foto do produto e a foto de referência do cenário ao mecanismo de geração de vídeo junto destas instruções.`;
+
+document.getElementById('videoResult').textContent=currentVideoPrompt;
+document.getElementById('videoResult').classList.remove('hidden');
+document.getElementById('copyVideoPrompt').classList.remove('hidden');
+
+const preview=document.getElementById('videoPreview');
+preview.innerHTML='';
+const img=document.createElement('img');
+img.src=reader.result;
+img.alt='Foto de referência do cenário';
+preview.appendChild(img);
+};
+
+reader.readAsDataURL(sceneFile);
+}
+
+function copyVideoPrompt(){
+navigator.clipboard.writeText(currentVideoPrompt)
+.then(()=>alert('Instruções copiadas!'))
+.catch(()=>alert('Não foi possível copiar.'));
+}
+
+document.getElementById('scenePhoto').addEventListener('change',function(){
+const file=this.files[0];
+if(!file)return;
+
+if(file.size>2*1024*1024){
+alert('A foto do cenário deve ter no máximo 2 MB.');
+this.value='';
+return;
+}
+
+const reader=new FileReader();
+reader.onload=()=>{
+const preview=document.getElementById('videoPreview');
+preview.innerHTML='';
+const img=document.createElement('img');
+img.src=reader.result;
+img.alt='Foto de referência do cenário';
+preview.appendChild(img);
+};
+reader.readAsDataURL(file);
+});
 
 update();
 </script>
