@@ -134,7 +134,7 @@ footer{text-align:center;color:#788071;font-size:11px;padding:20px}
 <h2>Estúdio de vídeos IA</h2>
 <p class="muted">Gere o vídeo em um gerador web gratuito a partir das suas fotos e guarde o resultado aqui.</p>
 
-<div class="notice"><b>Gerador web embutido:</b> a moldura abaixo carrega um site gratuito de imagem para vídeo. Sites de terceiros podem bloquear a exibição dentro de outra página ou mudar os limites gratuitos. Se a área ficar em branco, use "Abrir em nova aba". O resultado você importa no passo final.</div>
+<div class="notice"><b>Kling AI:</b> o site abre em nova aba (ele não permite ser exibido dentro de outra página). No Kling, escolha <b>Imagem para vídeo</b>, envie a foto salva, cole o prompt, selecione formato <b>9:16</b> e gere. Depois baixe o vídeo e importe aqui. Os créditos e a marca d'água do plano gratuito são definidos pelo Kling.</div>
 
 <div class="video-layout">
 <div>
@@ -162,14 +162,10 @@ footer{text-align:center;color:#788071;font-size:11px;padding:20px}
 <input id="extraPrompt" placeholder="Ex.: câmera girando devagar ao redor do produto">
 <button class="btn" onclick="copyAiPrompt()">1. Copiar prompt</button>
 <button class="btn secondary" onclick="saveSourceImage()">2. Salvar a foto escolhida</button>
-<label>3. Gerador de vídeo (site gratuito)</label>
+<label>3. Abrir o gerador</label>
 <input id="genUrl" type="url" placeholder="https://...">
-<button class="btn" onclick="loadGenerator()">Carregar gerador aqui</button>
-<button class="btn secondary" onclick="openGenerator()">Abrir em nova aba</button>
-<div id="genFrameWrap" class="hidden" style="margin-top:12px">
-<iframe id="genFrame" title="Gerador de vídeo" style="width:100%;height:560px;border:1px solid #35412f;border-radius:12px;background:#0b0e0a" allow="clipboard-write; clipboard-read" referrerpolicy="no-referrer"></iframe>
-<p class="small">Em branco ou com erro? O site bloqueia incorporação. Use "Abrir em nova aba". Envie a foto salva no passo 2 e cole o prompt do passo 1.</p>
-</div>
+<button class="btn" onclick="openGenerator()">Abrir Kling AI</button>
+<p class="small">Você pode trocar o endereço por outro gerador.</p>
 <label>4. Importar o vídeo gerado</label>
 <input id="importVid" type="file" accept="video/*" onchange="importVideo(this)">
 <button class="btn secondary" onclick="prepareVideo()">Só preparar instruções</button>
@@ -606,7 +602,7 @@ document.getElementById('scenePhoto').addEventListener('change',async function()
 });
 
 
-const GEN_DEFAULT='https://aiimagetovideo.pro/pt/unlimited-genv-ai-video-generator-free';
+const GEN_DEFAULT='https://klingai.com';
 function genUrl(){
  const el=document.getElementById('genUrl');
  let u=el.value.trim()||GEN_DEFAULT;
@@ -615,16 +611,11 @@ function genUrl(){
  try{localStorage.setItem('motor_genurl',u);}catch(e){}
  return u;
 }
-function loadGenerator(){
- const u=genUrl();if(!u)return;
- document.getElementById('genFrameWrap').classList.remove('hidden');
- document.getElementById('genFrame').src=u;
-}
 function openGenerator(){
  const u=genUrl();if(!u)return;
  window.open(u,'_blank','noopener');
 }
-document.getElementById('genUrl').value=localStorage.getItem('motor_genurl')||GEN_DEFAULT;
+document.getElementById('genUrl').value=(()=>{const u=localStorage.getItem('motor_genurl')||'';return u&&!u.includes('aiimagetovideo.pro')?u:GEN_DEFAULT;})();
 
 update();
 show('products');
