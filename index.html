@@ -1,189 +1,1078 @@
 
-const HF_SPACE_BASE =
-  "https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080a08">
+<title>MotorIA — Estúdio de Afiliados</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--bg:#080a08;--panel:#111510;--panel2:#171d15;--line:#2a3426;--moss:#252d20;--sage:#aab59a;--text:#eef0e9;--muted:#a3aa9b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;line-height:1.5}
+button,input,textarea,select{font:inherit}
+header{padding:25px 18px 20px;background:linear-gradient(135deg,#141b12,#080a08 72%);border-bottom:1px solid var(--line)}
+.header-inner,main{max-width:980px;margin:auto}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#526347,#252d20);display:grid;place-items:center;font-size:21px}
+.brand-name{font-weight:800;font-size:23px}
+.tagline{color:var(--muted);font-size:12px}
+.header-note{margin:22px 0 0;font:700 clamp(22px,5vw,32px)/1.2 Manrope;max-width:620px}
+.header-note span{color:var(--sage)}
+main{padding:18px 14px 50px}
+nav{display:flex;gap:8px;overflow-x:auto;padding:3px 1px 14px;margin-bottom:8px;scrollbar-width:none}
+.nav-btn{white-space:nowrap;background:transparent;border:1px solid var(--line);color:var(--muted);padding:10px 13px;border-radius:999px;font-size:12px;font-weight:700}
+.nav-btn.active{background:var(--moss);border-color:#526247;color:white}
+section.panel{background:var(--panel);border:1px solid var(--line);padding:19px;border-radius:18px;margin-bottom:16px}
+h2{font-size:19px;margin:0 0 7px}
+h3{font-size:15px}
+p{margin:7px 0;color:#d5d9cf}
+.muted,.small{color:var(--muted);font-size:12px}
+label{display:block;font-size:12px;font-weight:600;color:#c5cdbd;margin:13px 0 6px}
+input,textarea,select{width:100%;padding:13px 14px;background:#0c100b;border:1px solid #35412f;border-radius:11px;color:var(--text);font-size:14px;outline:none}
+input:focus,textarea:focus,select:focus{border-color:#81936f}
+textarea{min-height:100px;resize:vertical}
+button{cursor:pointer}
+.btn{border:1px solid #526247;background:linear-gradient(135deg,#45543a,#293324);color:white;padding:12px 16px;border-radius:11px;font-weight:700;font-size:13px;margin:9px 5px 0 0}
+.btn.secondary{background:#171e15;border-color:#394634}
+.btn.danger{background:#241614;border-color:#5b302c;color:#e5b4ae}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.stat,.tile{background:var(--panel2);border:1px solid var(--line);padding:15px;border-radius:14px}
+.stat strong{display:block;font-size:25px}
+.tile{text-align:left;color:white;width:100%;min-height:105px}
+.tile b{display:block;margin:7px 0}
+.tile span{font-size:11px;color:var(--muted)}
+.notice{background:#1b2118;border:1px solid #46533d;color:#cbd4c1;padding:13px;border-radius:12px;font-size:12px;line-height:1.6;margin:13px 0}
+.card{background:#151b13;border:1px solid var(--line);padding:13px;border-radius:14px;margin:11px 0}
+.card img{width:100%;max-height:190px;object-fit:contain;border-radius:10px;background:#0b0e0a}
+.result{white-space:pre-wrap;line-height:1.7;background:#0b0f0a;border:1px solid #303b2b;padding:15px;border-radius:12px;margin-top:12px;font-size:13px;overflow-wrap:anywhere}
+.hidden{display:none!important}
+.video-layout{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:18px;align-items:start}
+.preview-wrap{display:flex;justify-content:center;background:#0b0e0a;border:1px solid var(--line);border-radius:14px;padding:10px}
+.preview{width:100%;max-width:180px;aspect-ratio:9/16;border:1px dashed #69785c;border-radius:11px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);background:#171d15;padding:10px;font-size:12px}
+.preview img{width:100%;height:100%;object-fit:contain}
+video{display:block}
+#downloadVideo{display:inline-block;text-decoration:none;margin-top:10px}
+.empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
+footer{text-align:center;color:#788071;font-size:11px;padding:20px}
+@media(max-width:620px){main{padding:14px 12px 40px}.video-layout{grid-template-columns:1fr}.preview{max-width:160px}.panel{padding:16px!important}}
+</style>
+</head>
+<body>
+<header>
+<div class="header-inner">
+<div class="brand">
+<div class="logo">✦</div>
+<div>
+<div class="brand-name">MotorIA</div>
+<div class="tagline">ESTÚDIO INTELIGENTE DE AFILIADOS</div>
+</div>
+</div>
+<div class="header-note">Seu produto. Sua criatividade.<br><span>Conteúdo pronto para vender.</span></div>
+</div>
+</header>
 
-const HF_FN_NAME = "generate_video";
+<main>
+<nav>
+<button class="nav-btn active" data-page="products" onclick="show('products',this)">Produtos</button>
+<button class="nav-btn" data-page="scripts" onclick="show('scripts',this)">Roteiros</button>
+<button class="nav-btn" data-page="videos" onclick="show('videos',this)">Vídeos IA</button>
+<button class="nav-btn" data-page="captions" onclick="show('captions',this)">Legendas</button>
+<button class="nav-btn" data-page="library" onclick="show('library',this)">Biblioteca</button>
+</nav>
 
-const DEFAULT_NEGATIVE_PROMPT =
-  "色调艳丽, 过曝, 静态, 细节模糊不清, 字幕, 风格, 作品, 画作, 画面, 静止, 整体发灰, " +
-  "最差质量, 低质量, JPEG压缩残留, 丑陋的, 残缺的, 多余的手指, 画得不好的手部, " +
-  "画得不好的脸部, 畸形的, 毁容的, 形态畸形的肢体, 手指融合, 静止不动的画面, " +
-  "杂乱的背景, 三条腿, 背景人很多, 倒着走";
+<section id="products" class="panel">
+<h2>Cadastro de produtos</h2>
+<p class="muted">Guarde as informações que serão usadas nos roteiros, vídeos e legendas.</p>
+<label>Nome do produto</label>
+<input id="name" placeholder="Ex.: Bolsa feminina transversal">
+<label>Preço</label>
+<input id="price" placeholder="Ex.: R$ 59,90">
+<label>Descrição e características reais</label>
+<textarea id="description" placeholder="Material, tamanho, benefícios, cores e detalhes..."></textarea>
+<label>Link de afiliado</label>
+<input id="link" type="url" placeholder="Cole seu link de afiliado">
+<label>Foto do produto (JPG, PNG ou WebP; até 12 MB)</label>
+<input id="photo" type="file" accept="image/*">
+<button class="btn" onclick="addProduct()">Salvar produto</button>
+<div id="productList"></div>
+</section>
 
-export default {
-  async fetch(request) {
-    const origin = request.headers.get("Origin") || "";
+<section id="scripts" class="panel hidden">
+<h2>Gerador de roteiros</h2>
+<p class="muted">Escolha o produto e crie seu roteiro.</p>
+<label>Produto</label>
+<select id="productSelect"></select>
+<label>Tipo de vídeo</label>
+<select id="style">
+<option value="curioso">Curiosidade / descoberta</option>
+<option value="oferta">Oferta / oportunidade</option>
+<option value="demonstracao">Demonstração</option>
+<option value="emocional">Emocional</option>
+</select>
+<label>Duração</label>
+<select id="duration">
+<option>15 segundos</option>
+<option>30 segundos</option>
+<option>60 segundos</option>
+</select>
+<button class="btn" onclick="generate()">Gerar roteiro</button>
+<div id="result" class="result hidden"></div>
+<div id="scriptActions" class="hidden">
+<button class="btn" onclick="saveScript()">Salvar roteiro</button>
+<button class="btn secondary" onclick="useScriptInVideo()">Usar este roteiro no vídeo</button>
+</div>
+</section>
 
-    const cors = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Max-Age": "86400",
-      "Vary": "Origin"
-    };
+<section id="videos" class="panel hidden">
+<h2>Estúdio de vídeos IA</h2>
+<p class="muted">Crie vídeos de produtos com inteligência artificial.</p>
 
-    const url = new URL(request.url);
+<div class="notice">
+<b>MotorIA + Wan 2.2:</b> geração integrada por meio do nosso serviço próprio. Enviamos somente a foto do produto como referência. O cenário é criado pela própria IA.
+<br><br>
+<b>Formato:</b> vertical 9:16 · <b>Duração:</b> 4,5 segundos · <b>Inference steps:</b> 12.
+</div>
 
-    if (request.method === "OPTIONS") {
-      return new Response(null, { status: 204, headers: cors });
-    }
+<div class="video-layout">
+<div>
+<label>1. Produto</label>
+<select id="videoProduct" onchange="syncVideoScripts()"></select>
 
-    if (request.method === "GET" && url.pathname === "/health") {
-      return json({ ok: true, service: "MotorIA / NiftyVid / Wan 2.2" }, 200, cors);
-    }
+<label>2. Roteiro salvo para este produto (opcional)</label>
+<select id="videoScript"></select>
+<p class="small">O roteiro será utilizado como orientação criativa, sem substituir a foto do produto.</p>
 
-    if (request.method !== "POST" || url.pathname !== "/generate") {
-      return json({ error: "Endpoint não encontrado." }, 404, cors);
-    }
+<label>3. Estilo do vídeo</label>
+<select id="videoStyle">
+<option value="anuncio">Anúncio de produto</option>
+<option value="demonstracao">Demonstração do produto</option>
+<option value="cinematico">Apresentação cinematográfica</option>
+<option value="ugc">Estilo criador de conteúdo</option>
+</select>
 
-    try {
-      const form = await request.formData();
-      const image = form.get("image");
-      const paramsRaw = form.get("params");
+<div class="notice">
+<b>Configurações automáticas:</b>
+<br>• Wan 2.2
+<br>• 4,5 segundos
+<br>• 12 inference steps
+<br>• Proporção 9:16
+<br>• Uma única foto de referência
+</div>
 
-      if (!(image instanceof File)) {
-        return json({ error: "Envie a foto do produto." }, 400, cors);
-      }
+<button class="btn" id="generateVideoBtn" onclick="generateVideo()">Gerar vídeo com IA</button>
 
-      if (!image.type.startsWith("image/")) {
-        return json({ error: "O arquivo enviado não é uma imagem." }, 400, cors);
-      }
+<div id="videoStatus" class="notice hidden" role="status" aria-live="polite"></div>
 
-      if (image.size > 8 * 1024 * 1024) {
-        return json({ error: "A imagem deve ter no máximo 8 MB." }, 413, cors);
-      }
+<div id="generatedVideoWrap" class="card hidden">
+<video id="generatedVideo" controls playsinline style="width:100%;max-height:520px;border-radius:12px;background:#000"></video>
+<a id="downloadVideo" class="btn secondary" download="motoria-video.mp4">Baixar vídeo MP4</a>
+</div>
 
-      let params = {};
-      try {
-        params = JSON.parse(paramsRaw || "{}");
-      } catch {
-        return json({ error: "Parâmetros inválidos." }, 400, cors);
-      }
+<div id="videoResult" class="result hidden"></div>
+<button id="copyVideoPrompt" class="btn secondary hidden" onclick="copyVideoPrompt()">Copiar instruções</button>
+<button id="videoCaptionButton" class="btn secondary hidden" onclick="makeCaptionFromVideo()">Gerar legenda deste vídeo</button>
+</div>
 
-      const prompt = String(params.prompt || "").trim().slice(0, 1500);
+<div>
+<label>Prévia da foto do produto</label>
+<div class="preview-wrap">
+<div class="preview" id="videoPreview">A foto do produto aparecerá aqui.</div>
+</div>
+<p class="small">Esta é a única imagem enviada como referência à IA.</p>
+</div>
+</div>
+</section>
 
-      if (!prompt) {
-        return json({ error: "As instruções de movimento estão vazias." }, 400, cors);
-      }
+<section id="captions" class="panel hidden">
+<h2>Legenda para publicação</h2>
+<p class="muted">Gere uma descrição comercial com emojis, hashtags e link de afiliado.</p>
+<label>Produto</label>
+<select id="captionProduct" onchange="captionProductChanged()"></select>
+<label>Roteiro (opcional)</label>
+<select id="captionScript"></select>
+<label>Tom da legenda</label>
+<select id="captionTone">
+<option value="natural">Natural e próximo</option>
+<option value="oferta">Oferta e urgência moderada</option>
+<option value="curioso">Curioso e chamativo</option>
+<option value="elegante">Elegante e direto</option>
+</select>
+<button class="btn" onclick="generateCaption()">Gerar legenda automática</button>
+<label>Edite sua legenda</label>
+<textarea id="captionResult" class="hidden" rows="10"></textarea>
+<div id="captionActions" class="hidden">
+<button class="btn" onclick="copyCaption()">Copiar legenda</button>
+<button class="btn secondary" onclick="saveCaption()">Salvar na biblioteca</button>
+</div>
+<div class="notice">Confira preço, disponibilidade e link antes de publicar.</div>
+</section>
 
-      // 1. Envia a imagem para o NiftyVid / Hugging Face.
-      const uploadForm = new FormData();
-      uploadForm.append("files", image, image.name || "produto.jpg");
+<section id="library" class="panel hidden">
+<h2>Sua biblioteca</h2>
+<p class="muted">Roteiros e legendas salvos neste aparelho.</p>
+<div id="libraryList"></div>
+</section>
 
-      const uploadResponse = await fetch(
-        `${HF_SPACE_BASE}/gradio_api/upload`,
-        {
-          method: "POST",
-          body: uploadForm
-        }
-      );
+<footer>MotorIA · Seu estúdio criativo</footer>
+</main>
 
-      if (!uploadResponse.ok) {
-        throw new Error(
-          `Falha ao enviar a imagem (${uploadResponse.status}). O serviço pode estar iniciando ou ocupado.`
-        );
-      }
+<script>
+/* CONFIGURAÇÃO DA INTEGRAÇÃO */
+const WORKER_URL='https://motoria-video.antarx.workers.dev';
+const HF_SPACE_BASE='https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space';
+const VIDEO_DURATION=4.5;
+const INFERENCE_STEPS=12;
+const MAX_VIDEO_IMAGE_SIZE=8*1024*1024;
 
-      const uploadedPaths = await uploadResponse.json();
-
-      if (!Array.isArray(uploadedPaths) || !uploadedPaths[0]) {
-        throw new Error("O serviço não retornou o arquivo enviado.");
-      }
-
-      const imagePath = uploadedPaths[0];
-
-      const inputImage = {
-        path: imagePath,
-        url: `${HF_SPACE_BASE}/gradio_api/file=${imagePath}`,
-        orig_name: image.name || "produto.jpg",
-        size: image.size,
-        mime_type: image.type,
-        meta: { _type: "gradio.FileData" }
-      };
-
-      // 2. Parâmetros na ordem exigida pelo NiftyVid.
-      const data = [
-        inputImage,
-        null,
-        prompt,
-        12,
-        DEFAULT_NEGATIVE_PROMPT,
-        4.5,
-        1,
-        1,
-        42,
-        true,
-        6,
-        "UniPCMultistep",
-        3.0,
-        16,
-        false,
-        true
-      ];
-
-      // 3. Envia o pedido de geração.
-      const submitResponse = await fetch(
-        `${HF_SPACE_BASE}/gradio_api/call/${HF_FN_NAME}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ data })
-        }
-      );
-
-      if (!submitResponse.ok) {
-        throw new Error(
-          `Não foi possível iniciar a geração (${submitResponse.status}).`
-        );
-      }
-
-      const submission = await submitResponse.json();
-
-      if (!submission.event_id) {
-        throw new Error("O gerador não retornou o identificador da tarefa.");
-      }
-
-      // 4. Repassa o fluxo SSE ao navegador.
-      const streamResponse = await fetch(
-        `${HF_SPACE_BASE}/gradio_api/call/${HF_FN_NAME}/${submission.event_id}`,
-        {
-          method: "GET",
-          headers: { Accept: "text/event-stream" }
-        }
-      );
-
-      if (!streamResponse.ok || !streamResponse.body) {
-        throw new Error(
-          `Não foi possível acompanhar a geração (${streamResponse.status}).`
-        );
-      }
-
-      return new Response(streamResponse.body, {
-        status: 200,
-        headers: {
-          ...cors,
-          "Content-Type": "text/event-stream; charset=utf-8",
-          "Cache-Control": "no-cache, no-transform",
-          "X-Accel-Buffering": "no"
-        }
-      });
-
-    } catch (error) {
-      return json(
-        { error: error.message || "Erro inesperado na geração." },
-        500,
-        cors
-      );
-    }
-  }
+const readStore=(key,fallback)=>{
+try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}
+catch(e){return fallback}
 };
 
-function json(data, status, headers) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      ...headers,
-      "Content-Type": "application/json"
-    }
-  });
+let products=readStore('motor_products',[]);
+let rawScripts=readStore('motor_scripts',[]);
+let scripts=rawScripts.map((s,i)=>typeof s==='string'?{
+id:'legacy-'+i,productIndex:null,productName:'Produto não identificado',
+text:s,createdAt:Date.now()
+}:s);
+let captions=readStore('motor_captions',[]);
+let currentScript=null,currentVideoPrompt='',currentCaption='';
+let generatedVideoObjectURL=null;
+
+function persist(){
+localStorage.setItem('motor_products',JSON.stringify(products));
+localStorage.setItem('motor_scripts',JSON.stringify(scripts));
+localStorage.setItem('motor_captions',JSON.stringify(captions));
+update();
 }
+
+function show(id){
+document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+update();
+}
+
+function esc(s){
+return String(s??'').replace(/[&<>"']/g,c=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+}
+
+function productOptions(selected){
+return products.map((p,i)=>
+`<option value="${i}" ${String(selected)===String(i)?'selected':''}>${esc(p.name)}</option>`
+).join('');
+}
+
+function update(){
+document.getElementById('productList').innerHTML=products.map((p,i)=>`
+<div class="card">
+${p.photo?`<img src="${p.photo}" alt="Foto do produto">`:''}
+<b>${esc(p.name)}</b>
+<p>${esc(p.price||'Preço não informado')}</p>
+<p class="small">${esc(p.description||'Sem descrição')}</p>
+<p class="small">${p.link?'Link de afiliado cadastrado':'Sem link de afiliado'}</p>
+<button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button>
+</div>`).join('')||'<div class="empty">Nenhum produto cadastrado ainda.</div>';
+
+const opts=productOptions();
+
+['productSelect','videoProduct','captionProduct'].forEach(id=>{
+const el=document.getElementById(id);
+const old=el.value;
+el.innerHTML=opts||'<option value="">Cadastre um produto primeiro</option>';
+if(old!==''&&products[Number(old)])el.value=old;
+});
+
+updateScriptSelectors();
+
+document.getElementById('libraryList').innerHTML=
+scripts.map((s,i)=>`
+<div class="card">
+<b>Roteiro ${i+1} · ${esc(s.productName||'Produto')}</b>
+<div class="result">${esc(s.text)}</div>
+<button class="btn secondary" onclick="copyText(${i})">Copiar roteiro</button>
+<button class="btn danger" onclick="removeScript(${i})">Excluir</button>
+</div>`).join('')+
+captions.map((c,i)=>`
+<div class="card">
+<b>Legenda ${i+1} · ${esc(c.productName)}</b>
+<div class="result">${esc(c.text)}</div>
+<button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar legenda</button>
+<button class="btn danger" onclick="removeCaption(${i})">Excluir</button>
+</div>`).join('')||
+'<div class="empty">Nenhum roteiro ou legenda salvo.</div>';
+
+updateProductPreview();
+}
+
+function updateScriptSelectors(){
+const vi=Number(document.getElementById('videoProduct').value);
+const ci=Number(document.getElementById('captionProduct').value);
+
+const videoList=scripts.map((s,i)=>({s,i})).filter(x=>
+x.s.productIndex===vi||
+(x.s.productIndex==null&&x.s.productName==='Produto não identificado')
+);
+
+const captionList=scripts.map((s,i)=>({s,i})).filter(x=>
+x.s.productIndex===ci||x.s.productIndex==null
+);
+
+const oldVideo=document.getElementById('videoScript').value;
+const oldCaption=document.getElementById('captionScript').value;
+
+document.getElementById('videoScript').innerHTML=
+'<option value="">Sem roteiro selecionado</option>'+
+videoList.map(x=>`<option value="${x.i}">Roteiro ${x.i+1} · ${esc(x.s.productName)}</option>`).join('');
+
+document.getElementById('captionScript').innerHTML=
+'<option value="">Sem roteiro selecionado</option>'+
+captionList.map(x=>`<option value="${x.i}">Roteiro ${x.i+1}</option>`).join('');
+
+if(videoList.some(x=>String(x.i)===oldVideo)){
+document.getElementById('videoScript').value=oldVideo;
+}
+if(captionList.some(x=>String(x.i)===oldCaption)){
+document.getElementById('captionScript').value=oldCaption;
+}
+}
+
+function syncVideoScripts(){
+updateScriptSelectors();
+updateProductPreview();
+}
+function captionProductChanged(){updateScriptSelectors();}
+
+function updateProductPreview(){
+const idx=Number(document.getElementById('videoProduct').value);
+const p=products[idx];
+const preview=document.getElementById('videoPreview');
+
+if(!p||!p.photo){
+preview.textContent='Selecione um produto com foto cadastrada.';
+return;
+}
+
+preview.innerHTML='';
+const img=document.createElement('img');
+img.src=p.photo;
+img.alt='Foto do produto selecionado';
+preview.appendChild(img);
+}
+
+/* IMAGENS */
+
+async function compressImageFile(file,maxSide=1600,quality=.84){
+if(!file)throw new Error('Selecione uma foto.');
+
+const bitmap=await createImageBitmap(file);
+const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
+
+const canvas=document.createElement('canvas');
+canvas.width=Math.max(1,Math.round(bitmap.width*scale));
+canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+
+const ctx=canvas.getContext('2d',{alpha:false});
+ctx.fillStyle='#fff';
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
+bitmap.close?.();
+
+const blob=await new Promise((resolve,reject)=>{
+canvas.toBlob(b=>b?resolve(b):reject(new Error('Falha ao converter imagem.')),'image/jpeg',quality);
+});
+
+return await new Promise((resolve,reject)=>{
+const r=new FileReader();
+r.onload=()=>resolve(r.result);
+r.onerror=()=>reject(new Error('Falha ao ler imagem convertida.'));
+r.readAsDataURL(blob);
+});
+}
+
+async function loadImage(source,label='imagem'){
+let blob;
+
+try{
+if(source instanceof Blob){
+blob=source;
+}else if(typeof source==='string'&&source.trim()){
+const response=await fetch(source);
+if(!response.ok)throw new Error('Não foi possível acessar o arquivo.');
+blob=await response.blob();
+}else{
+throw new Error('Arquivo vazio ou inválido.');
+}
+
+if(!blob.type.startsWith('image/')){
+throw new Error('O arquivo selecionado não é uma imagem válida.');
+}
+
+const objectURL=URL.createObjectURL(blob);
+const img=new Image();
+img.decoding='async';
+
+try{
+await new Promise((resolve,reject)=>{
+img.onload=resolve;
+img.onerror=()=>reject(new Error('O navegador não conseguiu decodificar a imagem.'));
+img.src=objectURL;
+if(img.complete&&img.naturalWidth>0)resolve();
+});
+
+if(img.naturalWidth===0||img.naturalHeight===0){
+throw new Error('A imagem não possui dimensões válidas.');
+}
+return img;
+}catch(error){
+throw new Error('Não foi possível abrir '+label+'. Verifique se a imagem está em JPG, PNG ou WebP. '+error.message);
+}finally{
+URL.revokeObjectURL(objectURL);
+}
+}catch(error){
+throw new Error('Falha ao carregar '+label+': '+error.message);
+}
+}
+
+/* CADASTRO DE PRODUTOS */
+
+async function addProduct(){
+const name=document.getElementById('name').value.trim();
+if(!name){alert('Digite o nome do produto.');return;}
+
+const file=document.getElementById('photo').files[0];
+
+try{
+let photo='';
+if(file){
+if(!file.type.startsWith('image/'))throw new Error('Escolha um arquivo de imagem válido.');
+if(file.size>12*1024*1024)throw new Error('A foto original deve ter no máximo 12 MB.');
+photo=await compressImageFile(file,1600,.82);
+}
+
+products.push({
+name,
+price:document.getElementById('price').value.trim(),
+description:document.getElementById('description').value.trim(),
+link:document.getElementById('link').value.trim(),
+photo
+});
+
+try{persist();}
+catch(e){
+products.pop();
+throw new Error('O armazenamento do navegador ficou cheio. Remova alguns produtos ou use uma foto menor.');
+}
+
+['name','price','description','link','photo'].forEach(id=>{
+document.getElementById(id).value='';
+});
+
+alert('Produto cadastrado!');
+}catch(e){
+alert(e.message||'Não foi possível salvar a imagem.');
+}
+}
+
+function removeProduct(i){
+if(!confirm('Excluir este produto? Os roteiros já salvos serão mantidos.'))return;
+products.splice(i,1);
+scripts=scripts.map(s=>({...s,
+productIndex:s.productIndex===i?null:(s.productIndex>i?s.productIndex-1:s.productIndex)
+}));
+persist();
+}
+
+/* ROTEIROS */
+
+function generate(){
+const idx=Number(document.getElementById('productSelect').value);
+const p=products[idx];
+if(!p){alert('Cadastre um produto primeiro.');return;}
+
+const duration=document.getElementById('duration').value;
+const type=document.getElementById('style').value;
+
+const opening={
+curioso:`Você já conhecia ${p.name}? Olha só essa opção!`,
+oferta:`Está procurando ${p.name}? Conheça os detalhes desta opção.`,
+demonstracao:`Vamos mostrar o que vale a pena conhecer em ${p.name}.`,
+emocional:`Pequenos detalhes podem facilitar a rotina. Conheça ${p.name}.`
+};
+
+currentScript={
+id:'script-'+Date.now(),
+productIndex:idx,
+productName:p.name,
+text:`ROTEIRO · ${duration.toUpperCase()}
+PRODUTO: ${p.name}
+
+🎬 ABERTURA:
+${opening[type]}
+
+📦 APRESENTAÇÃO:
+${p.description||'Apresente as características reais do produto.'}
+
+💰 PREÇO:
+${p.price||'Consulte o preço atualizado.'}
+
+📢 CHAMADA PARA AÇÃO:
+Confira os detalhes no link do produto e veja se ele combina com você.`,
+createdAt:Date.now()
+};
+
+document.getElementById('result').textContent=currentScript.text;
+document.getElementById('result').classList.remove('hidden');
+document.getElementById('scriptActions').classList.remove('hidden');
+}
+
+function saveScript(){
+if(!currentScript){alert('Gere um roteiro primeiro.');return;}
+if(!scripts.some(s=>s.id===currentScript.id)){
+scripts.push(currentScript);
+persist();
+alert('Roteiro salvo e vinculado ao produto!');
+}
+}
+
+function useScriptInVideo(){
+if(!currentScript){alert('Gere um roteiro primeiro.');return;}
+saveScript();
+show('videos');
+document.getElementById('videoProduct').value=String(currentScript.productIndex);
+updateScriptSelectors();
+const found=scripts.findIndex(s=>s.id===currentScript.id);
+document.getElementById('videoScript').value=String(found);
+updateProductPreview();
+}
+
+function removeScript(i){
+if(!confirm('Excluir este roteiro?'))return;
+scripts.splice(i,1);
+persist();
+}
+
+/* CÓPIA */
+
+function copy(text){
+if(navigator.clipboard&&window.isSecureContext){
+navigator.clipboard.writeText(text).then(()=>alert('Copiado!')).catch(()=>fallbackCopy(text));
+}else fallbackCopy(text);
+}
+
+function fallbackCopy(text){
+const t=document.createElement('textarea');
+t.value=text;
+t.style.position='fixed';
+t.style.opacity='0';
+document.body.appendChild(t);
+t.select();
+try{
+document.execCommand('copy');
+alert('Copiado!');
+}catch(e){
+alert('Não foi possível copiar automaticamente.');
+}
+t.remove();
+}
+
+function copyText(i){copy(scripts[i].text);}
+
+/* PREPARA UMA ÚNICA IMAGEM VERTICAL DO PRODUTO */
+
+async function makeProductReference(productData){
+if(!productData.photo){
+throw new Error('Este produto não tem foto cadastrada.');
+}
+
+const productImg=await loadImage(productData.photo,'a foto do produto');
+
+const canvas=document.createElement('canvas');
+canvas.width=832;
+canvas.height=1472;
+
+const ctx=canvas.getContext('2d');
+if(!ctx)throw new Error('Não foi possível preparar a imagem.');
+
+const gradient=ctx.createLinearGradient(0,0,0,1472);
+gradient.addColorStop(0,'#e8e9e4');
+gradient.addColorStop(1,'#aeb5a5');
+ctx.fillStyle=gradient;
+ctx.fillRect(0,0,832,1472);
+
+/* Mantém o produto inteiro visível */
+const maxW=760;
+const maxH=1320;
+const scale=Math.min(maxW/productImg.width,maxH/productImg.height);
+const pw=productImg.width*scale;
+const ph=productImg.height*scale;
+const px=(832-pw)/2;
+const py=(1472-ph)/2;
+
+ctx.save();
+ctx.shadowColor='rgba(0,0,0,.16)';
+ctx.shadowBlur=28;
+ctx.shadowOffsetY=10;
+ctx.drawImage(productImg,px,py,pw,ph);
+ctx.restore();
+
+const blob=await new Promise((resolve,reject)=>{
+canvas.toBlob(
+b=>b?resolve(b):reject(new Error('Não foi possível preparar a imagem final.')),
+'image/jpeg',
+.92
+);
+});
+
+return new File([blob],'motoria-product.jpg',{type:'image/jpeg'});
+}
+
+/* PROMPT DO WAN 2.2 */
+
+function buildVideoPrompt(p,style,script){
+const styles={
+anuncio:'Create a premium commercial product advertisement.',
+demonstracao:'Create a realistic product demonstration, showing the item clearly.',
+cinematico:'Create a cinematic and elegant commercial product presentation.',
+ugc:'Create a natural social-media creator style product presentation.'
+};
+
+return `
+${styles[style]||styles.anuncio}
+
+Generate a realistic image-to-video animation using the supplied product image as the ONLY visual reference.
+
+VIDEO REQUIREMENTS:
+Vertical 9:16 composition.
+Duration exactly 4.5 seconds.
+Preserve the original product faithfully.
+The product must remain the main subject, centered and clearly visible.
+Create a natural, attractive environment automatically.
+Use realistic lighting, believable shadows and subtle camera movement.
+Use a smooth cinematic camera push-in and gentle natural motion.
+
+PRODUCT PRESERVATION:
+Do not redesign, replace, duplicate or deform the product.
+Preserve its exact shape, proportions, colors, patterns, logo, packaging, material and visible details.
+Do not invent product features.
+Do not add text, subtitles, captions, logos or watermarks.
+Do not introduce unrelated objects that obscure the product.
+
+PRODUCT NAME:
+${p.name}
+
+PRODUCT DETAILS:
+${p.description||'Preserve only the details visible in the supplied image.'}
+
+CREATIVE DIRECTION:
+${script?script.text:'Create an attractive commercial presentation without inventing product claims.'}
+
+The uploaded image is the only product reference. Do not request or expect a separate scene image.
+`;
+}
+
+/* LEITURA DOS EVENTOS SSE DO GRADIO */
+
+function extractVideoFile(value){
+if(!value)return null;
+
+if(typeof value==='string'){
+if(/\.(mp4|webm|mov)(\?|$)/i.test(value)||value.includes('/gradio_api/file=')){
+return {url:value};
+}
+return null;
+}
+
+if(Array.isArray(value)){
+for(const item of value){
+const found=extractVideoFile(item);
+if(found)return found;
+}
+return null;
+}
+
+if(typeof value==='object'){
+if(value.video)return extractVideoFile(value.video);
+if(value.url)return value;
+if(value.path)return value;
+if(value.name&&/\.(mp4|webm|mov)$/i.test(value.name))return value;
+if(value.data)return extractVideoFile(value.data);
+if(value.output)return extractVideoFile(value.output);
+}
+
+return null;
+}
+
+function normalizeVideoUrl(file){
+let url=file?.url||'';
+
+if(!url&&file?.path){
+url=file.path;
+}
+
+if(!url)throw new Error('A IA terminou, mas não retornou o arquivo de vídeo.');
+
+if(url.startsWith('data:')||url.startsWith('blob:')||/^https?:\/\//i.test(url)){
+return url;
+}
+
+if(url.startsWith('/')){
+return HF_SPACE_BASE+url;
+}
+
+if(url.startsWith('http')){
+return url;
+}
+
+return HF_SPACE_BASE+'/gradio_api/file='+encodeURIComponent(url);
+}
+
+function parseSSEBlock(block){
+const lines=block.split(/\r?\n/);
+const dataLines=lines.filter(line=>line.startsWith('data:'));
+if(!dataLines.length)return null;
+
+const raw=dataLines.map(line=>line.slice(5).trim()).join('\n');
+if(!raw||raw==='[DONE]')return null;
+
+try{return JSON.parse(raw);}
+catch(e){return null;}
+}
+
+async function readGenerationStream(response,status){
+if(!response.body){
+throw new Error('O navegador não conseguiu ler a resposta da geração.');
+}
+
+const reader=response.body.getReader();
+const decoder=new TextDecoder();
+let buffer='';
+let finalPayload=null;
+let failure=null;
+
+while(true){
+const {value,done}=await reader.read();
+if(done)break;
+
+buffer+=decoder.decode(value,{stream:true});
+
+const blocks=buffer.split(/\r?\n\r?\n/);
+buffer=blocks.pop()||'';
+
+for(const block of blocks){
+const payload=parseSSEBlock(block);
+if(!payload)continue;
+
+if(payload.msg==='process_starts'){
+status.textContent='Wan 2.2 iniciou a geração do vídeo...';
+}else if(payload.msg==='process_generating'){
+status.textContent='Wan 2.2 está criando o vídeo. Aguarde...';
+}else if(payload.msg==='process_completed'){
+finalPayload=payload;
+}else if(payload.msg==='process_failed'){
+failure=payload;
+}else if(payload.error){
+failure=payload;
+}
+}
+}
+
+buffer+=decoder.decode();
+
+if(buffer.trim()){
+const payload=parseSSEBlock(buffer);
+if(payload){
+if(payload.msg==='process_completed')finalPayload=payload;
+if(payload.msg==='process_failed'||payload.error)failure=payload;
+}
+}
+
+if(failure){
+throw new Error(
+failure.error||
+failure.message||
+failure.msg||
+'A geração falhou no servidor Wan 2.2.'
+);
+}
+
+if(!finalPayload){
+throw new Error('A conexão terminou sem um evento de conclusão do Wan 2.2. Tente novamente.');
+}
+
+const output=finalPayload.output?.data||
+finalPayload.output||
+finalPayload.data||
+finalPayload;
+
+const file=extractVideoFile(output);
+
+if(!file){
+throw new Error('A geração terminou, mas não foi possível localizar o arquivo de vídeo na resposta.');
+}
+
+return normalizeVideoUrl(file);
+}
+
+/* GERAÇÃO DE VÍDEO PELO WORKER */
+
+async function generateVideo(){
+
+const idx=Number(document.getElementById('videoProduct').value);
+const p=products[idx];
+
+if(!p){alert('Cadastre um produto primeiro.');return;}
+if(!p.photo){alert('Este produto não tem foto cadastrada. Adicione uma foto ao produto.');return;}
+
+const scriptIdx=document.getElementById('videoScript').value;
+const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
+
+const style=document.getElementById('videoStyle').value;
+const status=document.getElementById('videoStatus');
+const btn=document.getElementById('generateVideoBtn');
+const wrap=document.getElementById('generatedVideoWrap');
+
+wrap.classList.add('hidden');
+document.getElementById('videoResult').classList.add('hidden');
+document.getElementById('copyVideoPrompt').classList.add('hidden');
+document.getElementById('videoCaptionButton').classList.add('hidden');
+
+if(generatedVideoObjectURL){
+URL.revokeObjectURL(generatedVideoObjectURL);
+generatedVideoObjectURL=null;
+}
+
+btn.disabled=true;
+btn.textContent='Preparando produto...';
+status.classList.remove('hidden');
+status.textContent='Preparando a única imagem de referência em formato vertical...';
+
+try{
+
+const reference=await makeProductReference(p);
+
+if(reference.size>MAX_VIDEO_IMAGE_SIZE){
+throw new Error('A imagem preparada ultrapassou o limite de 8 MB.');
+}
+
+const prompt=buildVideoPrompt(p,style,script);
+currentVideoPrompt=prompt;
+
+status.textContent='Enviando a foto do produto para o nosso Worker...';
+btn.textContent='Enviando imagem...';
+
+const formData=new FormData();
+formData.append('image',reference,'motoria-product.jpg');
+formData.append('params',JSON.stringify({
+prompt,
+duration_seconds:VIDEO_DURATION,
+steps:INFERENCE_STEPS,
+aspect_ratio:'9:16'
+}));
+
+const response=await fetch(WORKER_URL+'/generate',{
+method:'POST',
+body:formData
+});
+
+if(!response.ok){
+let detail='';
+try{
+detail=await response.text();
+}catch(e){}
+
+throw new Error(
+'Erro no serviço de geração ('+response.status+'). '+
+(detail?detail.slice(0,900):response.statusText)
+);
+}
+
+const contentType=response.headers.get('content-type')||'';
+
+if(!contentType.includes('text/event-stream')){
+const body=await response.text();
+throw new Error(
+'O Worker não retornou o fluxo de geração esperado. Resposta: '+body.slice(0,700)
+);
+}
+
+btn.textContent='Gerando vídeo...';
+status.textContent='Imagem enviada! O Wan 2.2 está processando o vídeo. Não feche esta página.';
+
+const videoUrl=await readGenerationStream(response,status);
+
+status.textContent='Vídeo recebido! Preparando a reprodução...';
+btn.textContent='Carregando vídeo...';
+
+const video=document.getElementById('generatedVideo');
+video.src=videoUrl;
+video.load();
+
+const dl=document.getElementById('downloadVideo');
+dl.href=videoUrl;
+dl.download='motoria-video.mp4';
+
+wrap.classList.remove('hidden');
+document.getElementById('videoCaptionButton').classList.remove('hidden');
+document.getElementById('copyVideoPrompt').classList.remove('hidden');
+
+status.textContent='Geração concluída! Seu vídeo está disponível para assistir e baixar.';
+document.getElementById('videoResult').textContent=
+'Modelo: Wan 2.2\nDuração solicitada: 4,5 segundos\nFormato: 9:16 vertical\nInference steps: 12\nImagem de referência: foto do produto.';
+
+document.getElementById('videoResult').classList.remove('hidden');
+
+}catch(e){
+
+console.error('Erro na geração MotorIA:',e);
+
+let msg=e?.message||String(e);
+
+if(/failed to fetch|networkerror|load failed/i.test(msg)){
+msg='Não foi possível conectar ao Worker. Confira sua conexão e tente novamente. Detalhe: '+msg;
+}else if(/413|payload too large/i.test(msg)){
+msg='A imagem enviada ultrapassou o limite permitido pelo serviço.';
+}else if(/500|502|503|504/i.test(msg)){
+msg='O serviço de geração encontrou uma falha ou está temporariamente indisponível. Detalhe: '+msg;
+}
+
+status.textContent='Não foi possível gerar o vídeo: '+msg;
+
+}finally{
+btn.disabled=false;
+btn.textContent='Gerar vídeo com IA';
+}
+}
+
+function copyVideoPrompt(){
+copy(currentVideoPrompt);
+}
+
+function makeCaptionFromVideo(){
+const idx=Number(document.getElementById('videoProduct').value);
+show('captions');
+
+document.getElementById('captionProduct').value=String(idx);
+updateScriptSelectors();
+
+const s=document.getElementById('videoScript').value;
+if(s!==''){
+document.getElementById('captionScript').value=s;
+}
+
+generateCaption();
+}
+
+/* LEGENDAS */
+
+function hashtagsFor(p){
+const words=(p.name+' '+(p.description||''))
+.normalize('NFD')
+.replace(/[\u0300-\u036f]/g,'')
+.toLowerCase()
+.match(/[a-z0-9]+/g)||[];
+
+const stop=new Set([
+'para','com','sem','uma','uns','das','dos','que','por','the','and','de','do','da'
+]);
+
+const tags=[
+...new Set(words.filter(w=>w.length>3&&!stop.has(w)).slice(0,4))
+].map(w=>'#'+w);
+
+return [...tags,'#Achadinhos','#Ofertas','#DicasDeCompra'].slice(0,7).join(' ');
+}
+
+function generateCaption(){
+
+const idx=Number(document.getElementById('captionProduct').value);
+const p=products[idx];
+
+if(!p){alert('Cadastre um produto primeiro.');return;}
+
+const scriptIdx=document.getElementById('captionScript').value;
+const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
+
+const tone=document.getElementById('captionTone').value;
+
+const intro={
+natural:`✨ Olha só este ${p.name}!`,
+oferta:`🛍️ Está de olho em ${p.name}? Confira esta opção!`,
+curioso:`👀 Já conhece ${p.name}? Veja os detalhes!`,
+elegante:`Conheça ${p.name}. ✨`
+};
+
+const description=p.description?`\n\n${p.description}`:'';
+const price=p.price?`\n\n💚 Preço informado: ${p.price}`:'';
+
+const hook=script?
+`\n\n💡 ${script.text.split('\n').filter(line=>
+line.trim()&&!/ROTEIRO|PRODUTO:|ABERTURA:|APRESENTAÇÃO:|PREÇO:|CHAMADA PARA AÇÃO:/i.test(line)
+).slice(0,2).join(' ').slice(0,220)}`:'';
+
+const affiliate=p.link?
+`\n\n🔗 Confira aqui: ${p.link}`:
+'\n\n🔗 Adicione seu link de afiliado no cadastro do produto para incluí-lo aqui.';
+
+currentCaption=
+`${intro[tone]}${description}${hook}${price}
+
+💚 Confira os detalhes e veja se combina com você!
+
+${hashtagsFor(p)}${affiliate}`;
+
+document.getElementById('captionResult').value=currentCaption;
+document.getElementById('captionResult').classList.remove('hidden');
+document.getElementById('captionActions').classList.remove('hidden');
+}
+
+function copyCaption(){
+currentCaption=document.getElementById('captionResult').value;
+copy(currentCaption);
+}
+
+function saveCaption(){
+
+const text=document.getElementById('captionResult').value;
+
+if(!text.trim()){
+alert('Gere uma legenda primeiro.');
+return;
+}
+
+const idx=Number(document.getElementById('captionProduct').value);
+const p=products[idx];
+
+captions.push({
+productName:p?.name||'Produto',
+text,
+createdAt:Date.now()
+});
+
+persist();
+alert('Legenda salva na biblioteca!');
+}
+
+function copyCaptionAt(i){
+copy(captions[i].text);
+}
+
+function removeCaption(i){
+if(!confirm('Excluir esta legenda?'))return;
+captions.splice(i,1);
+persist();
+}
+
+/* INICIALIZAÇÃO */
+
+update();
+show('products');
+
+</script>
+</body>
+</html>
