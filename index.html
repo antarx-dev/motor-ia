@@ -171,6 +171,7 @@ video{display:block}
 </main>
 
 <script>
+const WORKER_URL='https://motoria-video.antarx.workers.dev';
 const HF_SPACE_BASE='https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space';
 const HF_FN='generate_video';
 const VIDEO_DURATION=4.5;
@@ -377,46 +378,17 @@ if(/failed to fetch|networkerror|load failed/i.test(t))return 'Não foi possíve
 return t;
 }
 
-async function hfUpload(file){
+async function workerGenerate(file,prompt,dur,statusEl){
 const form=new FormData();
-form.append('files',file,file.name||'motoria-product.jpg');
-const r=await fetch(HF_SPACE_BASE+'/gradio_api/upload',{method:'POST',body:form});
-if(!r.ok)throw new Error('Falha no envio da imagem ('+r.status+').');
-const paths=await r.json();
-if(!Array.isArray(paths)||!paths[0])throw new Error('O servidor não retornou o caminho da imagem.');
-return paths[0];
+form.append('image',file,'motoria-product.jpg');
+form.append('params',JSON.stringify({prompt,duration_seconds:dur,steps:INFERENCE_STEPS}));
+const r=await fetch(WORKER_URL+'/generate',{method:'POST',body:form});
+if(!r.ok){
+let m='';
+try{const j=await r.json();m=j.error||'';}catch(e){}
+throw new Error(m||'O serviço de geração respondeu com erro ('+r.status+').');
 }
-
-async function hfParameters(){
-try{
-const r=await fetch(HF_SPACE_BASE+'/gradio_api/info');
-if(!r.ok)return null;
-const info=await r.json();
-const ep=info?.named_endpoints?.['/'+HF_FN]||info?.named_endpoints?.[HF_FN];
-return ep?.parameters||null;
-}catch(e){return null;}
-}
-
-function hfBuildData(parameters,imageData,prompt,duration){
-if(!parameters||!parameters.length){
-return [imageData,null,prompt,INFERENCE_STEPS,NEG_PROMPT,duration,1,1,42,true,6,'UniPCMultistep',3.0,16,false];
-}
-const o={input_image:imageData,image:imageData,last_image:null,prompt:prompt,steps:INFERENCE_STEPS,negative_prompt:NEG_PROMPT,duration_seconds:duration,randomize_seed:true};
-return parameters.map(p=>{
-const n=p.parameter_name;
-if(n in o)return o[n];
-return p.parameter_has_default?p.parameter_default:null;
-});
-}
-
-async function hfSubmit(imagePath,prompt,duration){
-const imageData={path:imagePath,url:HF_SPACE_BASE+'/gradio_api/file='+imagePath,orig_name:'motoria-product.jpg',size:null,mime_type:'image/jpeg',meta:{_type:'gradio.FileData'}};
-const data=hfBuildData(await hfParameters(),imageData,prompt,duration||VIDEO_DURATION);
-const r=await fetch(HF_SPACE_BASE+'/gradio_api/call/'+HF_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data})});
-if(!r.ok){const d=await r.text();throw new Error('Falha ao iniciar a geração ('+r.status+'): '+d.slice(0,300));}
-const res=await r.json();
-if(!res.event_id)throw new Error('O servidor não retornou o identificador da geração.');
-return res.event_id;
+return readSSE(r,statusEl);
 }
 
 function findVideoUrl(v){
@@ -432,9 +404,8 @@ for(const k of Object.keys(v)){const f=findVideoUrl(v[k]);if(f)return f;}
 return null;
 }
 
-async function hfWaitResult(eventId,statusEl){
-const r=await fetch(HF_SPACE_BASE+'/gradio_api/call/'+HF_FN+'/'+encodeURIComponent(eventId),{headers:{Accept:'text/event-stream'}});
-if(!r.ok||!r.body)throw new Error('Não foi possível acompanhar a geração ('+r.status+').');
+async function readSSE(r,statusEl){
+if(!r.body)throw new Error('O navegador não conseguiu ler a resposta da geração.');
 const reader=r.body.getReader();
 const dec=new TextDecoder();
 let buf='',result=null,error=null,failed=false;
@@ -469,7 +440,7 @@ return url;
 }
 
 async function fetchVideoBlob(url){
-const r=await fetch(url);
+const r=await fetch(WORKER_URL+'/proxy?url='+encodeURIComponent(url));
 if(!r.ok)throw new Error('Não foi possível baixar o vídeo gerado ('+r.status+').');
 const b=await r.blob();
 return b.type.startsWith('video/')?b:new Blob([b],{type:'video/mp4'});
@@ -554,14 +525,11 @@ let ok=false;
 try{
 status.textContent='Preparando a foto do produto...';
 const ref=await makeProductReference(p);
-status.textContent='Enviando a foto para a IA...';
-const path=await hfUpload(ref);
 let url=null;
 for(const dur of FALLBACK_DURATIONS){
 try{
 status.textContent='Gerando o vídeo '+(recs.length+1)+' de 3 ('+ANGLES[k].name+') com '+String(dur).replace('.',',')+' s... Pode levar 1 a 2 minutos. Não feche a página.';
-const eventId=await hfSubmit(path,buildVideoPrompt(p,ANGLES[k]),dur);
-url=await hfWaitResult(eventId,status);
+url=await workerGenerate(ref,buildVideoPrompt(p,ANGLES[k]),dur,status);
 break;
 }catch(err){
 const empty=friendlyError(err?.message)===ERRO_VAZIO;
