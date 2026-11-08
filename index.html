@@ -77,8 +77,6 @@ video{display:block}
 </head>
 <body>
 <div id="motoria-error" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#7a1f1f;color:#fff;padding:12px 14px;font:600 13px Inter,Arial,sans-serif"></div>
-<script>window.addEventListener("error",function(e){try{var b=document.getElementById("motoria-error");if(b){b.style.display="block";b.textContent="Ops: "+(e.message||"erro");}var f=document.getElementById("motoria-fix");if(f)f.style.display="block";}catch(_){}});</script>
-<div id="motoria-error" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#7a1f1f;color:#fff;padding:12px 14px;font:600 13px Inter,Arial,sans-serif"></div>
 <script>
 window.addEventListener('error',function(e){try{var b=document.getElementById('motoria-error');if(b){b.style.display='block';b.textContent='Ops, algo falhou, mas a tela continua aqui: '+(e.message||'erro desconhecido')+' — recarregue a página se precisar.';}}catch(_){}});
 window.addEventListener('unhandledrejection',function(e){try{var b=document.getElementById('motoria-error');if(b){b.style.display='block';b.textContent='Falha na geração: '+((e.reason&&e.reason.message)||e.reason||'erro desconhecido')+' — tente outro provedor abaixo.';}}catch(_){}});
@@ -98,14 +96,14 @@ window.addEventListener('unhandledrejection',function(e){try{var b=document.getE
 
 <main>
 <nav>
-<button class="nav-btn active" data-page="products" onclick="show('products')">Produtos</button>
-<button class="nav-btn" data-page="videos" onclick="show('videos')">Vídeos IA</button>
+<button class="nav-btn" data-page="products" onclick="show('products')">Produtos</button>
+<button class="nav-btn active" data-page="videos" onclick="show('videos')">Vídeos IA</button>
 <button class="nav-btn" data-page="edit" onclick="show('edit')">Edição</button>
 <button class="nav-btn" data-page="captions" onclick="show('captions')">Legendas</button>
 <button class="nav-btn" data-page="library" onclick="show('library')">Biblioteca</button>
 </nav>
 
-<section id="products" class="panel">
+<section id="products" class="panel hidden">
 <h2>Cadastro de produtos</h2>
 <p class="muted">Cadastre o produto que será usado nos vídeos e legendas.</p>
 <label>Nome do produto</label>
@@ -118,24 +116,36 @@ window.addEventListener('unhandledrejection',function(e){try{var b=document.getE
 <div id="productList"><div class="empty">Nenhum produto cadastrado ainda.</div></div>
 </section>
 
-<section id="videos" class="panel hidden">
-<h2>Gerar vídeo — Muse AI</h2>
-<p class="muted">Mesmo fluxo do vidogrid.ai: 1 imagem, prompt, Portrait 9:16, 10s fixo.</p>
-<div class="notice"><b>PROVIDER</b><br><span style="display:inline-block;background:#d4f73a;color:#111;padding:6px 10px;border-radius:999px;font-weight:800;font-size:12px">✦ Muse AI — NEW</span><br><span class="small">Cinematic 10-second videos from text or a single image, powered by Muse AI.</span></div>
-<label>Produto</label><select id="videoProduct" onchange="onVideoProductChange()"><option value="">Cadastre um produto primeiro</option></select>
-<div id="videoCount" class="notice"></div>
-<label>01 — IMAGE REFERENCE (opcional)</label><input id="museImage" type="file" accept="image/*"><p class="small">1 imagem, JPG/PNG/WebP até 10 MB. Se não escolher, usa a foto do produto.</p>
-<div class="preview-wrap"><div class="preview" id="videoPreview">Selecione um produto com foto cadastrada.</div></div>
-<label>02 — PROMPT</label><textarea id="musePrompt" style="min-height:80px">modelo posando para foto suavemente</textarea><p class="small" id="musePromptCount">36/5000</p>
-<label>03 — SETTINGS</label>
-<p class="small">Orientation</p><p><b>Portrait — 9:16</b> (travado)</p>
-<p class="small">Duration</p><p><b>10s — Fixed length</b><br><span class="small">Muse AI always renders 10-second videos.</span></p>
-<button class="btn" id="generateVideoBtn" onclick="openMuseOverlay()" style="background:#d4f73a;color:#111;border-color:#d4f73a;font-size:15px;padding:14px 18px">✦ GENERATE VIDEO — 10s</button>
-<button class="btn secondary hidden" id="makeAnotherBtn" onclick="makeAnotherVideo()">↻ Fazer outro vídeo</button>
-<div id="videoStatus" class="notice hidden" role="status" aria-live="polite"></div>
-<div id="providerLog" class="notice hidden"></div>
+<section id="videos" class="panel">
+<h2>Estúdio de vídeos IA</h2>
+<p class="muted">Crie 3 vídeos do produto, um de cada vez, cada um com um ângulo de câmera diferente.</p>
+
+<div class="notice">
+<b>Wan 2.2:</b> cada toque gera 1 vídeo (3,5 s, 6 steps) com um ângulo de câmera diferente. Ao terminar, ele é salvo e já aparece na aba Edição. Volte aqui para gerar o próximo, até completar 3. Cada vídeo leva de 1 a 2 minutos. Não feche a página enquanto gera.
+</div>
+
+<div class="video-layout">
+<div>
+<label>Produto</label>
+<select id="videoProduct" onchange="onVideoProductChange()"><option value="">Cadastre um produto primeiro</option></select>
+<div id="videoCount" class="notice">Cadastre um produto para começar.</div>
+<button class="btn" id="generateVideoBtn" onclick="generateNext()" disabled="">Gerar vídeo</button><div class="notice" style="border:2px solid #d4f73a;margin-top:14px"><b>🤖 Automático — 3 fotos → 3 vídeos</b><br><span class="small">Escolha 3 fotos diferentes. O site gera 1 vídeo pra cada uma, sozinho, um por vez, e joga os 3 pra aba Edição. Não precisa apertar nada no meio.</span><br><label>Escolha as 3 fotos</label><input id="museBatch" type="file" accept="image/*" multiple=""><p class="small">Foto 1 → Vídeo 1, Foto 2 → Vídeo 2, Foto 3 → Vídeo 3.</p><button class="btn" onclick="generateBatch3()" id="batchBtn" style="background:#d4f73a;color:#111;border-color:#d4f73a;font-size:15px;padding:14px 18px">▶ Gerar 3 vídeos automaticamente</button><div id="batchStatus" class="notice hidden"></div></div>
+<div class="notice" style="margin-top:14px"><b>✦ Muse AI (vidogrid) — sobreposto</b><br><span class="small">Quer usar o Muse AI do vidogrid? Ele não automatiza (pede login + check humano). O automático acima usa o motor embutido.</span><br><button class="btn secondary" onclick="openMuseOverlay()">⛶ Abrir Muse AI aqui dentro</button></div>
+
+<label>Space extra (opcional) — cole outro .hf.space de Wan 2.2</label><input id="extraSpace" placeholder="https://exemplo-wan22.hf.space"><button class="btn secondary" onclick="saveExtraSpace()">Salvar Space extra</button><div id="providerLog" class="notice"></div><p class="small">Muse e SnapGen não têm API gratuita sem login para embutir aqui — por isso usamos vários Spaces públicos gratuitos. Se um falhar, o próximo tenta sozinho.</p><div id="videoStatus" class="notice hidden" role="status" aria-live="polite"></div>
 <button id="goEdit" class="btn secondary hidden" onclick="show('edit')">Ir para Edição</button>
+</div>
+
+<div>
+<label>Foto do produto</label>
+<div class="preview-wrap">
+<div class="preview" id="videoPreview">Selecione um produto com foto cadastrada.</div>
+</div>
+<p class="small">Esta é a única imagem enviada à IA.</p>
+</div>
+</div>
 </section>
+
 <section id="edit" class="panel hidden">
 <h2>Edição</h2>
 <p class="muted">Os vídeos que você gera chegam aqui automaticamente. Com 2 ou 3 prontos, crie um único vídeo final unindo todos.</p>
@@ -189,15 +199,19 @@ window.addEventListener('unhandledrejection',function(e){try{var b=document.getE
 <script>
 const HF_SPACE_BASE='https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space';
 const HF_FN='generate_video';
-const VIDEO_DURATION=4.5;
+const VIDEO_DURATION=3.5;
 const INFERENCE_STEPS=6;
-const FALLBACK_DURATIONS=[4.5];
+const FALLBACK_DURATIONS=[3.5];
 const NEG_PROMPT='色调艳丽, 过曝, 静态, 细节模糊不清, 字幕, 风格, 作品, 画作, 画面, 静止, 整体发灰, 最差质量, 低质量, JPEG压缩残留, 丑陋的, 残缺的, 多余的手指, 畸形的, 毁容的, 形态畸形的肢体, 杂乱的背景, 水印';
-const NIFTY_SPACE='https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space';
-const NIFTY_NAME='NiftyVid';
+const PROVIDERS=[
+ {name:'Wan 2.2 — Space 1 (principal)', base:'https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space', fn:'generate_video'},
+ {name:'Wan 2.2 — Space 2', base:'https://kulkas2pintu-wan555.hf.space', fn:null},
+ {name:'Wan 2.2 — Space 3', base:'https://cinderholm-wan2-2-i2v-v3.hf.space', fn:null}
+];
 function buildVideoPrompt(p,angle){
  return 'Realistic product video, photorealistic, natural studio lighting, soft shadows, true colors, sharp focus, subtle realistic motion, smooth cinematic camera, high detail. '+angle.motion+'. Keep the product exactly identical to the photo, same shape, same colors, same logo, no morphing, no extra objects, no text, no watermark, no distortion. Product: '+p.name;
 }
+function friendlyError(m){return m||'Erro desconhecido';}
 const ERRO_VAZIO='O servidor de vídeo recusou o pedido sem explicar o motivo. Pode ser fila cheia, limite de tempo ou cota. Tente de novo em instantes.';
 
 const ANGLES=[
@@ -294,7 +308,6 @@ img.alt='Foto do produto selecionado';
 preview.appendChild(img);
 }
 
-document.addEventListener('input',function(e){ if(e.target&&e.target.id==='musePrompt'){ var c=document.getElementById('musePromptCount'); if(c) c.textContent=e.target.value.length+'/5000'; } });
 function onVideoProductChange(){
 updateProductPreview();
 updateVideoInfo();
@@ -392,6 +405,9 @@ const blob=await new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error(
 return new File([blob],'motoria-product.jpg',{type:'image/jpeg'});
 }
 
+function buildVideoPrompt(p,angle){
+return `Premium commercial product ad. The product (${p.name}) stays sharp and unchanged: same shape, colors, logo and details. ${angle.motion}. Soft natural motion, realistic lighting and shadows, clean attractive background. No text, no watermark, no extra objects.`;
+}
 
 /* CHAMADA AO SPACE (direto do navegador) */
 function friendlyError(v){
@@ -453,18 +469,32 @@ async function hfWaitResult(base,fn,eventId,statusEl){
   if(!result) throw new Error('A conexão terminou sem o vídeo. Tente novamente.');
   const url=findVideoUrl(result,base); if(!url) throw new Error('A geração terminou, mas o vídeo não veio na resposta.');
   return url;
- }catch(e){ if(e.name==='AbortError') throw new Error('Tempo esgotado (3 min). Tente de novo.'); throw e; }
+ }catch(e){ if(e.name==='AbortError') throw new Error('Tempo esgotado (3 min) neste provedor. Tentando o próximo...'); throw e; }
  finally{ clearTimeout(to); }
 }
-
 async function tryProviders(p,angle,status){
+ const extra=(localStorage.getItem('motoria_hf_space_extra')||'').trim();
+ const list=[...PROVIDERS]; if(extra && extra.startsWith('https://') && extra.includes('.hf.space')) list.push({name:'Space extra',base:extra.replace(/\/$/,''),fn:null});
+ const log=document.getElementById('providerLog'); if(log) log.innerHTML='';
  const ref=await makeProductReference(p);
- status.textContent='NiftyVid: enviando a imagem...';
- const path=await hfUpload(NIFTY_SPACE,ref);
- status.textContent='NiftyVid: gerando o vídeo de 4,5 segundos... Não feche a página.';
- const sub=await hfSubmit(NIFTY_SPACE,HF_FN,path,buildVideoPrompt(p,angle));
- const url=await hfWaitResult(NIFTY_SPACE,sub.fn,sub.eventId,status);
- return {url, provider:NIFTY_NAME};
+ for(let i=0;i<list.length;i++){
+  const prov=list[i];
+  try{
+   status.textContent='Provedor '+(i+1)+' de '+list.length+' ('+prov.name+'): enviando foto...';
+   const path=await hfUpload(prov.base,ref);
+   status.textContent='Provedor '+(i+1)+' ('+prov.name+'): gerando... pode levar 1 a 3 min. Não feche a página.';
+   const sub=await hfSubmit(prov.base,prov.fn,path,buildVideoPrompt(p,angle));
+   const url=await hfWaitResult(prov.base,sub.fn,sub.eventId,status);
+   if(log) log.innerHTML+='<div>✅ '+prov.name+' — gerou o vídeo</div>';
+   return {url, provider:prov.name};
+  }catch(err){
+   const msg=friendlyError(err?.message||String(err));
+   if(log) log.innerHTML+='<div>❌ '+prov.name+' — '+msg+'</div>';
+   status.textContent='Provedor '+(i+1)+' falhou ('+msg+'). '+(i+1<list.length?'Tentando o próximo...':'');
+   await new Promise(r=>setTimeout(r,1500));
+  }
+ }
+ throw new Error('Todos os provedores falharam. Tente de novo em alguns minutos ou cole outro Space em Space extra.');
 }
 
 async function fetchVideoBlob(url){
@@ -510,7 +540,8 @@ try{await dbDel(pid+'-clip'+k);}catch(e){}
 loadEdit();
 }
 
-
+function saveExtraSpace(){ const v=document.getElementById('extraSpace').value.trim(); if(v && (!v.startsWith('https://')||!v.includes('.hf.space'))){ alert('Cole um link válido, ex: https://exemplo.hf.space'); return; } localStorage.setItem('motoria_hf_space_extra',v); alert(v?'Space extra salvo!':'Space extra removido.'); }
+window.addEventListener('DOMContentLoaded',()=>{ const e=document.getElementById('extraSpace'); if(e) e.value=localStorage.getItem('motoria_hf_space_extra')||''; });
 /* VÍDEOS IA: um vídeo por vez, enviado direto para a Edição */
 let generating=false;
 const slotOf=r=>Number(r.id.slice(r.id.lastIndexOf('-clip')+5));
@@ -528,33 +559,100 @@ const used=new Set(recs.map(slotOf));
 const k=ANGLES.findIndex((_,i)=>!used.has(i));
 info.innerHTML='<b>Vídeos prontos: '+n+' de 3.</b>'+(k>=0?' Próximo ângulo: '+esc(ANGLES[k].name)+'.':' Todos prontos! Vá para a aba Edição.');
 btn.disabled=k<0;
-btn.textContent=k>=0?'▶ Gerar vídeo — 4,5s ('+ANGLES[k].name+')':'Os 3 vídeos estão prontos';
+btn.textContent=k>=0?'Gerar vídeo '+(n+1)+' de 3 ('+ANGLES[k].name+')':'Os 3 vídeos estão prontos';
 goEdit.classList.toggle('hidden',n<1);
 }
 
-function openMuseOverlay(){ const o=document.getElementById('museOverlay'); o.style.display='flex'; document.body.style.overflow='hidden'; const st=document.getElementById('videoStatus'); st.classList.remove('hidden'); st.textContent='Muse AI aberto aqui dentro, sobreposto. Gere o vídeo, baixe, e importe embaixo.'; }
+
+let batchRunning=false;
+async function generateBatch3(){
+ if(batchRunning){alert('Já está gerando os 3 vídeos. Aguarde.');return;}
+ const idx=Number(document.getElementById('videoProduct').value); const p=products[idx]; if(!p){alert('Cadastre um produto primeiro.');return;}
+ const files=[...document.getElementById('museBatch').files];
+ if(files.length!==3){alert('Escolha exatamente 3 fotos. Você escolheu '+files.length+'.');return;}
+ const btn=document.getElementById('batchBtn'); const status=document.getElementById('batchStatus'); status.classList.remove('hidden');
+ batchRunning=true; generating=true; if(btn){btn.disabled=true;btn.textContent='Gerando os 3 vídeos...';}
+ let done=0;
+ try{
+  for(let k=0;k<3;k++){
+   status.textContent='Vídeo '+(k+1)+' de 3: enviando a foto '+(k+1)+'...';
+   const refFile=await (async()=>{ const img=await loadImage(URL.createObjectURL(files[k])); const c=document.createElement('canvas'); c.width=832; c.height=1472; const ctx=c.getContext('2d'); ctx.fillStyle='#e8e9e4'; ctx.fillRect(0,0,832,1472); const sc=Math.min(760/img.width,1320/img.height); ctx.drawImage(img,(832-img.width*sc)/2,(1472-img.height*sc)/2,img.width*sc,img.height*sc); const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.92)); return new File([b],'foto'+(k+1)+'.jpg',{type:'image/jpeg'}); })();
+   status.textContent='Vídeo '+(k+1)+' de 3: gerando... Não feche a página.';
+   const path=await hfUpload(HF_SPACE_BASE,refFile);
+   const sub=await hfSubmit(HF_SPACE_BASE,HF_FN,path,buildVideoPrompt(p,ANGLES[k]));
+   const url=await hfWaitResult(HF_SPACE_BASE,sub.fn,sub.eventId,status);
+   status.textContent='Vídeo '+(k+1)+' de 3: salvando na Edição...';
+   const blob=await fetchVideoBlob(url);
+   if(!blob||blob.size<1000) throw new Error('O vídeo '+(k+1)+' veio vazio. Tente de novo.');
+   await dbPut({id:p.id+'-clip'+k,productId:p.id,kind:'clip',angle:ANGLES[k].name,blob,createdAt:Date.now()});
+   done++;
+   status.textContent='Vídeo '+(k+1)+' de 3 pronto ✅ — indo para o próximo...';
+  }
+  status.textContent='Pronto! Os 3 vídeos foram gerados e enviados para a aba Edição ✅';
+  document.getElementById('editProduct').value=String(idx);
+  show('edit'); try{ await loadEdit(); }catch(_){}
+  const es=document.getElementById('editStatus'); if(es){ es.classList.remove('hidden'); es.textContent='3 vídeos prontos! Toque em "Criar vídeo final".'; }
+ }catch(e){ console.error(e); status.textContent='Parou no vídeo '+(done+1)+' de 3: '+(e.message||e)+'. Os '+done+' primeiros já estão salvos na Edição.'; alert('Parou no vídeo '+(done+1)+' de 3: '+(e.message||e)); }
+ finally{ batchRunning=false; generating=false; if(btn){btn.disabled=false;btn.textContent='▶ Gerar 3 vídeos automaticamente';} }
+}
+function openMuseOverlay(){ const o=document.getElementById('museOverlay'); o.style.display='flex'; document.body.style.overflow='hidden'; }
 function closeMuseOverlay(){ const o=document.getElementById('museOverlay'); o.style.display='none'; document.body.style.overflow=''; }
 async function importMuseVideo(){
  const idx=Number(document.getElementById('videoProduct').value); const p=products[idx]; if(!p){alert('Cadastre um produto primeiro.');return;}
- const file=(document.getElementById('museImportOverlay')&&document.getElementById('museImportOverlay').files[0]) || document.getElementById('museImage').files[0];
- if(!file || !file.type.startsWith('video/')){ alert('Escolha o vídeo que você baixou do Muse AI (arquivo de vídeo).'); return; }
+ const file=document.getElementById('museImportOverlay')&&document.getElementById('museImportOverlay').files[0];
+ if(!file||!file.type.startsWith('video/')){ alert('Escolha o vídeo que você baixou do Muse AI.'); return; }
  const recs=await getClips(p.id); const used=new Set(recs.map(slotOf)); const k=ANGLES.findIndex((_,i)=>!used.has(i));
- if(k<0){alert('Este produto já tem os 3 vídeos. Na aba Edição você pode excluir algum para importar outro.');return;}
- const status=document.getElementById('videoStatus'); status.classList.remove('hidden'); status.textContent='Importando para a Edição...';
- try{
-  if(file.size<1000) throw new Error('O vídeo veio vazio. Baixe de novo no Muse AI.');
-  await dbPut({id:p.id+'-clip'+k,productId:p.id,kind:'clip',angle:ANGLES[k].name,blob:file,createdAt:Date.now()});
-  const total=(await getClips(p.id)).length;
-  document.getElementById('editProduct').value=String(idx);
-  status.textContent='Vídeo Muse AI salvo na aba Edição ('+total+' de 3).';
-  const a=document.getElementById('makeAnotherBtn'); if(a) a.classList.remove('hidden');
-  const go=document.getElementById('goEdit'); if(go) go.classList.remove('hidden');
-  show('edit'); try{ await loadEdit(); }catch(_){}
-  const es=document.getElementById('editStatus'); if(es){ es.classList.remove('hidden'); es.textContent='Vídeo '+(k+1)+' do Muse AI salvo!'; }
- }catch(e){ status.textContent='Não foi possível importar: '+(e.message||e); }
+ if(k<0){alert('Este produto já tem os 3 vídeos.');return;}
+ await dbPut({id:p.id+'-clip'+k,productId:p.id,kind:'clip',angle:ANGLES[k].name,blob:file,createdAt:Date.now()});
+ document.getElementById('editProduct').value=String(idx); show('edit'); try{ await loadEdit(); }catch(_){}
+ const es=document.getElementById('editStatus'); if(es){ es.classList.remove('hidden'); es.textContent='Vídeo do Muse AI salvo!'; }
 }
-async function generateNext(){ openMuseOverlay(); }
-function makeAnotherVideo(){ document.getElementById('videoStatus').textContent='Pronto para o próximo vídeo de 4,5s.'; const a=document.getElementById('makeAnotherBtn'); if(a) a.classList.add('hidden'); show('videos'); updateVideoInfo(); }
+
+async function generateNext(){
+if(generating)return;
+const idx=Number(document.getElementById('videoProduct').value);
+const p=products[idx];
+if(!p){alert('Cadastre um produto primeiro.');return;}
+if(!p.photo){alert('Este produto não tem foto cadastrada.');return;}
+
+const recs=await getClips(p.id);
+const used=new Set(recs.map(slotOf));
+const k=ANGLES.findIndex((_,i)=>!used.has(i));
+if(k<0){alert('Este produto já tem os 3 vídeos. Na aba Edição você pode criar o vídeo final ou excluir algum para gerar outro.');return;}
+
+generating=true;
+const btn=document.getElementById('generateVideoBtn');
+const status=document.getElementById('videoStatus');
+btn.disabled=true;
+btn.textContent='Gerando...';
+status.classList.remove('hidden');
+let ok=false;
+try{
+status.textContent='Preparando a foto do produto...';
+const gen=await tryProviders(p,ANGLES[k],status);
+const url=gen.url;
+status.textContent='Salvando no site... (gerado por '+gen.provider+')';
+const blob=await fetchVideoBlob(url);
+await dbPut({id:p.id+'-clip'+k,productId:p.id,kind:'clip',angle:ANGLES[k].name,blob,createdAt:Date.now()});
+ok=true;
+}catch(e){
+console.error(e);
+status.textContent='Não foi possível gerar: '+friendlyError(e?.message||String(e));
+}finally{
+generating=false;
+}
+if(!ok){updateVideoInfo();return;}
+
+/* envia automaticamente para a aba Edição */
+const total=(await getClips(p.id)).length;
+document.getElementById('editProduct').value=String(idx);
+show('edit');
+const es=document.getElementById('editStatus');
+es.classList.remove('hidden');
+es.textContent=total>=3
+?'Vídeo '+(k+1)+' salvo! Os 3 vídeos estão prontos. Toque em "Criar vídeo final".'
+:'Vídeo '+(k+1)+' salvo ('+total+' de 3)! Volte em Vídeos IA para gerar o próximo.';
+}
 
 /* EDIÇÃO: junta os vídeos em um só */
 async function loadEdit(){
@@ -788,14 +886,13 @@ alert('Legenda salva na biblioteca!');
 function copyCaptionAt(i){copy(captions[i].text);}
 function removeCaption(i){if(!confirm('Excluir esta legenda?'))return;captions.splice(i,1);persist();}
 
-try{ update(); show('products'); }catch(e){ try{ document.getElementById('products').classList.remove('hidden'); }catch(_){} }
+update();
+show('products');
 </script>
-<button id="motoria-fix" onclick="document.querySelectorAll('main section').forEach(function(x){x.classList.remove('hidden')});document.getElementById('products').classList.remove('hidden')" style="display:none;position:fixed;bottom:14px;left:14px;right:14px;z-index:10000;background:#b91c1c;color:#fff;border:0;padding:14px;border-radius:12px;font-weight:800">⚠️ Tela preta? Toque aqui para mostrar o site</button>
-<script>setTimeout(function(){try{var prod=document.getElementById("products");if(!prod||prod.classList.contains("hidden")){var b=document.getElementById("motoria-fix");if(b)b.style.display="block";if(prod)prod.classList.remove("hidden");}}catch(_){}},2500);</script>
 <div id="museOverlay" style="display:none;position:fixed;inset:0;z-index:20000;background:rgba(0,0,0,.88);flex-direction:column">
 <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#111510;border-bottom:1px solid #2a3426;color:#eef0e9"><b style="flex:1">✦ Muse AI — vidogrid.ai — sobreposto</b><button onclick="window.open('https://vidogrid.ai/app/video-gen/muse','_blank','noopener')" style="background:#d4f73a;color:#111;border:0;padding:10px 12px;border-radius:10px;font-weight:800">Abrir em nova aba</button><button onclick="closeMuseOverlay()" style="background:#b91c1c;color:#fff;border:0;padding:10px 14px;border-radius:10px;font-weight:800">✕ Fechar</button></div>
-<iframe id="museFrame" src="https://vidogrid.ai/app/video-gen/muse" style="flex:1;width:100%;border:0;background:#fff" allow="camera;microphone;clipboard-write;downloads" sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups allow-modals"></iframe>
-<div style="padding:12px 14px;background:#111510;border-top:1px solid #2a3426;color:#eef0e9"><b>Depois de baixar no Muse AI:</b><br><input id="museImportOverlay" type="file" accept="video/*" style="margin-top:8px"><button class="btn" onclick="importMuseVideo(); closeMuseOverlay();" style="background:#d4f73a;color:#111;border-color:#d4f73a">⬆ Importar vídeo do Muse AI → Edição</button><p class="small">Se a janela ficar em branco, o vidogrid bloqueou o quadro — use “Abrir em nova aba”.</p></div>
+<iframe src="https://vidogrid.ai/app/video-gen/muse" style="flex:1;width:100%;border:0;background:#fff" allow="camera;microphone;clipboard-write;downloads" sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups allow-modals"></iframe>
+<div style="padding:12px 14px;background:#111510;border-top:1px solid #2a3426;color:#eef0e9"><b>Depois de baixar no Muse AI:</b><br><input id="museImportOverlay" type="file" accept="video/*" style="margin-top:8px"><button class="btn" onclick="importMuseVideo(); closeMuseOverlay();" style="background:#d4f73a;color:#111;border-color:#d4f73a">⬆ Importar vídeo do Muse AI → Edição</button></div>
 </div>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
 
