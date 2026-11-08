@@ -1,25 +1,6 @@
-<html lang="pt-BR"><style>* { -webkit-text-size-adjust: 95.33333333333333% !important; }</style><head><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-</style>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080a08">
@@ -76,5 +57,790 @@ video{display:block}
 </style>
 </head>
 <body>
-<div id="motoria-error" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#7a1f1f;color:#fff;padding:12px 14px;font:600 13px Inter,Arial,sans-serif"></div>
-<script>window.addEventListener("error",function(e){try{var b=document.getElementById("motoria-error");if(b){b.style.display="block";b.textContent="Ops: "+(e.message||"erro");}var f=document.getElementById("motoria-fix");if(f)f.style.display="block";}catch(_){}});</script></body></html>
+<header>
+<div class="header-inner">
+<div class="brand">
+<div class="logo">✦</div>
+<div>
+<div class="brand-name">MotorIA</div>
+<div class="tagline">ESTÚDIO INTELIGENTE DE AFILIADOS</div>
+</div>
+</div>
+<div class="header-note">Seu produto. Sua criatividade.<br><span>Conteúdo pronto para vender.</span></div>
+</div>
+</header>
+
+<main>
+<nav>
+<button class="nav-btn active" data-page="products" onclick="show('products')">Produtos</button>
+<button class="nav-btn" data-page="scripts" onclick="show('scripts')">Roteiros</button>
+<button class="nav-btn" data-page="videos" onclick="show('videos')">Vídeos IA</button>
+<button class="nav-btn" data-page="captions" onclick="show('captions')">Legendas</button>
+<button class="nav-btn" data-page="library" onclick="show('library')">Biblioteca</button>
+</nav>
+
+<section id="products" class="panel">
+<h2>Cadastro de produtos</h2>
+<p class="muted">Guarde as informações que serão usadas nos roteiros, vídeos e legendas.</p>
+<label>Nome do produto</label>
+<input id="name" placeholder="Ex.: Bolsa feminina transversal">
+<label>Preço</label>
+<input id="price" placeholder="Ex.: R$ 59,90">
+<label>Descrição e características reais</label>
+<textarea id="description" placeholder="Material, tamanho, benefícios, cores e detalhes..."></textarea>
+<label>Link de afiliado</label>
+<input id="link" type="url" placeholder="Cole seu link de afiliado">
+<label>Foto do produto (JPG, PNG ou WebP; até 12 MB)</label>
+<input id="photo" type="file" accept="image/*">
+<button class="btn" onclick="addProduct()">Salvar produto</button>
+<div id="productList"></div>
+</section>
+
+<section id="scripts" class="panel hidden">
+<h2>Gerador de roteiros</h2>
+<p class="muted">Escolha o produto e crie seu roteiro.</p>
+<label>Produto</label>
+<select id="productSelect"></select>
+<label>Tipo de vídeo</label>
+<select id="style">
+<option value="curioso">Curiosidade / descoberta</option>
+<option value="oferta">Oferta / oportunidade</option>
+<option value="demonstracao">Demonstração</option>
+<option value="emocional">Emocional</option>
+</select>
+<label>Duração</label>
+<select id="duration">
+<option>15 segundos</option>
+<option>30 segundos</option>
+<option>60 segundos</option>
+</select>
+<button class="btn" onclick="generate()">Gerar roteiro</button>
+<div id="result" class="result hidden"></div>
+<div id="scriptActions" class="hidden">
+<button class="btn" onclick="saveScript()">Salvar roteiro</button>
+<button class="btn secondary" onclick="useScriptInVideo()">Usar este roteiro no vídeo</button>
+</div>
+</section>
+
+<section id="videos" class="panel hidden">
+<h2>Estúdio de vídeos IA</h2>
+<p class="muted">Crie vídeos de produtos com inteligência artificial.</p>
+
+<div class="notice">
+<b>Wan 2.2 (mesma IA do NiftyVid):</b> a geração passa pelo seu Worker do Cloudflare, exatamente como no NiftyVid. Enviamos só a foto do produto.
+<br><br>
+<b>Formato:</b> vertical 9:16 · <b>Duração:</b> 3,5 s · <b>Steps:</b> 6. A primeira geração pode levar 1 a 2 minutos (a GPU precisa acordar).
+</div>
+
+<div class="video-layout">
+<div>
+<label>1. Produto</label>
+<select id="videoProduct" onchange="syncVideoScripts()"></select>
+
+<label>2. Roteiro salvo para este produto (opcional)</label>
+<select id="videoScript"></select>
+<p class="small">O roteiro é usado como orientação criativa, sem substituir a foto do produto.</p>
+
+<label>3. Estilo do vídeo</label>
+<select id="videoStyle">
+<option value="anuncio">Anúncio de produto</option>
+<option value="demonstracao">Demonstração do produto</option>
+<option value="cinematico">Apresentação cinematográfica</option>
+<option value="ugc">Estilo criador de conteúdo</option>
+</select>
+
+<button class="btn" id="generateVideoBtn" onclick="generateVideo()">Gerar vídeo com IA</button>
+
+<div id="videoStatus" class="notice hidden" role="status" aria-live="polite"></div>
+
+<div id="generatedVideoWrap" class="card hidden">
+<video id="generatedVideo" controls playsinline style="width:100%;max-height:520px;border-radius:12px;background:#000"></video>
+<a id="downloadVideo" class="btn secondary" download="motoria-video.mp4">Baixar vídeo MP4</a>
+</div>
+
+<div id="videoResult" class="result hidden"></div>
+<button id="copyVideoPrompt" class="btn secondary hidden" onclick="copyVideoPrompt()">Copiar prompt</button>
+<button id="videoCaptionButton" class="btn secondary hidden" onclick="makeCaptionFromVideo()">Gerar legenda deste vídeo</button>
+</div>
+
+<div>
+<label>Prévia da foto do produto</label>
+<div class="preview-wrap">
+<div class="preview" id="videoPreview">A foto do produto aparecerá aqui.</div>
+</div>
+<p class="small">Esta é a única imagem enviada à IA.</p>
+</div>
+</div>
+</section>
+
+<section id="captions" class="panel hidden">
+<h2>Legenda para publicação</h2>
+<p class="muted">Gere uma descrição comercial com emojis, hashtags e link de afiliado.</p>
+<label>Produto</label>
+<select id="captionProduct" onchange="captionProductChanged()"></select>
+<label>Roteiro (opcional)</label>
+<select id="captionScript"></select>
+<label>Tom da legenda</label>
+<select id="captionTone">
+<option value="natural">Natural e próximo</option>
+<option value="oferta">Oferta e urgência moderada</option>
+<option value="curioso">Curioso e chamativo</option>
+<option value="elegante">Elegante e direto</option>
+</select>
+<button class="btn" onclick="generateCaption()">Gerar legenda automática</button>
+<label>Edite sua legenda</label>
+<textarea id="captionResult" class="hidden" rows="10"></textarea>
+<div id="captionActions" class="hidden">
+<button class="btn" onclick="copyCaption()">Copiar legenda</button>
+<button class="btn secondary" onclick="saveCaption()">Salvar na biblioteca</button>
+</div>
+<div class="notice">Confira preço, disponibilidade e link antes de publicar.</div>
+</section>
+
+<section id="library" class="panel hidden">
+<h2>Sua biblioteca</h2>
+<p class="muted">Roteiros e legendas salvos neste aparelho.</p>
+<div id="libraryList"></div>
+</section>
+
+<footer>MotorIA · Seu estúdio criativo</footer>
+</main>
+
+<script>
+const WORKER_URL='https://motoria-video.antarx.workers.dev';
+const HF_SPACE_BASE='https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space';
+const VIDEO_DURATION=3.5;
+const INFERENCE_STEPS=6;
+const ERRO_VAZIO='O servidor de vídeo falhou sem dar detalhes. Pode ser fila cheia, limite de tempo ou cota. Tente de novo em instantes.';
+
+const readStore=(key,fallback)=>{
+try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}
+catch(e){return fallback}
+};
+
+let products=readStore('motor_products',[]);
+let rawScripts=readStore('motor_scripts',[]);
+let scripts=rawScripts.map((s,i)=>typeof s==='string'?{
+id:'legacy-'+i,productIndex:null,productName:'Produto não identificado',
+text:s,createdAt:Date.now()
+}:s);
+let captions=readStore('motor_captions',[]);
+let currentScript=null,currentVideoPrompt='',currentCaption='';
+
+function persist(){
+localStorage.setItem('motor_products',JSON.stringify(products));
+localStorage.setItem('motor_scripts',JSON.stringify(scripts));
+localStorage.setItem('motor_captions',JSON.stringify(captions));
+update();
+}
+
+function show(id){
+document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+update();
+}
+
+function esc(s){
+return String(s??'').replace(/[&<>"']/g,c=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+}
+
+function productOptions(selected){
+return products.map((p,i)=>
+`<option value="${i}" ${String(selected)===String(i)?'selected':''}>${esc(p.name)}</option>`
+).join('');
+}
+
+function update(){
+document.getElementById('productList').innerHTML=products.map((p,i)=>`
+<div class="card">
+${p.photo?`<img src="${p.photo}" alt="Foto do produto">`:''}
+<b>${esc(p.name)}</b>
+<p>${esc(p.price||'Preço não informado')}</p>
+<p class="small">${esc(p.description||'Sem descrição')}</p>
+<p class="small">${p.link?'Link de afiliado cadastrado':'Sem link de afiliado'}</p>
+<button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button>
+</div>`).join('')||'<div class="empty">Nenhum produto cadastrado ainda.</div>';
+
+const opts=productOptions();
+
+['productSelect','videoProduct','captionProduct'].forEach(id=>{
+const el=document.getElementById(id);
+const old=el.value;
+el.innerHTML=opts||'<option value="">Cadastre um produto primeiro</option>';
+if(old!==''&&products[Number(old)])el.value=old;
+});
+
+updateScriptSelectors();
+
+document.getElementById('libraryList').innerHTML=
+scripts.map((s,i)=>`
+<div class="card">
+<b>Roteiro ${i+1} · ${esc(s.productName||'Produto')}</b>
+<div class="result">${esc(s.text)}</div>
+<button class="btn secondary" onclick="copyText(${i})">Copiar roteiro</button>
+<button class="btn danger" onclick="removeScript(${i})">Excluir</button>
+</div>`).join('')+
+captions.map((c,i)=>`
+<div class="card">
+<b>Legenda ${i+1} · ${esc(c.productName)}</b>
+<div class="result">${esc(c.text)}</div>
+<button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar legenda</button>
+<button class="btn danger" onclick="removeCaption(${i})">Excluir</button>
+</div>`).join('')||
+'<div class="empty">Nenhum roteiro ou legenda salvo.</div>';
+
+updateProductPreview();
+}
+
+function updateScriptSelectors(){
+const vi=Number(document.getElementById('videoProduct').value);
+const ci=Number(document.getElementById('captionProduct').value);
+
+const videoList=scripts.map((s,i)=>({s,i})).filter(x=>
+x.s.productIndex===vi||
+(x.s.productIndex==null&&x.s.productName==='Produto não identificado')
+);
+
+const captionList=scripts.map((s,i)=>({s,i})).filter(x=>
+x.s.productIndex===ci||x.s.productIndex==null
+);
+
+const oldVideo=document.getElementById('videoScript').value;
+const oldCaption=document.getElementById('captionScript').value;
+
+document.getElementById('videoScript').innerHTML=
+'<option value="">Sem roteiro selecionado</option>'+
+videoList.map(x=>`<option value="${x.i}">Roteiro ${x.i+1} · ${esc(x.s.productName)}</option>`).join('');
+
+document.getElementById('captionScript').innerHTML=
+'<option value="">Sem roteiro selecionado</option>'+
+captionList.map(x=>`<option value="${x.i}">Roteiro ${x.i+1}</option>`).join('');
+
+if(videoList.some(x=>String(x.i)===oldVideo)){
+document.getElementById('videoScript').value=oldVideo;
+}
+if(captionList.some(x=>String(x.i)===oldCaption)){
+document.getElementById('captionScript').value=oldCaption;
+}
+}
+
+function syncVideoScripts(){
+updateScriptSelectors();
+updateProductPreview();
+}
+function captionProductChanged(){updateScriptSelectors();}
+
+function updateProductPreview(){
+const idx=Number(document.getElementById('videoProduct').value);
+const p=products[idx];
+const preview=document.getElementById('videoPreview');
+
+if(!p||!p.photo){
+preview.textContent='Selecione um produto com foto cadastrada.';
+return;
+}
+
+preview.innerHTML='';
+const img=document.createElement('img');
+img.src=p.photo;
+img.alt='Foto do produto selecionado';
+preview.appendChild(img);
+}
+
+/* IMAGENS */
+
+async function compressImageFile(file,maxSide=1600,quality=.84){
+if(!file)throw new Error('Selecione uma foto.');
+
+const bitmap=await createImageBitmap(file);
+const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
+
+const canvas=document.createElement('canvas');
+canvas.width=Math.max(1,Math.round(bitmap.width*scale));
+canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+
+const ctx=canvas.getContext('2d',{alpha:false});
+ctx.fillStyle='#fff';
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
+bitmap.close?.();
+
+const blob=await new Promise((resolve,reject)=>{
+canvas.toBlob(b=>b?resolve(b):reject(new Error('Falha ao converter imagem.')),'image/jpeg',quality);
+});
+
+return await new Promise((resolve,reject)=>{
+const r=new FileReader();
+r.onload=()=>resolve(r.result);
+r.onerror=()=>reject(new Error('Falha ao ler imagem convertida.'));
+r.readAsDataURL(blob);
+});
+}
+
+async function loadImage(source,label='imagem'){
+let blob;
+try{
+if(source instanceof Blob){
+blob=source;
+}else if(typeof source==='string'&&source.trim()){
+const response=await fetch(source);
+if(!response.ok)throw new Error('Não foi possível acessar o arquivo.');
+blob=await response.blob();
+}else{
+throw new Error('Arquivo vazio ou inválido.');
+}
+
+if(!blob.type.startsWith('image/')){
+throw new Error('O arquivo selecionado não é uma imagem válida.');
+}
+
+const objectURL=URL.createObjectURL(blob);
+const img=new Image();
+img.decoding='async';
+
+try{
+await new Promise((resolve,reject)=>{
+img.onload=resolve;
+img.onerror=()=>reject(new Error('O navegador não conseguiu decodificar a imagem.'));
+img.src=objectURL;
+});
+
+if(img.naturalWidth===0||img.naturalHeight===0){
+throw new Error('A imagem não possui dimensões válidas.');
+}
+return img;
+}finally{
+URL.revokeObjectURL(objectURL);
+}
+}catch(error){
+throw new Error('Falha ao carregar '+label+': '+error.message);
+}
+}
+
+/* CADASTRO DE PRODUTOS */
+
+async function addProduct(){
+const name=document.getElementById('name').value.trim();
+if(!name){alert('Digite o nome do produto.');return;}
+
+const file=document.getElementById('photo').files[0];
+
+try{
+let photo='';
+if(file){
+if(!file.type.startsWith('image/'))throw new Error('Escolha um arquivo de imagem válido.');
+if(file.size>12*1024*1024)throw new Error('A foto original deve ter no máximo 12 MB.');
+photo=await compressImageFile(file,1600,.82);
+}
+
+products.push({
+name,
+price:document.getElementById('price').value.trim(),
+description:document.getElementById('description').value.trim(),
+link:document.getElementById('link').value.trim(),
+photo
+});
+
+try{persist();}
+catch(e){
+products.pop();
+throw new Error('O armazenamento do navegador ficou cheio. Remova alguns produtos ou use uma foto menor.');
+}
+
+['name','price','description','link','photo'].forEach(id=>{
+document.getElementById(id).value='';
+});
+
+alert('Produto cadastrado!');
+}catch(e){
+alert(e.message||'Não foi possível salvar a imagem.');
+}
+}
+
+function removeProduct(i){
+if(!confirm('Excluir este produto? Os roteiros já salvos serão mantidos.'))return;
+products.splice(i,1);
+scripts=scripts.map(s=>({...s,
+productIndex:s.productIndex===i?null:(s.productIndex>i?s.productIndex-1:s.productIndex)
+}));
+persist();
+}
+
+/* ROTEIROS */
+
+function generate(){
+const idx=Number(document.getElementById('productSelect').value);
+const p=products[idx];
+if(!p){alert('Cadastre um produto primeiro.');return;}
+
+const duration=document.getElementById('duration').value;
+const type=document.getElementById('style').value;
+
+const opening={
+curioso:`Você já conhecia ${p.name}? Olha só essa opção!`,
+oferta:`Está procurando ${p.name}? Conheça os detalhes desta opção.`,
+demonstracao:`Vamos mostrar o que vale a pena conhecer em ${p.name}.`,
+emocional:`Pequenos detalhes podem facilitar a rotina. Conheça ${p.name}.`
+};
+
+currentScript={
+id:'script-'+Date.now(),
+productIndex:idx,
+productName:p.name,
+text:`ROTEIRO · ${duration.toUpperCase()}
+PRODUTO: ${p.name}
+
+🎬 ABERTURA:
+${opening[type]}
+
+📦 APRESENTAÇÃO:
+${p.description||'Apresente as características reais do produto.'}
+
+💰 PREÇO:
+${p.price||'Consulte o preço atualizado.'}
+
+📢 CHAMADA PARA AÇÃO:
+Confira os detalhes no link do produto e veja se ele combina com você.`,
+createdAt:Date.now()
+};
+
+document.getElementById('result').textContent=currentScript.text;
+document.getElementById('result').classList.remove('hidden');
+document.getElementById('scriptActions').classList.remove('hidden');
+}
+
+function saveScript(){
+if(!currentScript){alert('Gere um roteiro primeiro.');return;}
+if(!scripts.some(s=>s.id===currentScript.id)){
+scripts.push(currentScript);
+persist();
+alert('Roteiro salvo e vinculado ao produto!');
+}
+}
+
+function useScriptInVideo(){
+if(!currentScript){alert('Gere um roteiro primeiro.');return;}
+saveScript();
+show('videos');
+document.getElementById('videoProduct').value=String(currentScript.productIndex);
+updateScriptSelectors();
+const found=scripts.findIndex(s=>s.id===currentScript.id);
+document.getElementById('videoScript').value=String(found);
+updateProductPreview();
+}
+
+function removeScript(i){
+if(!confirm('Excluir este roteiro?'))return;
+scripts.splice(i,1);
+persist();
+}
+
+/* CÓPIA */
+
+function copy(text){
+if(navigator.clipboard&&window.isSecureContext){
+navigator.clipboard.writeText(text).then(()=>alert('Copiado!')).catch(()=>fallbackCopy(text));
+}else fallbackCopy(text);
+}
+
+function fallbackCopy(text){
+const t=document.createElement('textarea');
+t.value=text;
+t.style.position='fixed';
+t.style.opacity='0';
+document.body.appendChild(t);
+t.select();
+try{
+document.execCommand('copy');
+alert('Copiado!');
+}catch(e){
+alert('Não foi possível copiar automaticamente.');
+}
+t.remove();
+}
+
+function copyText(i){copy(scripts[i].text);}
+
+/* FOTO DO PRODUTO (enviada como está, igual ao NiftyVid) */
+
+async function makeProductReference(productData){
+if(!productData.photo){
+throw new Error('Este produto não tem foto cadastrada.');
+}
+const blob=await (await fetch(productData.photo)).blob();
+return new File([blob],'motoria-product.jpg',{type:blob.type||'image/jpeg'});
+}
+
+/* PROMPT CURTO (movimento e câmera) */
+
+function buildVideoPrompt(p,style,script){
+const styles={
+anuncio:'Premium commercial product ad.',
+demonstracao:'Realistic product demonstration.',
+cinematico:'Cinematic, elegant product presentation.',
+ugc:'Natural social-media creator style product shot.'
+};
+return `${styles[style]||styles.anuncio} The product (${p.name}) stays centered, sharp and unchanged: same shape, colors, logo and details. Smooth slow camera push-in, soft natural motion, realistic lighting and shadows, clean attractive background. No text, no watermark, no extra objects.`;
+}
+
+/* GERAÇÃO VIA WORKER (mesmo fluxo do NiftyVid) */
+
+function friendlyError(v){
+const t=String(v??'').trim();
+if(!t||t==='null'||t==='undefined'||t==='[object Object]'||t===ERRO_VAZIO)return ERRO_VAZIO;
+if(/failed to fetch|networkerror|load failed/i.test(t))return 'Não foi possível conectar ao seu Worker. Confira se ele foi publicado (abra /health) e tente de novo.';
+return t;
+}
+
+function parseSseEvent(raw){
+let name='message';
+const dataLines=[];
+for(const line of raw.split(/\r?\n/)){
+if(line.startsWith('event:'))name=line.slice(6).trim();
+else if(line.startsWith('data:'))dataLines.push(line.slice(5).trim());
+}
+if(!dataLines.length)return null;
+return {name,data:dataLines.join('\n')};
+}
+
+function extractVideoUrl(fileData){
+if(!fileData)return null;
+if(typeof fileData==='string')return HF_SPACE_BASE+'/gradio_api/file='+fileData;
+if(typeof fileData==='object'){
+if(fileData.url)return fileData.url;
+if(fileData.path)return HF_SPACE_BASE+'/gradio_api/file='+fileData.path;
+if(fileData.video)return extractVideoUrl(fileData.video);
+}
+return null;
+}
+
+async function consumeSseUntilComplete(stream,status){
+const reader=stream.getReader();
+const decoder=new TextDecoder();
+let buffer='';
+while(true){
+const {value,done}=await reader.read();
+if(done)break;
+buffer+=decoder.decode(value,{stream:true});
+const parts=buffer.split(/\r?\n\r?\n/);
+buffer=parts.pop()??'';
+for(const raw of parts){
+const evt=parseSseEvent(raw);
+if(!evt)continue;
+if(evt.name==='generating'||evt.name==='heartbeat'){
+status.textContent='Wan 2.2 está criando o vídeo. Aguarde...';
+}
+if(evt.name==='complete'){
+let payload;
+try{payload=JSON.parse(evt.data);}
+catch(e){throw new Error('O servidor devolveu um resultado inválido.');}
+const first=Array.isArray(payload)?payload[0]:payload;
+const url=extractVideoUrl(first);
+if(!url)throw new Error('A geração terminou, mas o vídeo não veio na resposta.');
+return url;
+}
+if(evt.name==='error'){
+let msg=evt.data;
+try{const parsed=JSON.parse(evt.data);if(typeof parsed==='string')msg=parsed;else if(parsed&&parsed.error)msg=String(parsed.error);else msg='';}catch(e){}
+throw new Error(friendlyError(msg));
+}
+}
+}
+throw new Error('A conexão terminou antes do vídeo ficar pronto. Tente de novo.');
+}
+
+async function readErrorMessage(res){
+try{
+const body=await res.clone().json();
+if(body&&typeof body.error==='string')return body.error;
+}catch(e){}
+const text=await res.text().catch(()=>'');
+return text||(res.status+' '+res.statusText);
+}
+
+async function workerGenerate(file,prompt,status){
+const form=new FormData();
+form.append('image',file);
+form.append('params',JSON.stringify({prompt,duration_seconds:VIDEO_DURATION,steps:INFERENCE_STEPS}));
+const res=await fetch(WORKER_URL+'/generate',{method:'POST',body:form});
+if(!res.ok||!res.body)throw new Error(await readErrorMessage(res));
+return consumeSseUntilComplete(res.body,status);
+}
+
+async function generateVideo(){
+const idx=Number(document.getElementById('videoProduct').value);
+const p=products[idx];
+if(!p){alert('Cadastre um produto primeiro.');return;}
+if(!p.photo){alert('Este produto não tem foto cadastrada. Adicione uma foto ao produto.');return;}
+
+const scriptIdx=document.getElementById('videoScript').value;
+const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
+const style=document.getElementById('videoStyle').value;
+const status=document.getElementById('videoStatus');
+const btn=document.getElementById('generateVideoBtn');
+const wrap=document.getElementById('generatedVideoWrap');
+
+wrap.classList.add('hidden');
+document.getElementById('videoResult').classList.add('hidden');
+document.getElementById('videoCaptionButton').classList.add('hidden');
+btn.disabled=true;
+btn.textContent='Preparando foto...';
+status.classList.remove('hidden');
+status.textContent='Preparando a foto do produto...';
+
+try{
+const reference=await makeProductReference(p);
+const prompt=buildVideoPrompt(p,style,script);
+currentVideoPrompt=prompt;
+document.getElementById('copyVideoPrompt').classList.remove('hidden');
+
+btn.textContent='Gerando vídeo...';
+status.textContent='Enviando a foto e entrando na fila da GPU. Pode levar 1 a 2 minutos. Não feche esta página.';
+const url=await workerGenerate(reference,prompt,status);
+
+const video=document.getElementById('generatedVideo');
+video.src=url;
+video.load();
+const dl=document.getElementById('downloadVideo');
+dl.href=url;
+wrap.classList.remove('hidden');
+document.getElementById('videoCaptionButton').classList.remove('hidden');
+status.textContent='Pronto! Seu vídeo está disponível para assistir e baixar.';
+document.getElementById('videoResult').textContent='Modelo: Wan 2.2\nDuração: 3,5 s\nSteps: 6\nReferência: foto do produto.';
+document.getElementById('videoResult').classList.remove('hidden');
+}catch(e){
+console.error('Erro na geração:',e);
+status.textContent='Não foi possível gerar o vídeo: '+friendlyError(e?.message||String(e));
+}finally{
+btn.disabled=false;
+btn.textContent='Gerar vídeo com IA';
+}
+}
+
+function copyVideoPrompt(){copy(currentVideoPrompt);}
+
+function makeCaptionFromVideo(){
+const idx=Number(document.getElementById('videoProduct').value);
+show('captions');
+
+document.getElementById('captionProduct').value=String(idx);
+updateScriptSelectors();
+
+const s=document.getElementById('videoScript').value;
+if(s!==''){
+document.getElementById('captionScript').value=s;
+}
+
+generateCaption();
+}
+
+/* LEGENDAS */
+
+function hashtagsFor(p){
+const words=(p.name+' '+(p.description||''))
+.normalize('NFD')
+.replace(/[\u0300-\u036f]/g,'')
+.toLowerCase()
+.match(/[a-z0-9]+/g)||[];
+
+const stop=new Set([
+'para','com','sem','uma','uns','das','dos','que','por','the','and','de','do','da'
+]);
+
+const tags=[
+...new Set(words.filter(w=>w.length>3&&!stop.has(w)).slice(0,4))
+].map(w=>'#'+w);
+
+return [...tags,'#Achadinhos','#Ofertas','#DicasDeCompra'].slice(0,7).join(' ');
+}
+
+function generateCaption(){
+
+const idx=Number(document.getElementById('captionProduct').value);
+const p=products[idx];
+
+if(!p){alert('Cadastre um produto primeiro.');return;}
+
+const scriptIdx=document.getElementById('captionScript').value;
+const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
+
+const tone=document.getElementById('captionTone').value;
+
+const intro={
+natural:`✨ Olha só este ${p.name}!`,
+oferta:`🛍️ Está de olho em ${p.name}? Confira esta opção!`,
+curioso:`👀 Já conhece ${p.name}? Veja os detalhes!`,
+elegante:`Conheça ${p.name}. ✨`
+};
+
+const description=p.description?`\n\n${p.description}`:'';
+const price=p.price?`\n\n💚 Preço informado: ${p.price}`:'';
+
+const hook=script?
+`\n\n💡 ${script.text.split('\n').filter(line=>
+line.trim()&&!/ROTEIRO|PRODUTO:|ABERTURA:|APRESENTAÇÃO:|PREÇO:|CHAMADA PARA AÇÃO:/i.test(line)
+).slice(0,2).join(' ').slice(0,220)}`:'';
+
+const affiliate=p.link?
+`\n\n🔗 Confira aqui: ${p.link}`:
+'\n\n🔗 Adicione seu link de afiliado no cadastro do produto para incluí-lo aqui.';
+
+currentCaption=
+`${intro[tone]}${description}${hook}${price}
+
+💚 Confira os detalhes e veja se combina com você!
+
+${hashtagsFor(p)}${affiliate}`;
+
+document.getElementById('captionResult').value=currentCaption;
+document.getElementById('captionResult').classList.remove('hidden');
+document.getElementById('captionActions').classList.remove('hidden');
+}
+
+function copyCaption(){
+currentCaption=document.getElementById('captionResult').value;
+copy(currentCaption);
+}
+
+function saveCaption(){
+
+const text=document.getElementById('captionResult').value;
+
+if(!text.trim()){
+alert('Gere uma legenda primeiro.');
+return;
+}
+
+const idx=Number(document.getElementById('captionProduct').value);
+const p=products[idx];
+
+captions.push({
+productName:p?.name||'Produto',
+text,
+createdAt:Date.now()
+});
+
+persist();
+alert('Legenda salva na biblioteca!');
+}
+
+function copyCaptionAt(i){
+copy(captions[i].text);
+}
+
+function removeCaption(i){
+if(!confirm('Excluir esta legenda?'))return;
+captions.splice(i,1);
+persist();
+}
+
+/* INICIALIZAÇÃO */
+
+update();
+show('products');
+</script>
+</body>
+</html>
