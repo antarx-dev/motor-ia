@@ -94,17 +94,16 @@ video{display:block}
 
 <section id="videos" class="panel hidden">
 <h2>Estúdio de vídeos IA</h2>
-<p class="muted">Crie 3 vídeos do produto, cada um com um ângulo de câmera diferente.</p>
+<p class="muted">Crie 3 vídeos do produto, um de cada vez, cada um com um ângulo de câmera diferente.</p>
 
 <div class="notice">
-<b>Wan 2.2:</b> a geração acontece direto do seu navegador. Serão 3 vídeos de 4,5 s (6 steps), gerados um após o outro e salvos automaticamente neste aparelho. Cada um pode levar de 1 a 2 minutos. Não feche a página.
+<b>Wan 2.2:</b> gere um vídeo por vez, no seu ritmo. Toque em "Gerar este vídeo" em cada ângulo (4,5 s, 6 steps). Cada um é salvo automaticamente neste aparelho e leva de 1 a 2 minutos. Não feche a página enquanto um vídeo estiver sendo gerado.
 </div>
 
 <div class="video-layout">
 <div>
 <label>Produto</label>
 <select id="videoProduct" onchange="onVideoProductChange()"></select>
-<button class="btn" id="generateVideoBtn" onclick="generateVideos()">Gerar 3 vídeos com IA</button>
 <div id="videoStatus" class="notice hidden" role="status" aria-live="polite"></div>
 <div id="clipGrid" class="clips"></div>
 <button id="goEdit" class="btn secondary hidden" onclick="show('edit')">Ir para Edição</button>
@@ -491,67 +490,62 @@ async function renderClips(containerId,productId){
 const box=document.getElementById(containerId);
 (objectURLs[containerId]||[]).forEach(u=>URL.revokeObjectURL(u));
 objectURLs[containerId]=[];
-if(!productId){box.innerHTML='';document.getElementById('goEdit')?.classList.add('hidden');return;}
+const isGen=containerId==='clipGrid';
+if(!productId){box.innerHTML='';if(isGen)document.getElementById('goEdit').classList.add('hidden');return;}
 const recs=await getClips(productId);
 box.innerHTML=ANGLES.map((a,k)=>{
 const rec=recs.find(r=>r.id===productId+'-clip'+k);
-if(!rec)return clipCardHTML(containerId+'-'+k,(k+1)+'. '+a.name,'<p class="small">Ainda não gerado.</p>');
+const title=(k+1)+'. '+a.name;
+const st=isGen?`<p class="small" id="gst-${k}"></p>`:'';
+const genBtn=isGen?`<button class="btn" style="width:100%;margin:6px 0 0" data-gen onclick="generateOne(${k})">${rec?'Gerar de novo':'Gerar este vídeo'}</button>`:'';
+if(!rec)return clipCardHTML(containerId+'-'+k,title,`<p class="small">Ainda não gerado.</p>${st}${genBtn}`);
 const u=URL.createObjectURL(rec.blob);
 objectURLs[containerId].push(u);
-return clipCardHTML(containerId+'-'+k,(k+1)+'. '+a.name,`<video src="${u}" controls playsinline loop muted></video><a class="small" href="${u}" download="motoria-angulo-${k+1}.mp4">Baixar</a>`);
+return clipCardHTML(containerId+'-'+k,title,`<video src="${u}" controls playsinline loop muted></video><a class="small" href="${u}" download="motoria-angulo-${k+1}.mp4">Baixar</a>${st}${genBtn}`);
 }).join('');
-if(containerId==='clipGrid')document.getElementById('goEdit').classList.toggle('hidden',recs.length<2);
+if(isGen)document.getElementById('goEdit').classList.toggle('hidden',recs.length<2);
 }
 
-/* GERAR 3 VÍDEOS COM ÂNGULOS DIFERENTES */
-async function generateVideos(){
+/* GERAR UM VÍDEO POR VEZ */
+let generating=false;
+async function generateOne(k){
+if(generating){alert('Aguarde o vídeo atual terminar.');return;}
 const p=products[Number(document.getElementById('videoProduct').value)];
 if(!p){alert('Cadastre um produto primeiro.');return;}
 if(!p.photo){alert('Este produto não tem foto cadastrada.');return;}
 
-const btn=document.getElementById('generateVideoBtn');
+generating=true;
 const status=document.getElementById('videoStatus');
-const box=document.getElementById('clipGrid');
-btn.disabled=true;
-btn.textContent='Gerando...';
-status.classList.remove('hidden');
-status.textContent='Preparando a foto do produto...';
-box.innerHTML=ANGLES.map((a,k)=>clipCardHTML('gen-'+k,(k+1)+'. '+a.name,'<p class="small" id="gst-'+k+'">Na fila...</p>')).join('');
-document.getElementById('goEdit').classList.add('hidden');
-
-let ok=0;
-try{
-const reference=await makeProductReference(p);
-status.textContent='Enviando a foto para a IA...';
-const path=await hfUpload(reference);
-
-for(let k=0;k<ANGLES.length;k++){
+const setBtns=d=>document.querySelectorAll('#clipGrid [data-gen]').forEach(b=>b.disabled=d);
+setBtns(true);
 const st=document.getElementById('gst-'+k);
-status.textContent='Gerando vídeo '+(k+1)+' de 3 ('+ANGLES[k].name+')... Não feche a página.';
+status.classList.remove('hidden');
+status.textContent='Gerando o vídeo '+(k+1)+' de 3 ('+ANGLES[k].name+')... Não feche a página.';
+let ok=false;
 try{
+st.textContent='Preparando a foto...';
+const ref=await makeProductReference(p);
+st.textContent='Enviando a foto para a IA...';
+const path=await hfUpload(ref);
 st.textContent='Iniciando (a primeira vez pode levar 1 a 2 minutos)...';
 const eventId=await hfSubmit(path,buildVideoPrompt(p,ANGLES[k]));
 const url=await hfWaitResult(eventId,st);
 st.textContent='Salvando no site...';
 const blob=await fetchVideoBlob(url);
 await dbPut({id:p.id+'-clip'+k,productId:p.id,kind:'clip',angle:ANGLES[k].name,blob,createdAt:Date.now()});
-ok++;
-const u=URL.createObjectURL(blob);
-(objectURLs.clipGrid=objectURLs.clipGrid||[]).push(u);
-document.getElementById('gen-'+k).innerHTML=`<b>${k+1}. ${esc(ANGLES[k].name)}</b><video src="${u}" controls playsinline loop muted></video><a class="small" href="${u}" download="motoria-angulo-${k+1}.mp4">Baixar</a>`;
+ok=true;
 }catch(e){
 console.error(e);
-st.textContent='Falhou: '+friendlyError(e?.message||String(e));
-}
-}
-status.textContent=ok===3?'Pronto! Os 3 vídeos foram salvos. Vá para a aba Edição.':(ok>0?ok+' de 3 vídeos salvos. Tente gerar de novo para completar.':'Não foi possível gerar os vídeos. Veja o motivo em cada card.');
-}catch(e){
-console.error(e);
-status.textContent='Não foi possível gerar: '+friendlyError(e?.message||String(e));
+if(st)st.textContent='Falhou: '+friendlyError(e?.message||String(e));
+status.textContent='O vídeo '+(k+1)+' não foi gerado. Você pode tentar de novo quando quiser.';
 }finally{
-btn.disabled=false;
-btn.textContent='Gerar 3 vídeos com IA';
-if(ok>=2)document.getElementById('goEdit').classList.remove('hidden');
+generating=false;
+setBtns(false);
+}
+if(ok){
+await renderClips('clipGrid',p.id);
+const n=(await getClips(p.id)).length;
+status.textContent=n===3?'Os 3 vídeos estão prontos e salvos. Vá para a aba Edição.':'Vídeo '+(k+1)+' salvo! Gere o próximo quando quiser ('+n+' de 3 prontos).';
 }
 }
 
