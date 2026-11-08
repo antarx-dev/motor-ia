@@ -174,8 +174,9 @@ const HF_SPACE_BASE='https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space';
 const HF_FN='generate_video';
 const VIDEO_DURATION=4.5;
 const INFERENCE_STEPS=6;
+const FALLBACK_DURATIONS=[4.5,3.5];
 const NEG_PROMPT='色调艳丽, 过曝, 静态, 细节模糊不清, 字幕, 风格, 作品, 画作, 画面, 静止, 整体发灰, 最差质量, 低质量, JPEG压缩残留, 丑陋的, 残缺的, 多余的手指, 畸形的, 毁容的, 形态畸形的肢体, 杂乱的背景, 水印';
-const ERRO_VAZIO='O servidor de vídeo falhou sem dar detalhes. Provável cota de GPU esgotada ou fila cheia. Tente de novo em alguns minutos.';
+const ERRO_VAZIO='O servidor de vídeo recusou o pedido sem explicar o motivo. Pode ser fila cheia, limite de tempo ou cota. Tente de novo em instantes.';
 
 const ANGLES=[
 {name:'Giro ao redor',motion:'the camera slowly orbits around the product, three-quarter side angle'},
@@ -352,7 +353,7 @@ t.remove();
 async function makeProductReference(p){
 if(!p.photo)throw new Error('Este produto não tem foto cadastrada.');
 const img=await loadImage(p.photo);
-const scale=Math.min(1,1280/Math.max(img.width,img.height));
+const scale=Math.min(1,832/Math.max(img.width,img.height));
 const w=Math.max(16,Math.round(img.width*scale/16)*16);
 const h=Math.max(16,Math.round(img.height*scale/16)*16);
 const canvas=document.createElement('canvas');
@@ -369,7 +370,7 @@ return `Premium commercial product ad. The product (${p.name}) stays sharp and u
 /* CHAMADA AO SPACE (direto do navegador) */
 function friendlyError(v){
 const t=String(v??'').trim();
-if(!t||t==='null'||t==='undefined'||t==='[object Object]')return ERRO_VAZIO;
+if(!t||t==='null'||t==='undefined'||t==='[object Object]'||t===ERRO_VAZIO)return ERRO_VAZIO;
 if(/quota|gpu/i.test(t))return 'Cota de GPU gratuita esgotada. Tente de novo mais tarde. Detalhe: '+t;
 if(/failed to fetch|networkerror|load failed/i.test(t))return 'Não foi possível conectar ao servidor de vídeo. Confira sua conexão ou tente mais tarde.';
 return t;
@@ -395,11 +396,11 @@ return ep?.parameters||null;
 }catch(e){return null;}
 }
 
-function hfBuildData(parameters,imageData,prompt){
+function hfBuildData(parameters,imageData,prompt,duration){
 if(!parameters||!parameters.length){
-return [imageData,null,prompt,INFERENCE_STEPS,NEG_PROMPT,VIDEO_DURATION,1,1,42,true,6,'UniPCMultistep',3.0,16,false];
+return [imageData,null,prompt,INFERENCE_STEPS,NEG_PROMPT,duration,1,1,42,true,6,'UniPCMultistep',3.0,16,false];
 }
-const o={input_image:imageData,image:imageData,last_image:null,prompt:prompt,steps:INFERENCE_STEPS,negative_prompt:NEG_PROMPT,duration_seconds:VIDEO_DURATION,randomize_seed:true};
+const o={input_image:imageData,image:imageData,last_image:null,prompt:prompt,steps:INFERENCE_STEPS,negative_prompt:NEG_PROMPT,duration_seconds:duration,randomize_seed:true};
 return parameters.map(p=>{
 const n=p.parameter_name;
 if(n in o)return o[n];
@@ -407,9 +408,9 @@ return p.parameter_has_default?p.parameter_default:null;
 });
 }
 
-async function hfSubmit(imagePath,prompt){
+async function hfSubmit(imagePath,prompt,duration){
 const imageData={path:imagePath,url:HF_SPACE_BASE+'/gradio_api/file='+imagePath,orig_name:'motoria-product.jpg',size:null,mime_type:'image/jpeg',meta:{_type:'gradio.FileData'}};
-const data=hfBuildData(await hfParameters(),imageData,prompt);
+const data=hfBuildData(await hfParameters(),imageData,prompt,duration||VIDEO_DURATION);
 const r=await fetch(HF_SPACE_BASE+'/gradio_api/call/'+HF_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data})});
 if(!r.ok){const d=await r.text();throw new Error('Falha ao iniciar a geração ('+r.status+'): '+d.slice(0,300));}
 const res=await r.json();
@@ -527,9 +528,20 @@ st.textContent='Preparando a foto...';
 const ref=await makeProductReference(p);
 st.textContent='Enviando a foto para a IA...';
 const path=await hfUpload(ref);
-st.textContent='Iniciando (a primeira vez pode levar 1 a 2 minutos)...';
-const eventId=await hfSubmit(path,buildVideoPrompt(p,ANGLES[k]));
-const url=await hfWaitResult(eventId,st);
+let url=null;
+for(const dur of FALLBACK_DURATIONS){
+try{
+st.textContent='Iniciando com '+String(dur).replace('.',',')+' s (a primeira vez pode levar 1 a 2 minutos)...';
+const eventId=await hfSubmit(path,buildVideoPrompt(p,ANGLES[k]),dur);
+url=await hfWaitResult(eventId,st);
+break;
+}catch(err){
+const empty=friendlyError(err?.message)===ERRO_VAZIO;
+if(!empty||dur===FALLBACK_DURATIONS[FALLBACK_DURATIONS.length-1])throw err;
+st.textContent='O servidor recusou com '+String(dur).replace('.',',')+' s. Tentando de novo com menos tempo...';
+await new Promise(r=>setTimeout(r,2500));
+}
+}
 st.textContent='Salvando no site...';
 const blob=await fetchVideoBlob(url);
 await dbPut({id:p.id+'-clip'+k,productId:p.id,kind:'clip',angle:ANGLES[k].name,blob,createdAt:Date.now()});
