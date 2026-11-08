@@ -6,472 +6,815 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080a08">
 <title>MotorIA — Estúdio de Afiliados</title>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
-:root{--bg:#080a08;--panel:#111510;--panel2:#171d15;--line:#2a3426;--moss:#252d20;--sage:#aab59a;--text:#eef0e9;--muted:#a3aa9b}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#080a08;
+  --panel:#111510;
+  --panel2:#171d15;
+  --line:#2a3426;
+  --moss:#252d20;
+  --sage:#aab59a;
+  --text:#eef0e9;
+  --muted:#a3aa9b;
+  --purple:#8055e8;
+}
+
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;line-height:1.5}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  line-height:1.5;
+}
+
+body.modal-open{overflow:hidden}
+
 button,input,textarea,select{font:inherit}
-header{padding:25px 18px 20px;background:linear-gradient(135deg,#141b12,#080a08 72%);border-bottom:1px solid var(--line)}
+
+header{
+  padding:25px 18px 20px;
+  background:linear-gradient(135deg,#141b12,#080a08 72%);
+  border-bottom:1px solid var(--line);
+}
+
 .header-inner,main{max-width:980px;margin:auto}
+
 .brand{display:flex;align-items:center;gap:11px}
-.logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#526347,#252d20);display:grid;place-items:center;font-size:21px}
+
+.logo{
+  width:40px;height:40px;border-radius:13px;
+  background:linear-gradient(145deg,#526347,#252d20);
+  display:grid;place-items:center;font-size:21px
+}
+
 .brand-name{font-weight:800;font-size:23px}
 .tagline{color:var(--muted);font-size:12px}
-.header-note{margin:22px 0 0;font:700 clamp(22px,5vw,32px)/1.2 Manrope;max-width:620px}
+
+.header-note{
+  margin:22px 0 0;
+  font:700 clamp(22px,5vw,32px)/1.2 Manrope;
+  max-width:620px
+}
+
 .header-note span{color:var(--sage)}
+
 main{padding:18px 14px 50px}
-nav{display:flex;gap:8px;overflow-x:auto;padding:3px 1px 14px;margin-bottom:8px;scrollbar-width:none}
-.nav-btn{white-space:nowrap;background:transparent;border:1px solid var(--line);color:var(--muted);padding:10px 13px;border-radius:999px;font-size:12px;font-weight:700}
-.nav-btn.active{background:var(--moss);border-color:#526247;color:white}
-section.panel{background:var(--panel);border:1px solid var(--line);padding:19px;border-radius:18px;margin-bottom:16px}
+
+nav{
+  display:flex;gap:8px;overflow-x:auto;
+  padding:3px 1px 14px;margin-bottom:8px;
+  scrollbar-width:none
+}
+
+.nav-btn{
+  white-space:nowrap;background:transparent;
+  border:1px solid var(--line);color:var(--muted);
+  padding:10px 13px;border-radius:999px;
+  font-size:12px;font-weight:700
+}
+
+.nav-btn.active{
+  background:var(--moss);
+  border-color:#526247;color:white
+}
+
+section.panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  padding:19px;border-radius:18px;
+  margin-bottom:16px
+}
+
 h2{font-size:19px;margin:0 0 7px}
-h3{font-size:15px}
 p{margin:7px 0;color:#d5d9cf}
 .muted,.small{color:var(--muted);font-size:12px}
-label{display:block;font-size:12px;font-weight:600;color:#c5cdbd;margin:13px 0 6px}
-input,textarea,select{width:100%;padding:13px 14px;background:#0c100b;border:1px solid #35412f;border-radius:11px;color:var(--text);font-size:14px;outline:none}
+
+label{
+  display:block;font-size:12px;font-weight:600;
+  color:#c5cdbd;margin:13px 0 6px
+}
+
+input,textarea,select{
+  width:100%;padding:13px 14px;
+  background:#0c100b;border:1px solid #35412f;
+  border-radius:11px;color:var(--text);
+  font-size:14px;outline:none
+}
+
 input:focus,textarea:focus,select:focus{border-color:#81936f}
 textarea{min-height:100px;resize:vertical}
+
 button{cursor:pointer}
-.btn{border:1px solid #526247;background:linear-gradient(135deg,#45543a,#293324);color:white;padding:12px 16px;border-radius:11px;font-weight:700;font-size:13px;margin:9px 5px 0 0}
+
+.btn{
+  border:1px solid #526247;
+  background:linear-gradient(135deg,#45543a,#293324);
+  color:white;padding:12px 16px;
+  border-radius:11px;font-weight:700;
+  font-size:13px;margin:9px 5px 0 0
+}
+
 .btn.secondary{background:#171e15;border-color:#394634}
 .btn.danger{background:#241614;border-color:#5b302c;color:#e5b4ae}
 .btn:disabled{opacity:.55;cursor:not-allowed}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-.stat,.tile{background:var(--panel2);border:1px solid var(--line);padding:15px;border-radius:14px}
-.stat strong{display:block;font-size:25px}
-.tile{text-align:left;color:white;width:100%;min-height:105px}
-.tile b{display:block;margin:7px 0}
-.tile span{font-size:11px;color:var(--muted)}
-.notice{background:#1b2118;border:1px solid #46533d;color:#cbd4c1;padding:13px;border-radius:12px;font-size:12px;line-height:1.6;margin:13px 0}
-.card{background:#151b13;border:1px solid var(--line);padding:13px;border-radius:14px;margin:11px 0}
-.card img{width:100%;max-height:190px;object-fit:contain;border-radius:10px;background:#0b0e0a}
-.result{white-space:pre-wrap;line-height:1.7;background:#0b0f0a;border:1px solid #303b2b;padding:15px;border-radius:12px;margin-top:12px;font-size:13px;overflow-wrap:anywhere}
+
+.card{
+  background:#151b13;border:1px solid var(--line);
+  padding:13px;border-radius:14px;margin:11px 0
+}
+
+.card img{
+  width:100%;max-height:190px;
+  object-fit:contain;border-radius:10px;
+  background:#0b0e0a
+}
+
+.notice{
+  background:#1b2118;border:1px solid #46533d;
+  color:#cbd4c1;padding:13px;border-radius:12px;
+  font-size:12px;line-height:1.6;margin:13px 0
+}
+
+.result{
+  white-space:pre-wrap;line-height:1.7;
+  background:#0b0f0a;border:1px solid #303b2b;
+  padding:15px;border-radius:12px;
+  margin-top:12px;font-size:13px;
+  overflow-wrap:anywhere
+}
+
 .hidden{display:none!important}
-.video-layout{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:18px;align-items:start}
-.preview-wrap{display:flex;justify-content:center;background:#0b0e0a;border:1px solid var(--line);border-radius:14px;padding:10px}
-.preview{width:100%;max-width:180px;aspect-ratio:9/16;border:1px dashed #69785c;border-radius:11px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);background:#171d15;padding:10px;font-size:12px}
-.preview img{width:100%;height:100%;object-fit:contain}
-video{display:block}
-#downloadVideo{display:inline-block;text-decoration:none;margin-top:10px}
 .empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
+
+.preview-wrap{
+  display:flex;justify-content:center;
+  background:#0b0e0a;border:1px solid var(--line);
+  border-radius:14px;padding:10px
+}
+
+.preview{
+  width:100%;max-width:180px;aspect-ratio:9/16;
+  border:1px dashed #69785c;border-radius:11px;
+  overflow:hidden;display:flex;align-items:center;
+  justify-content:center;text-align:center;
+  color:var(--muted);background:#171d15;
+  padding:10px;font-size:12px
+}
+
+.preview img{width:100%;height:100%;object-fit:contain}
+
+.video-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 200px;
+  gap:18px;align-items:start
+}
+
 footer{text-align:center;color:#788071;font-size:11px;padding:20px}
-@media(max-width:620px){main{padding:14px 12px 40px}.video-layout{grid-template-columns:1fr}.preview{max-width:160px}.panel{padding:16px!important}}
+
+/* JANELA SOBREPOSTA DO NIFTYVID */
+
+.nifty-overlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  background:rgba(0,0,0,.84);
+  backdrop-filter:blur(9px);
+  -webkit-backdrop-filter:blur(9px);
+}
+
+.nifty-overlay.open{display:flex}
+
+.nifty-window{
+  width:min(1180px,100%);
+  height:min(850px,94dvh);
+  background:#111510;
+  border:2px solid #8055e8;
+  border-radius:19px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 0 45px rgba(128,85,232,.35);
+  animation:modalIn .2s ease-out;
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:scale(.97) translateY(10px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+
+.nifty-top{
+  min-height:58px;
+  padding:10px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:#151a13;
+  border-bottom:1px solid #394331;
+}
+
+.nifty-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+  font-weight:800;
+}
+
+.nifty-mark{
+  color:#b99aff;
+  font-size:22px;
+}
+
+.nifty-close{
+  width:38px;
+  height:38px;
+  border:1px solid #59447f;
+  border-radius:10px;
+  color:white;
+  background:#241b32;
+  font-size:22px;
+  display:grid;
+  place-items:center;
+}
+
+.nifty-frame-wrap{
+  flex:1;
+  min-height:0;
+  background:#fff;
+  position:relative;
+}
+
+.nifty-frame{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  background:white;
+}
+
+.nifty-bottom{
+  min-height:54px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:9px 14px;
+  background:#111510;
+  border-top:1px solid #394331;
+}
+
+.nifty-bottom span{
+  font-size:11px;
+  color:#a3aa9b;
+}
+
+.nifty-close-bottom{
+  background:#211a2d;
+  color:white;
+  border:1px solid #8055e8;
+  padding:9px 15px;
+  border-radius:9px;
+  font-weight:700;
+}
+
+.nifty-fallback{
+  padding:16px;
+  text-align:center;
+  font-size:12px;
+  color:#d1c5e9;
+  background:#211a2d;
+  display:none;
+}
+
+.nifty-fallback a{color:#c7aaff}
+
+@media(max-width:620px){
+  main{padding:14px 12px 40px}
+  section.panel{padding:16px}
+  .video-layout{grid-template-columns:1fr}
+  .preview{max-width:160px}
+
+  .nifty-overlay{
+    padding:0;
+    align-items:stretch;
+  }
+
+  .nifty-window{
+    width:100%;
+    height:100dvh;
+    max-height:100dvh;
+    border-radius:0;
+    border:0;
+    border-top:2px solid #8055e8;
+  }
+
+  .nifty-top{min-height:56px}
+  .nifty-bottom{min-height:52px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
-<div class="header-inner">
-<div class="brand">
-<div class="logo">✦</div>
-<div>
-<div class="brand-name">MotorIA</div>
-<div class="tagline">ESTÚDIO INTELIGENTE DE AFILIADOS</div>
-</div>
-</div>
-<div class="header-note">Seu produto. Sua criatividade.<br><span>Conteúdo pronto para vender.</span></div>
-</div>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo">✦</div>
+      <div>
+        <div class="brand-name">MotorIA</div>
+        <div class="tagline">ESTÚDIO INTELIGENTE DE AFILIADOS</div>
+      </div>
+    </div>
+    <div class="header-note">
+      Seu produto. Sua criatividade.<br>
+      <span>Conteúdo pronto para vender.</span>
+    </div>
+  </div>
 </header>
 
 <main>
+
 <nav>
-<button class="nav-btn active" data-page="products" onclick="show('products',this)">Produtos</button>
-<button class="nav-btn" data-page="scripts" onclick="show('scripts',this)">Roteiros</button>
-<button class="nav-btn" data-page="videos" onclick="show('videos',this)">Vídeos IA</button>
-<button class="nav-btn" data-page="captions" onclick="show('captions',this)">Legendas</button>
-<button class="nav-btn" data-page="library" onclick="show('library',this)">Biblioteca</button>
+  <button class="nav-btn active" data-page="products" onclick="show('products',this)">Produtos</button>
+  <button class="nav-btn" data-page="scripts" onclick="show('scripts',this)">Roteiros</button>
+  <button class="nav-btn" data-page="videos" onclick="show('videos',this)">Vídeos IA</button>
+  <button class="nav-btn" data-page="captions" onclick="show('captions',this)">Legendas</button>
+  <button class="nav-btn" data-page="library" onclick="show('library',this)">Biblioteca</button>
 </nav>
 
 <section id="products" class="panel">
-<h2>Cadastro de produtos</h2>
-<p class="muted">Guarde as informações que serão usadas nos roteiros, vídeos e legendas.</p>
-<label>Nome do produto</label>
-<input id="name" placeholder="Ex.: Bolsa feminina transversal">
-<label>Preço</label>
-<input id="price" placeholder="Ex.: R$ 59,90">
-<label>Descrição e características reais</label>
-<textarea id="description" placeholder="Material, tamanho, benefícios, cores e detalhes..."></textarea>
-<label>Link de afiliado</label>
-<input id="link" type="url" placeholder="Cole seu link de afiliado">
-<label>Foto do produto (JPG, PNG ou WebP; até 12 MB)</label>
-<input id="photo" type="file" accept="image/*">
-<button class="btn" onclick="addProduct()">Salvar produto</button>
-<div id="productList"></div>
+  <h2>Cadastro de produtos</h2>
+  <p class="muted">Guarde as informações que serão usadas nos roteiros, vídeos e legendas.</p>
+
+  <label>Nome do produto</label>
+  <input id="name" placeholder="Ex.: Bolsa feminina transversal">
+
+  <label>Preço</label>
+  <input id="price" placeholder="Ex.: R$ 59,90">
+
+  <label>Descrição e características</label>
+  <textarea id="description" placeholder="Material, tamanho, benefícios, cores e detalhes..."></textarea>
+
+  <label>Link de afiliado</label>
+  <input id="link" type="url" placeholder="Cole seu link de afiliado">
+
+  <label>Foto do produto</label>
+  <input id="photo" type="file" accept="image/*">
+
+  <button class="btn" onclick="addProduct()">Salvar produto</button>
+  <div id="productList"></div>
 </section>
 
 <section id="scripts" class="panel hidden">
-<h2>Gerador de roteiros</h2>
-<p class="muted">Escolha o produto e crie seu roteiro.</p>
-<label>Produto</label>
-<select id="productSelect"></select>
-<label>Tipo de vídeo</label>
-<select id="style">
-<option value="curioso">Curiosidade / descoberta</option>
-<option value="oferta">Oferta / oportunidade</option>
-<option value="demonstracao">Demonstração</option>
-<option value="emocional">Emocional</option>
-</select>
-<label>Duração</label>
-<select id="duration">
-<option>15 segundos</option>
-<option>30 segundos</option>
-<option>60 segundos</option>
-</select>
-<button class="btn" onclick="generate()">Gerar roteiro</button>
-<div id="result" class="result hidden"></div>
-<div id="scriptActions" class="hidden">
-<button class="btn" onclick="saveScript()">Salvar roteiro</button>
-<button class="btn secondary" onclick="useScriptInVideo()">Usar este roteiro no vídeo</button>
-</div>
+  <h2>Gerador de roteiros</h2>
+  <p class="muted">Crie roteiros comerciais para seus produtos.</p>
+
+  <label>Produto</label>
+  <select id="productSelect"></select>
+
+  <label>Tipo de vídeo</label>
+  <select id="style">
+    <option value="curioso">Curiosidade / descoberta</option>
+    <option value="oferta">Oferta / oportunidade</option>
+    <option value="demonstracao">Demonstração</option>
+    <option value="emocional">Emocional</option>
+  </select>
+
+  <label>Duração do roteiro</label>
+  <select id="duration">
+    <option>15 segundos</option>
+    <option>30 segundos</option>
+    <option>60 segundos</option>
+  </select>
+
+  <button class="btn" onclick="generate()">Gerar roteiro</button>
+
+  <div id="result" class="result hidden"></div>
+
+  <div id="scriptActions" class="hidden">
+    <button class="btn" onclick="saveScript()">Salvar roteiro</button>
+    <button class="btn secondary" onclick="useScriptInVideo()">Usar no vídeo</button>
+  </div>
 </section>
 
 <section id="videos" class="panel hidden">
-<h2>Estúdio de vídeos IA</h2>
-<p class="muted">Crie vídeos de produtos com a inteligência artificial original do NiftyVid.</p>
+  <h2>Estúdio de vídeos IA</h2>
+  <p class="muted">Acesse o gerador original NiftyVid dentro de uma janela sobreposta à MotorIA.</p>
 
-<div class="notice">
-<b>MotorIA + NiftyVid + Wan 2.2</b>
-<br>Geração integrada pelo Hugging Face através do nosso Worker.
-<br>Uma única foto original do produto como referência.
-<br><br>
-<b>Duração:</b> 4,5 segundos · <b>Inference steps:</b> 12.
-<br><b>Frame multiplier:</b> 16, configuração original.
-</div>
+  <div class="notice">
+    <b>MotorIA + NiftyVid + Wan 2.2</b><br>
+    O site original será exibido nesta janela, sem você precisar sair da MotorIA.
+  </div>
 
-<div class="video-layout">
-<div>
-<label>1. Produto</label>
-<select id="videoProduct" onchange="syncVideoScripts()"></select>
+  <div class="video-layout">
+    <div>
+      <label>1. Produto</label>
+      <select id="videoProduct" onchange="updateProductPreview()"></select>
 
-<label>2. Roteiro salvo para este produto (opcional)</label>
-<select id="videoScript"></select>
-<p class="small">O roteiro será usado como orientação criativa.</p>
+      <label>2. Roteiro salvo (opcional)</label>
+      <select id="videoScript"></select>
 
-<label>3. Estilo do vídeo</label>
-<select id="videoStyle">
-<option value="anuncio">Anúncio de produto</option>
-<option value="demonstracao">Demonstração do produto</option>
-<option value="cinematico">Apresentação cinematográfica</option>
-<option value="ugc">Estilo criador de conteúdo</option>
-</select>
+      <label>3. Estilo desejado</label>
+      <select id="videoStyle">
+        <option value="anuncio">Anúncio de produto</option>
+        <option value="demonstracao">Demonstração</option>
+        <option value="cinematico">Apresentação cinematográfica</option>
+        <option value="ugc">Estilo criador de conteúdo</option>
+      </select>
 
-<div class="notice">
-<b>Configurações automáticas:</b>
-<br>• Wan 2.2 original do NiftyVid
-<br>• 4,5 segundos
-<br>• 12 inference steps
-<br>• Uma única foto original
-<br>• Sem imagem artificial de cenário
-</div>
+      <div class="notice">
+        <b>Gerador original:</b><br>
+        NiftyVid — Wan 2.2<br>
+        Site: igorcsis.github.io/nifty-vid
+      </div>
 
-<button class="btn" id="generateVideoBtn" onclick="generateVideo()">Gerar vídeo com IA</button>
+      <button class="btn" onclick="openNiftyVid()">
+        ✨ Gerar vídeo com IA
+      </button>
+    </div>
 
-<div id="videoStatus" class="notice hidden" role="status" aria-live="polite"></div>
-
-<div id="generatedVideoWrap" class="card hidden">
-<video id="generatedVideo" controls playsinline style="width:100%;max-height:520px;border-radius:12px;background:#000"></video>
-<a id="downloadVideo" class="btn secondary" download="motoria-video.mp4">Baixar vídeo MP4</a>
-</div>
-
-<div id="videoResult" class="result hidden"></div>
-<button id="copyVideoPrompt" class="btn secondary hidden" onclick="copyVideoPrompt()">Copiar instruções</button>
-<button id="videoCaptionButton" class="btn secondary hidden" onclick="makeCaptionFromVideo()">Gerar legenda deste vídeo</button>
-</div>
-
-<div>
-<label>Prévia da foto do produto</label>
-<div class="preview-wrap">
-<div class="preview" id="videoPreview">A foto original do produto aparecerá aqui.</div>
-</div>
-<p class="small">A imagem original será enviada à IA, sem montagem de cenário.</p>
-</div>
-</div>
+    <div>
+      <label>Prévia da foto do produto</label>
+      <div class="preview-wrap">
+        <div class="preview" id="videoPreview">
+          Selecione um produto para visualizar sua foto.
+        </div>
+      </div>
+      <p class="small">A foto fica disponível na MotorIA para consulta. O envio ao NiftyVid é feito dentro do próprio site.</p>
+    </div>
+  </div>
 </section>
 
 <section id="captions" class="panel hidden">
-<h2>Legenda para publicação</h2>
-<p class="muted">Gere uma descrição comercial com emojis, hashtags e link de afiliado.</p>
-<label>Produto</label>
-<select id="captionProduct" onchange="captionProductChanged()"></select>
-<label>Roteiro (opcional)</label>
-<select id="captionScript"></select>
-<label>Tom da legenda</label>
-<select id="captionTone">
-<option value="natural">Natural e próximo</option>
-<option value="oferta">Oferta e urgência moderada</option>
-<option value="curioso">Curioso e chamativo</option>
-<option value="elegante">Elegante e direto</option>
-</select>
-<button class="btn" onclick="generateCaption()">Gerar legenda automática</button>
-<label>Edite sua legenda</label>
-<textarea id="captionResult" class="hidden" rows="10"></textarea>
-<div id="captionActions" class="hidden">
-<button class="btn" onclick="copyCaption()">Copiar legenda</button>
-<button class="btn secondary" onclick="saveCaption()">Salvar na biblioteca</button>
-</div>
-<div class="notice">Confira preço, disponibilidade e link antes de publicar.</div>
+  <h2>Legenda para publicação</h2>
+  <p class="muted">Crie descrições comerciais com emojis, hashtags e link de afiliado.</p>
+
+  <label>Produto</label>
+  <select id="captionProduct"></select>
+
+  <label>Roteiro (opcional)</label>
+  <select id="captionScript"></select>
+
+  <label>Tom da legenda</label>
+  <select id="captionTone">
+    <option value="natural">Natural e próximo</option>
+    <option value="oferta">Oferta e oportunidade</option>
+    <option value="curioso">Curioso e chamativo</option>
+    <option value="elegante">Elegante e direto</option>
+  </select>
+
+  <button class="btn" onclick="generateCaption()">Gerar legenda</button>
+
+  <label>Legenda</label>
+  <textarea id="captionResult" class="hidden" rows="10"></textarea>
+
+  <div id="captionActions" class="hidden">
+    <button class="btn" onclick="copyCaption()">Copiar legenda</button>
+    <button class="btn secondary" onclick="saveCaption()">Salvar na biblioteca</button>
+  </div>
 </section>
 
 <section id="library" class="panel hidden">
-<h2>Sua biblioteca</h2>
-<p class="muted">Roteiros e legendas salvos neste aparelho.</p>
-<div id="libraryList"></div>
+  <h2>Sua biblioteca</h2>
+  <p class="muted">Seus roteiros e legendas salvos neste aparelho.</p>
+  <div id="libraryList"></div>
 </section>
 
 <footer>MotorIA · Seu estúdio criativo</footer>
+
 </main>
 
-<script>
-/* CONFIGURAÇÃO */
+<!-- JANELA SOBREPOSTA DO SITE ORIGINAL NIFTYVID -->
 
-const WORKER_URL='https://motoria-video.antarx.workers.dev';
-const HF_SPACE_BASE='https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space';
-const VIDEO_DURATION=4.5;
-const INFERENCE_STEPS=12;
-const MAX_VIDEO_IMAGE_SIZE=8*1024*1024;
+<div class="nifty-overlay" id="niftyOverlay" aria-hidden="true">
+  <div class="nifty-window" role="dialog" aria-modal="true" aria-label="Gerador NiftyVid">
+
+    <div class="nifty-top">
+      <div class="nifty-title">
+        <span class="nifty-mark">✦</span>
+        <span>NiftyVid — Gerar Vídeo</span>
+      </div>
+
+      <button class="nifty-close" onclick="closeNiftyVid()" aria-label="Fechar">×</button>
+    </div>
+
+    <div class="nifty-frame-wrap">
+      <iframe
+        id="niftyFrame"
+        class="nifty-frame"
+        title="Site original NiftyVid"
+        src="about:blank"
+        allow="camera; microphone; clipboard-read; clipboard-write; fullscreen"
+        allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin">
+      </iframe>
+
+      <div class="nifty-fallback" id="niftyFallback">
+        Se o site não aparecer nesta janela, pode ser que o próprio NiftyVid bloqueie a incorporação.
+        <br><br>
+        <a href="https://igorcsis.github.io/nifty-vid/" target="_blank" rel="noopener">
+          Abrir o NiftyVid em uma nova aba
+        </a>
+      </div>
+    </div>
+
+    <div class="nifty-bottom">
+      <span>Você está usando o site original NiftyVid.</span>
+      <button class="nifty-close-bottom" onclick="closeNiftyVid()">✕ Fechar</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* CONFIGURAÇÃO DO NIFTYVID */
+
+const NIFTYVID_URL='https://igorcsis.github.io/nifty-vid/';
+
+/* ARMAZENAMENTO */
 
 const readStore=(key,fallback)=>{
-try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}
-catch(e){return fallback}
+  try{
+    return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback));
+  }catch(e){
+    return fallback;
+  }
 };
 
 let products=readStore('motor_products',[]);
-let rawScripts=readStore('motor_scripts',[]);
-let scripts=rawScripts.map((s,i)=>typeof s==='string'?{
-id:'legacy-'+i,productIndex:null,productName:'Produto não identificado',
-text:s,createdAt:Date.now()
-}:s);
+let scripts=readStore('motor_scripts',[]);
 let captions=readStore('motor_captions',[]);
-let currentScript=null,currentVideoPrompt='',currentCaption='';
-let generatedVideoObjectURL=null;
+let currentScript=null;
 
 function persist(){
-localStorage.setItem('motor_products',JSON.stringify(products));
-localStorage.setItem('motor_scripts',JSON.stringify(scripts));
-localStorage.setItem('motor_captions',JSON.stringify(captions));
-update();
-}
-
-function show(id){
-document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
-document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
-update();
+  localStorage.setItem('motor_products',JSON.stringify(products));
+  localStorage.setItem('motor_scripts',JSON.stringify(scripts));
+  localStorage.setItem('motor_captions',JSON.stringify(captions));
+  update();
 }
 
 function esc(s){
-return String(s??'').replace(/[&<>"']/g,c=>({
-'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-}[c]));
+  return String(s??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
 }
 
-function productOptions(selected){
-return products.map((p,i)=>
-`<option value="${i}" ${String(selected)===String(i)?'selected':''}>${esc(p.name)}</option>`
-).join('');
+function show(id,button){
+  document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.toggle('active',b.dataset.page===id);
+  });
+
+  update();
 }
 
-function update(){
-document.getElementById('productList').innerHTML=products.map((p,i)=>`
-<div class="card">
-${p.photo?`<img src="${p.photo}" alt="Foto do produto">`:''}
-<b>${esc(p.name)}</b>
-<p>${esc(p.price||'Preço não informado')}</p>
-<p class="small">${esc(p.description||'Sem descrição')}</p>
-<p class="small">${p.link?'Link de afiliado cadastrado':'Sem link de afiliado'}</p>
-<button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button>
-</div>`).join('')||'<div class="empty">Nenhum produto cadastrado ainda.</div>';
+/* SOBREPOSIÇÃO DO NIFTYVID */
 
-const opts=productOptions();
+function openNiftyVid(){
+  const overlay=document.getElementById('niftyOverlay');
+  const frame=document.getElementById('niftyFrame');
 
-['productSelect','videoProduct','captionProduct'].forEach(id=>{
-const el=document.getElementById(id);
-const old=el.value;
-el.innerHTML=opts||'<option value="">Cadastre um produto primeiro</option>';
-if(old!==''&&products[Number(old)])el.value=old;
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden','false');
+  document.body.classList.add('modal-open');
+
+  document.getElementById('niftyFallback').style.display='none';
+
+  // Carrega o site original na primeira abertura.
+  if(frame.src==='about:blank'){
+    frame.src=NIFTYVID_URL;
+  }
+}
+
+function closeNiftyVid(){
+  const overlay=document.getElementById('niftyOverlay');
+
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true');
+  document.body.classList.remove('modal-open');
+}
+
+// Fechar com a tecla ESC.
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    closeNiftyVid();
+  }
 });
 
-updateScriptSelectors();
+// Fechar ao tocar fora da moldura.
+document.getElementById('niftyOverlay').addEventListener('click',function(e){
+  if(e.target===this){
+    closeNiftyVid();
+  }
+});
 
-document.getElementById('libraryList').innerHTML=
-scripts.map((s,i)=>`
-<div class="card">
-<b>Roteiro ${i+1} · ${esc(s.productName||'Produto')}</b>
-<div class="result">${esc(s.text)}</div>
-<button class="btn secondary" onclick="copyText(${i})">Copiar roteiro</button>
-<button class="btn danger" onclick="removeScript(${i})">Excluir</button>
-</div>`).join('')+
-captions.map((c,i)=>`
-<div class="card">
-<b>Legenda ${i+1} · ${esc(c.productName)}</b>
-<div class="result">${esc(c.text)}</div>
-<button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar legenda</button>
-<button class="btn danger" onclick="removeCaption(${i})">Excluir</button>
-</div>`).join('')||
-'<div class="empty">Nenhum roteiro ou legenda salvo.</div>';
+/* PRODUTOS */
 
-updateProductPreview();
+function update(){
+  document.getElementById('productList').innerHTML=products.map((p,i)=>`
+    <div class="card">
+      ${p.photo?`<img src="${p.photo}" alt="Foto do produto">`:''}
+      <b>${esc(p.name)}</b>
+      <p>${esc(p.price||'Preço não informado')}</p>
+      <p class="small">${esc(p.description||'Sem descrição')}</p>
+      <button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button>
+    </div>
+  `).join('')||'<div class="empty">Nenhum produto cadastrado ainda.</div>';
+
+  const options=products.map((p,i)=>
+    `<option value="${i}">${esc(p.name)}</option>`
+  ).join('');
+
+  ['productSelect','videoProduct','captionProduct'].forEach(id=>{
+    const el=document.getElementById(id);
+    const old=el.value;
+    el.innerHTML=options||'<option value="">Cadastre um produto primeiro</option>';
+    if(products[Number(old)])el.value=old;
+  });
+
+  updateScriptSelectors();
+  updateProductPreview();
+
+  const library=document.getElementById('libraryList');
+
+  library.innerHTML=
+    scripts.map((s,i)=>`
+      <div class="card">
+        <b>Roteiro ${i+1} · ${esc(s.productName||'Produto')}</b>
+        <div class="result">${esc(s.text)}</div>
+        <button class="btn secondary" onclick="copyText(${i})">Copiar</button>
+        <button class="btn danger" onclick="removeScript(${i})">Excluir</button>
+      </div>
+    `).join('')+
+    captions.map((c,i)=>`
+      <div class="card">
+        <b>Legenda ${i+1} · ${esc(c.productName)}</b>
+        <div class="result">${esc(c.text)}</div>
+        <button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar</button>
+        <button class="btn danger" onclick="removeCaption(${i})">Excluir</button>
+      </div>
+    `).join('');
+
+  if(!scripts.length&&!captions.length){
+    library.innerHTML='<div class="empty">Nenhum conteúdo salvo ainda.</div>';
+  }
 }
 
 function updateScriptSelectors(){
-const vi=Number(document.getElementById('videoProduct').value);
-const ci=Number(document.getElementById('captionProduct').value);
+  const video=document.getElementById('videoScript');
+  const caption=document.getElementById('captionScript');
 
-const videoList=scripts.map((s,i)=>({s,i})).filter(x=>
-x.s.productIndex===vi||
-(x.s.productIndex==null&&x.s.productName==='Produto não identificado')
-);
+  const oldVideo=video.value;
+  const oldCaption=caption.value;
 
-const captionList=scripts.map((s,i)=>({s,i})).filter(x=>
-x.s.productIndex===ci||x.s.productIndex==null
-);
+  video.innerHTML='<option value="">Sem roteiro selecionado</option>'+
+    scripts.map((s,i)=>`<option value="${i}">Roteiro ${i+1} · ${esc(s.productName||'Produto')}</option>`).join('');
 
-const oldVideo=document.getElementById('videoScript').value;
-const oldCaption=document.getElementById('captionScript').value;
+  caption.innerHTML='<option value="">Sem roteiro selecionado</option>'+
+    scripts.map((s,i)=>`<option value="${i}">Roteiro ${i+1} · ${esc(s.productName||'Produto')}</option>`).join('');
 
-document.getElementById('videoScript').innerHTML=
-'<option value="">Sem roteiro selecionado</option>'+
-videoList.map(x=>`<option value="${x.i}">Roteiro ${x.i+1} · ${esc(x.s.productName)}</option>`).join('');
-
-document.getElementById('captionScript').innerHTML=
-'<option value="">Sem roteiro selecionado</option>'+
-captionList.map(x=>`<option value="${x.i}">Roteiro ${x.i+1}</option>`).join('');
-
-if(videoList.some(x=>String(x.i)===oldVideo)){
-document.getElementById('videoScript').value=oldVideo;
+  if(scripts[Number(oldVideo)])video.value=oldVideo;
+  if(scripts[Number(oldCaption)])caption.value=oldCaption;
 }
-if(captionList.some(x=>String(x.i)===oldCaption)){
-document.getElementById('captionScript').value=oldCaption;
-}
-}
-
-function syncVideoScripts(){
-updateScriptSelectors();
-updateProductPreview();
-}
-function captionProductChanged(){updateScriptSelectors();}
 
 function updateProductPreview(){
-const idx=Number(document.getElementById('videoProduct').value);
-const p=products[idx];
-const preview=document.getElementById('videoPreview');
+  const idx=Number(document.getElementById('videoProduct').value);
+  const p=products[idx];
+  const preview=document.getElementById('videoPreview');
 
-if(!p||!p.photo){
-preview.textContent='Selecione um produto com foto cadastrada.';
-return;
+  if(!p||!p.photo){
+    preview.textContent='Selecione um produto com foto cadastrada.';
+    return;
+  }
+
+  preview.innerHTML='';
+  const img=document.createElement('img');
+  img.src=p.photo;
+  img.alt='Foto do produto';
+  preview.appendChild(img);
 }
 
-preview.innerHTML='';
-const img=document.createElement('img');
-img.src=p.photo;
-img.alt='Foto original do produto';
-preview.appendChild(img);
-}
+async function compressImage(file){
+  const bitmap=await createImageBitmap(file);
+  const scale=Math.min(1,1600/Math.max(bitmap.width,bitmap.height));
 
-/* CADASTRO DE PRODUTOS */
+  const canvas=document.createElement('canvas');
+  canvas.width=Math.round(bitmap.width*scale);
+  canvas.height=Math.round(bitmap.height*scale);
 
-async function compressImageFile(file,maxSide=1600,quality=.84){
-if(!file)throw new Error('Selecione uma foto.');
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
+  bitmap.close?.();
 
-const bitmap=await createImageBitmap(file);
-const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
+  const blob=await new Promise(resolve=>
+    canvas.toBlob(resolve,'image/jpeg',.82)
+  );
 
-const canvas=document.createElement('canvas');
-canvas.width=Math.max(1,Math.round(bitmap.width*scale));
-canvas.height=Math.max(1,Math.round(bitmap.height*scale));
-
-const ctx=canvas.getContext('2d',{alpha:false});
-ctx.fillStyle='#fff';
-ctx.fillRect(0,0,canvas.width,canvas.height);
-ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
-bitmap.close?.();
-
-const blob=await new Promise((resolve,reject)=>{
-canvas.toBlob(b=>b?resolve(b):reject(new Error('Falha ao converter imagem.')),'image/jpeg',quality);
-});
-
-return await new Promise((resolve,reject)=>{
-const r=new FileReader();
-r.onload=()=>resolve(r.result);
-r.onerror=()=>reject(new Error('Falha ao ler imagem convertida.'));
-r.readAsDataURL(blob);
-});
+  return await new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=reject;
+    reader.readAsDataURL(blob);
+  });
 }
 
 async function addProduct(){
-const name=document.getElementById('name').value.trim();
-if(!name){alert('Digite o nome do produto.');return;}
+  const name=document.getElementById('name').value.trim();
 
-const file=document.getElementById('photo').files[0];
+  if(!name){
+    alert('Digite o nome do produto.');
+    return;
+  }
 
-try{
-let photo='';
-if(file){
-if(!file.type.startsWith('image/'))throw new Error('Escolha um arquivo de imagem válido.');
-if(file.size>12*1024*1024)throw new Error('A foto original deve ter no máximo 12 MB.');
-photo=await compressImageFile(file,1600,.82);
-}
+  const file=document.getElementById('photo').files[0];
 
-products.push({
-name,
-price:document.getElementById('price').value.trim(),
-description:document.getElementById('description').value.trim(),
-link:document.getElementById('link').value.trim(),
-photo
-});
+  try{
+    let photo='';
 
-try{persist();}
-catch(e){
-products.pop();
-throw new Error('O armazenamento do navegador ficou cheio. Remova alguns produtos ou use uma foto menor.');
-}
+    if(file){
+      if(!file.type.startsWith('image/')){
+        throw new Error('Escolha uma imagem válida.');
+      }
+      if(file.size>12*1024*1024){
+        throw new Error('A imagem deve ter no máximo 12 MB.');
+      }
+      photo=await compressImage(file);
+    }
 
-['name','price','description','link','photo'].forEach(id=>{
-document.getElementById(id).value='';
-});
+    products.push({
+      name,
+      price:document.getElementById('price').value.trim(),
+      description:document.getElementById('description').value.trim(),
+      link:document.getElementById('link').value.trim(),
+      photo
+    });
 
-alert('Produto cadastrado!');
-}catch(e){
-alert(e.message||'Não foi possível salvar a imagem.');
-}
+    persist();
+
+    ['name','price','description','link','photo'].forEach(id=>{
+      document.getElementById(id).value='';
+    });
+
+    alert('Produto cadastrado!');
+  }catch(e){
+    alert(e.message||'Não foi possível salvar o produto.');
+  }
 }
 
 function removeProduct(i){
-if(!confirm('Excluir este produto? Os roteiros já salvos serão mantidos.'))return;
-products.splice(i,1);
-scripts=scripts.map(s=>({...s,
-productIndex:s.productIndex===i?null:(s.productIndex>i?s.productIndex-1:s.productIndex)
-}));
-persist();
+  if(!confirm('Excluir este produto?'))return;
+  products.splice(i,1);
+  persist();
 }
 
 /* ROTEIROS */
 
 function generate(){
-const idx=Number(document.getElementById('productSelect').value);
-const p=products[idx];
-if(!p){alert('Cadastre um produto primeiro.');return;}
+  const idx=Number(document.getElementById('productSelect').value);
+  const p=products[idx];
 
-const duration=document.getElementById('duration').value;
-const type=document.getElementById('style').value;
+  if(!p){
+    alert('Cadastre um produto primeiro.');
+    return;
+  }
 
-const opening={
-curioso:`Você já conhecia ${p.name}? Olha só essa opção!`,
-oferta:`Está procurando ${p.name}? Conheça os detalhes desta opção.`,
-demonstracao:`Vamos mostrar o que vale a pena conhecer em ${p.name}.`,
-emocional:`Pequenos detalhes podem facilitar a rotina. Conheça ${p.name}.`
-};
+  const duration=document.getElementById('duration').value;
+  const type=document.getElementById('style').value;
 
-currentScript={
-id:'script-'+Date.now(),
-productIndex:idx,
-productName:p.name,
-text:`ROTEIRO · ${duration.toUpperCase()}
+  const openings={
+    curioso:`Você já conhecia ${p.name}? Olha só essa opção!`,
+    oferta:`Está procurando ${p.name}? Conheça esta opção.`,
+    demonstracao:`Vamos mostrar o que vale a pena conhecer em ${p.name}.`,
+    emocional:`Pequenos detalhes podem facilitar a rotina. Conheça ${p.name}.`
+  };
+
+  currentScript={
+    productIndex:idx,
+    productName:p.name,
+    text:`ROTEIRO · ${duration.toUpperCase()}
+
 PRODUTO: ${p.name}
 
 🎬 ABERTURA:
-${opening[type]}
+${openings[type]}
 
 📦 APRESENTAÇÃO:
 ${p.description||'Apresente as características reais do produto.'}
@@ -480,502 +823,149 @@ ${p.description||'Apresente as características reais do produto.'}
 ${p.price||'Consulte o preço atualizado.'}
 
 📢 CHAMADA PARA AÇÃO:
-Confira os detalhes no link do produto e veja se ele combina com você.`,
-createdAt:Date.now()
-};
+Confira os detalhes no link do produto e veja se ele combina com você.`
+  };
 
-document.getElementById('result').textContent=currentScript.text;
-document.getElementById('result').classList.remove('hidden');
-document.getElementById('scriptActions').classList.remove('hidden');
+  document.getElementById('result').textContent=currentScript.text;
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('scriptActions').classList.remove('hidden');
 }
 
 function saveScript(){
-if(!currentScript){alert('Gere um roteiro primeiro.');return;}
-if(!scripts.some(s=>s.id===currentScript.id)){
-scripts.push(currentScript);
-persist();
-alert('Roteiro salvo e vinculado ao produto!');
-}
+  if(!currentScript){
+    alert('Gere um roteiro primeiro.');
+    return;
+  }
+
+  scripts.push(currentScript);
+  persist();
+  alert('Roteiro salvo!');
 }
 
 function useScriptInVideo(){
-if(!currentScript){alert('Gere um roteiro primeiro.');return;}
-saveScript();
-show('videos');
-document.getElementById('videoProduct').value=String(currentScript.productIndex);
-updateScriptSelectors();
-const found=scripts.findIndex(s=>s.id===currentScript.id);
-document.getElementById('videoScript').value=String(found);
-updateProductPreview();
+  if(!currentScript)return;
+
+  scripts.push(currentScript);
+  persist();
+
+  show('videos');
+  document.getElementById('videoProduct').value=String(currentScript.productIndex);
+  updateScriptSelectors();
+  document.getElementById('videoScript').value=String(scripts.length-1);
+  updateProductPreview();
 }
 
 function removeScript(i){
-if(!confirm('Excluir este roteiro?'))return;
-scripts.splice(i,1);
-persist();
-}
-
-/* CÓPIA */
-
-function copy(text){
-if(navigator.clipboard&&window.isSecureContext){
-navigator.clipboard.writeText(text).then(()=>alert('Copiado!')).catch(()=>fallbackCopy(text));
-}else fallbackCopy(text);
-}
-
-function fallbackCopy(text){
-const t=document.createElement('textarea');
-t.value=text;
-t.style.position='fixed';
-t.style.opacity='0';
-document.body.appendChild(t);
-t.select();
-try{
-document.execCommand('copy');
-alert('Copiado!');
-}catch(e){
-alert('Não foi possível copiar automaticamente.');
-}
-t.remove();
-}
-
-function copyText(i){copy(scripts[i].text);}
-
-/* NIFTYVID: FOTO ORIGINAL, SEM MONTAGEM ARTIFICIAL */
-
-async function getOriginalProductFile(product){
-if(!product.photo)throw new Error('Este produto não tem foto cadastrada.');
-
-const response=await fetch(product.photo);
-if(!response.ok)throw new Error('Não foi possível abrir a foto original.');
-
-const blob=await response.blob();
-
-if(!blob.type.startsWith('image/')){
-throw new Error('A foto cadastrada não é uma imagem válida.');
-}
-
-if(blob.size>MAX_VIDEO_IMAGE_SIZE){
-throw new Error('A foto precisa ter no máximo 8 MB para a NiftyVid.');
-}
-
-const extension=blob.type.includes('png')?'png':
-blob.type.includes('webp')?'webp':'jpg';
-
-return new File(
-[blob],
-'motoria-product.'+extension,
-{type:blob.type}
-);
-}
-
-/* PROMPT PARA A WAN 2.2 */
-
-function buildVideoPrompt(p,style,script){
-const styles={
-anuncio:'Create a premium commercial product advertisement.',
-demonstracao:'Create a realistic product demonstration, showing the item clearly.',
-cinematico:'Create a cinematic and elegant commercial product presentation.',
-ugc:'Create a natural social-media creator style product presentation.'
-};
-
-return `
-${styles[style]||styles.anuncio}
-
-Animate the supplied image using Wan 2.2 image-to-video.
-
-Create natural, realistic movement and attractive cinematic camera motion.
-Use a gentle camera push-in and subtle environmental movement.
-Keep the product clearly visible throughout the video.
-
-PRESERVE THE PRODUCT:
-Do not redesign, replace, duplicate or deform it.
-Preserve the exact shape, proportions, colors, patterns, logo, packaging and visible details.
-Do not invent product features.
-Do not add subtitles, captions, text, logos or watermarks.
-Do not allow other objects to obscure the product.
-
-PRODUCT:
-${p.name}
-
-PRODUCT DETAILS:
-${p.description||'Preserve the details visible in the supplied image.'}
-
-CREATIVE DIRECTION:
-${script?script.text:'Create an attractive commercial presentation without inventing product claims.'}
-
-The supplied photo is the only visual reference.
-Create the motion and environment from this image.
-`;
-}
-
-/* SSE ORIGINAL DO NIFTYVID */
-
-function parseNiftySSEEvent(raw){
-let name='message';
-const dataLines=[];
-
-for(const line of raw.split(/\r?\n/)){
-if(line.startsWith('event:')){
-name=line.slice(6).trim();
-}else if(line.startsWith('data:')){
-dataLines.push(line.slice(5).trim());
-}
-}
-
-if(!dataLines.length)return null;
-
-return {
-name,
-data:dataLines.join('\n')
-};
-}
-
-function extractNiftyVideoUrl(fileData){
-if(!fileData)return null;
-
-if(typeof fileData==='string'){
-if(/^https?:\/\//i.test(fileData))return fileData;
-return HF_SPACE_BASE+'/gradio_api/file='+fileData;
-}
-
-if(typeof fileData==='object'){
-if(fileData.url)return fileData.url;
-if(fileData.path){
-return HF_SPACE_BASE+'/gradio_api/file='+fileData.path;
-}
-}
-
-return null;
-}
-
-async function readGenerationStream(response,status){
-if(!response.body){
-throw new Error('O navegador não conseguiu ler a transmissão SSE.');
-}
-
-const reader=response.body.getReader();
-const decoder=new TextDecoder();
-let buffer='';
-
-while(true){
-const {value,done}=await reader.read();
-
-if(done)break;
-
-buffer+=decoder.decode(value,{stream:true});
-
-const normalized=buffer.replace(/\r\n/g,'\n');
-const parts=normalized.split('\n\n');
-buffer=parts.pop()||'';
-
-for(const raw of parts){
-const event=parseNiftySSEEvent(raw);
-if(!event)continue;
-
-if(event.name==='generating'){
-status.textContent='A Wan 2.2 está criando seu vídeo. Aguarde...';
-continue;
-}
-
-if(event.name==='error'){
-let message=event.data;
-try{
-const parsed=JSON.parse(event.data);
-if(typeof parsed==='string')message=parsed;
-else message=parsed.error||parsed.message||event.data;
-}catch(e){}
-throw new Error(message||'A NiftyVid informou um erro na geração.');
-}
-
-if(event.name==='complete'){
-let payload;
-
-try{
-payload=JSON.parse(event.data);
-}catch(e){
-throw new Error('A resposta final da NiftyVid não pôde ser interpretada.');
-}
-
-const first=Array.isArray(payload)?payload[0]:null;
-const videoUrl=extractNiftyVideoUrl(first);
-
-if(!videoUrl){
-throw new Error('A geração terminou, mas não foi encontrado o endereço do vídeo.');
-}
-
-return videoUrl;
-}
-}
-}
-
-if(buffer.trim()){
-const event=parseNiftySSEEvent(buffer);
-
-if(event&&event.name==='complete'){
-const payload=JSON.parse(event.data);
-const videoUrl=extractNiftyVideoUrl(Array.isArray(payload)?payload[0]:null);
-if(videoUrl)return videoUrl;
-}
-
-if(event&&event.name==='error'){
-throw new Error(event.data||'Erro na geração.');
-}
-}
-
-throw new Error('A conexão terminou antes de o vídeo ser concluído. Tente novamente.');
-}
-
-/* GERAÇÃO INTEGRADA NIFTYVID + WAN 2.2 */
-
-async function generateVideo(){
-const idx=Number(document.getElementById('videoProduct').value);
-const p=products[idx];
-
-if(!p){
-alert('Cadastre um produto primeiro.');
-return;
-}
-
-if(!p.photo){
-alert('Este produto não tem foto cadastrada.');
-return;
-}
-
-const scriptIdx=document.getElementById('videoScript').value;
-const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
-
-const style=document.getElementById('videoStyle').value;
-const status=document.getElementById('videoStatus');
-const btn=document.getElementById('generateVideoBtn');
-const wrap=document.getElementById('generatedVideoWrap');
-
-wrap.classList.add('hidden');
-document.getElementById('videoResult').classList.add('hidden');
-document.getElementById('copyVideoPrompt').classList.add('hidden');
-document.getElementById('videoCaptionButton').classList.add('hidden');
-
-if(generatedVideoObjectURL){
-URL.revokeObjectURL(generatedVideoObjectURL);
-generatedVideoObjectURL=null;
-}
-
-btn.disabled=true;
-btn.textContent='Preparando foto...';
-status.classList.remove('hidden');
-status.textContent='Carregando a foto original do produto...';
-
-try{
-const originalFile=await getOriginalProductFile(p);
-
-const prompt=buildVideoPrompt(p,style,script);
-currentVideoPrompt=prompt;
-
-const formData=new FormData();
-
-formData.append('image',originalFile,originalFile.name);
-
-formData.append('params',JSON.stringify({
-prompt,
-duration_seconds:VIDEO_DURATION,
-steps:INFERENCE_STEPS
-}));
-
-status.textContent='Enviando a foto original para a NiftyVid...';
-btn.textContent='Enviando imagem...';
-
-const response=await fetch(WORKER_URL+'/generate',{
-method:'POST',
-body:formData
-});
-
-if(!response.ok){
-let detail='';
-try{
-const body=await response.clone().json();
-detail=body.error||JSON.stringify(body);
-}catch(e){
-detail=await response.text();
-}
-
-throw new Error(
-'Erro no serviço ('+response.status+'): '+detail.slice(0,900)
-);
-}
-
-const contentType=response.headers.get('content-type')||'';
-
-if(!contentType.includes('text/event-stream')){
-const body=await response.text();
-throw new Error('A resposta não é uma transmissão SSE válida: '+body.slice(0,700));
-}
-
-btn.textContent='Gerando vídeo...';
-status.textContent='Foto enviada! A NiftyVid está processando o vídeo com Wan 2.2. A primeira geração pode demorar de 1 a 2 minutos.';
-
-const videoUrl=await readGenerationStream(response,status);
-
-status.textContent='Vídeo recebido! Preparando reprodução...';
-btn.textContent='Carregando vídeo...';
-
-const video=document.getElementById('generatedVideo');
-video.src=videoUrl;
-video.load();
-
-const dl=document.getElementById('downloadVideo');
-dl.href=videoUrl;
-dl.download='motoria-video.mp4';
-
-wrap.classList.remove('hidden');
-document.getElementById('videoCaptionButton').classList.remove('hidden');
-document.getElementById('copyVideoPrompt').classList.remove('hidden');
-
-status.textContent='Geração concluída! Seu vídeo está disponível para assistir e baixar.';
-
-document.getElementById('videoResult').textContent=
-'Motor: NiftyVid original\n'+
-'Modelo: Wan 2.2\n'+
-'Duração: 4,5 segundos\n'+
-'Inference steps: 12\n'+
-'Frame multiplier: 16\n'+
-'Referência: foto original do produto.';
-
-document.getElementById('videoResult').classList.remove('hidden');
-
-}catch(e){
-console.error('Erro MotorIA NiftyVid:',e);
-
-let msg=e?.message||String(e);
-
-if(/failed to fetch|networkerror|load failed/i.test(msg)){
-msg='Não foi possível conectar ao Worker. Verifique a publicação na Cloudflare e sua conexão. '+msg;
-}
-
-status.textContent='Não foi possível gerar o vídeo: '+msg;
-
-}finally{
-btn.disabled=false;
-btn.textContent='Gerar vídeo com IA';
-}
-}
-
-function copyVideoPrompt(){
-copy(currentVideoPrompt);
-}
-
-function makeCaptionFromVideo(){
-const idx=Number(document.getElementById('videoProduct').value);
-show('captions');
-
-document.getElementById('captionProduct').value=String(idx);
-updateScriptSelectors();
-
-const s=document.getElementById('videoScript').value;
-if(s!==''){
-document.getElementById('captionScript').value=s;
-}
-
-generateCaption();
+  if(!confirm('Excluir este roteiro?'))return;
+  scripts.splice(i,1);
+  persist();
 }
 
 /* LEGENDAS */
 
 function hashtagsFor(p){
-const words=(p.name+' '+(p.description||''))
-.normalize('NFD')
-.replace(/[\u0300-\u036f]/g,'')
-.toLowerCase()
-.match(/[a-z0-9]+/g)||[];
+  const words=(p.name+' '+(p.description||''))
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase()
+    .match(/[a-z0-9]+/g)||[];
 
-const stop=new Set([
-'para','com','sem','uma','uns','das','dos','que','por','the','and','de','do','da'
-]);
+  const tags=[...new Set(words.filter(w=>w.length>3).slice(0,4))]
+    .map(w=>'#'+w);
 
-const tags=[
-...new Set(words.filter(w=>w.length>3&&!stop.has(w)).slice(0,4))
-].map(w=>'#'+w);
-
-return [...tags,'#Achadinhos','#Ofertas','#DicasDeCompra'].slice(0,7).join(' ');
+  return [...tags,'#Achadinhos','#Ofertas','#DicasDeCompra'].slice(0,7).join(' ');
 }
 
 function generateCaption(){
-const idx=Number(document.getElementById('captionProduct').value);
-const p=products[idx];
+  const idx=Number(document.getElementById('captionProduct').value);
+  const p=products[idx];
 
-if(!p){alert('Cadastre um produto primeiro.');return;}
+  if(!p){
+    alert('Cadastre um produto primeiro.');
+    return;
+  }
 
-const scriptIdx=document.getElementById('captionScript').value;
-const script=scriptIdx!==''?scripts[Number(scriptIdx)]:null;
-const tone=document.getElementById('captionTone').value;
+  const tone=document.getElementById('captionTone').value;
 
-const intro={
-natural:`✨ Olha só este ${p.name}!`,
-oferta:`🛍️ Está de olho em ${p.name}? Confira esta opção!`,
-curioso:`👀 Já conhece ${p.name}? Veja os detalhes!`,
-elegante:`Conheça ${p.name}. ✨`
-};
+  const intros={
+    natural:`✨ Olha só este ${p.name}!`,
+    oferta:`🛍️ Está de olho em ${p.name}? Confira esta opção!`,
+    curioso:`👀 Já conhece ${p.name}? Veja os detalhes!`,
+    elegante:`Conheça ${p.name}. ✨`
+  };
 
-const description=p.description?`\n\n${p.description}`:'';
-const price=p.price?`\n\n💚 Preço informado: ${p.price}`:'';
+  const price=p.price?`\n\n💚 Preço informado: ${p.price}`:'';
+  const description=p.description?`\n\n${p.description}`:'';
+  const link=p.link?`\n\n🔗 Confira aqui: ${p.link}`:'\n\n🔗 Adicione seu link de afiliado no cadastro do produto.';
 
-const hook=script?
-`\n\n💡 ${script.text.split('\n').filter(line=>
-line.trim()&&!/ROTEIRO|PRODUTO:|ABERTURA:|APRESENTAÇÃO:|PREÇO:|CHAMADA PARA AÇÃO:/i.test(line)
-).slice(0,2).join(' ').slice(0,220)}`:'';
-
-const affiliate=p.link?
-`\n\n🔗 Confira aqui: ${p.link}`:
-'\n\n🔗 Adicione seu link de afiliado no cadastro do produto para incluí-lo aqui.';
-
-currentCaption=
-`${intro[tone]}${description}${hook}${price}
+  const text=
+`${intros[tone]}${description}${price}
 
 💚 Confira os detalhes e veja se combina com você!
 
-${hashtagsFor(p)}${affiliate}`;
+${hashtagsFor(p)}${link}`;
 
-document.getElementById('captionResult').value=currentCaption;
-document.getElementById('captionResult').classList.remove('hidden');
-document.getElementById('captionActions').classList.remove('hidden');
+  document.getElementById('captionResult').value=text;
+  document.getElementById('captionResult').classList.remove('hidden');
+  document.getElementById('captionActions').classList.remove('hidden');
 }
 
 function copyCaption(){
-currentCaption=document.getElementById('captionResult').value;
-copy(currentCaption);
+  copy(document.getElementById('captionResult').value);
 }
 
 function saveCaption(){
-const text=document.getElementById('captionResult').value;
+  const text=document.getElementById('captionResult').value;
+  const idx=Number(document.getElementById('captionProduct').value);
+  const p=products[idx];
 
-if(!text.trim()){
-alert('Gere uma legenda primeiro.');
-return;
-}
+  if(!text.trim()||!p)return;
 
-const idx=Number(document.getElementById('captionProduct').value);
-const p=products[idx];
-
-captions.push({
-productName:p?.name||'Produto',
-text,
-createdAt:Date.now()
-});
-
-persist();
-alert('Legenda salva na biblioteca!');
-}
-
-function copyCaptionAt(i){
-copy(captions[i].text);
+  captions.push({productName:p.name,text});
+  persist();
+  alert('Legenda salva na biblioteca!');
 }
 
 function removeCaption(i){
-if(!confirm('Excluir esta legenda?'))return;
-captions.splice(i,1);
-persist();
+  if(!confirm('Excluir esta legenda?'))return;
+  captions.splice(i,1);
+  persist();
 }
 
-/* INICIALIZAÇÃO */
+/* COPIAR */
+
+function copy(text){
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text)
+      .then(()=>alert('Copiado!'))
+      .catch(()=>fallbackCopy(text));
+  }else{
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text){
+  const t=document.createElement('textarea');
+  t.value=text;
+  t.style.position='fixed';
+  t.style.opacity='0';
+  document.body.appendChild(t);
+  t.select();
+
+  try{
+    document.execCommand('copy');
+    alert('Copiado!');
+  }catch(e){
+    alert('Não foi possível copiar automaticamente.');
+  }
+
+  t.remove();
+}
+
+function copyText(i){copy(scripts[i].text);}
+function copyCaptionAt(i){copy(captions[i].text);}
+
+/* INICIAR */
 
 update();
 show('products');
