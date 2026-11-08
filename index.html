@@ -96,11 +96,9 @@ video{display:block}
 <section id="videos" class="panel hidden">
 <h2>Estúdio de vídeos IA</h2>
 <p class="muted">Crie 3 vídeos do produto, um de cada vez, cada um com um ângulo de câmera diferente.</p>
-
 <div class="notice">
-<b>Wan 2.2:</b> cada toque gera 1 vídeo (3,5 s, 6 steps) com um ângulo de câmera diferente. Ao terminar, ele é salvo e já aparece na aba Edição. Volte aqui para gerar o próximo, até completar 3. Cada vídeo leva de 1 a 2 minutos. Não feche a página enquanto gera.
+<b>Wan 2.2:</b> cada toque gera 1 vídeo (3,5 s, 6 steps) com um ângulo de câmera diferente. Quando terminar, o vídeo será salvo automaticamente e você será levado à aba Edição. Volte aqui para gerar o próximo, até completar 3. Cada vídeo pode levar de 1 a 2 minutos. Não feche a página enquanto gera.
 </div>
-
 <div class="video-layout">
 <div>
 <label>Produto</label>
@@ -110,7 +108,6 @@ video{display:block}
 <div id="videoStatus" class="notice hidden" role="status" aria-live="polite"></div>
 <button id="goEdit" class="btn secondary hidden" onclick="show('edit')">Ir para Edição</button>
 </div>
-
 <div>
 <label>Foto do produto</label>
 <div class="preview-wrap">
@@ -123,12 +120,12 @@ video{display:block}
 
 <section id="edit" class="panel hidden">
 <h2>Edição</h2>
-<p class="muted">Os vídeos que você gera chegam aqui automaticamente. Com 2 ou 3 prontos, crie um único vídeo final unindo todos.</p>
+<p class="muted">Os vídeos que você gera chegam aqui automaticamente. Depois de gerar os 3, crie um único vídeo final unindo todos.</p>
 <label>Produto</label>
 <select id="editProduct" onchange="loadEdit()"></select>
 <div id="editClips" class="clips"></div>
 <div class="notice">
-<b>Montagem automática:</b> transições suaves entre os 3 ângulos, correção de cor, zoom lento, vinheta e o nome do produto na abertura. A montagem acontece no navegador e leva cerca de 15 segundos. Mantenha a tela aberta durante o processo.
+<b>Montagem automática:</b> transições suaves entre os 3 ângulos, correção de cor, zoom lento, vinheta e o nome do produto na abertura. A montagem acontece no navegador. Mantenha a tela aberta durante o processo.
 </div>
 <button class="btn" id="finalBtn" onclick="createFinal()">Criar vídeo final</button>
 <div id="editStatus" class="notice hidden" role="status" aria-live="polite"></div>
@@ -167,7 +164,6 @@ video{display:block}
 <p class="muted">Vídeos finais editados e legendas salvos neste aparelho.</p>
 <div id="libraryList"></div>
 </section>
-
 <footer>MotorIA · Seu estúdio criativo</footer>
 </main>
 
@@ -256,7 +252,6 @@ const old=el.value;
 el.innerHTML=opts;
 if(old!==''&&products[Number(old)])el.value=old;
 });
-
 updateProductPreview();
 }
 
@@ -528,8 +523,12 @@ loadEdit();
 let generating=false;
 const slotOf=r=>Number(r.id.slice(r.id.lastIndexOf('-clip')+5));
 
-async function updateVideoInfo(){
-if(generating)return;
+/*
+  O parâmetro force permite atualizar o contador mesmo durante
+  a finalização da geração, sem liberar um segundo clique antes da hora.
+*/
+async function updateVideoInfo(force=false){
+if(generating&&!force)return;
 
 const pid=currentProductId('videoProduct');
 const info=document.getElementById('videoCount');
@@ -545,8 +544,7 @@ return;
 
 const recs=await getClips(pid);
 
-// Não altera o botão enquanto uma geração estiver acontecendo
-if(generating)return;
+if(generating&&!force)return;
 
 const n=recs.length;
 const used=new Set(recs.map(slotOf));
@@ -554,16 +552,16 @@ const k=ANGLES.findIndex((_,i)=>!used.has(i));
 
 info.innerHTML='<b>Vídeos prontos: '+n+' de 3.</b>'+(k>=0?' Próximo ângulo: '+esc(ANGLES[k].name)+'.':' Todos prontos! Vá para a aba Edição.');
 
-btn.disabled=k<0;
+btn.disabled=k<0||generating;
 btn.textContent=k>=0?'Gerar vídeo '+(n+1)+' de 3 ('+ANGLES[k].name+')':'Os 3 vídeos estão prontos';
 
 goEdit.classList.toggle('hidden',n<1);
 }
 
-/* GERAÇÃO SEQUENCIAL COM TRAVA IMEDIATA */
+/* GERAÇÃO SEQUENCIAL E ENVIO AUTOMÁTICO PARA EDIÇÃO */
 async function generateNext(){
 
-// A trava é ativada ANTES de qualquer operação assíncrona
+// Impede dois cliques ou duas requisições simultâneas.
 if(generating)return;
 
 const idx=Number(document.getElementById('videoProduct').value);
@@ -579,7 +577,7 @@ alert('Este produto não tem foto cadastrada.');
 return;
 }
 
-// BLOQUEIO IMEDIATO
+// A trava é ativada imediatamente, antes de qualquer await.
 generating=true;
 
 const btn=document.getElementById('generateVideoBtn');
@@ -595,17 +593,17 @@ status.textContent='Preparando a geração...';
 
 let ok=false;
 let k=-1;
+let total=0;
 
 try{
 
-// Consulta os vídeos já existentes somente depois de ativar a trava
+// Verifica quais ângulos já foram gerados.
 const recs=await getClips(p.id);
-
 const used=new Set(recs.map(slotOf));
 k=ANGLES.findIndex((_,i)=>!used.has(i));
 
 if(k<0){
-status.textContent='Os 3 vídeos deste produto já estão prontos!';
+status.textContent='Os 3 vídeos deste produto já estão prontos! Vá para a aba Edição.';
 return;
 }
 
@@ -615,21 +613,17 @@ const ref=await makeProductReference(p);
 let url=null;
 
 for(const dur of FALLBACK_DURATIONS){
-
 try{
-
 status.textContent='Gerando vídeo '+(recs.length+1)+' de 3 ('+ANGLES[k].name+'). Aguarde até terminar. Não feche a página.';
 
 const path=await hfUpload(ref);
 const eventId=await hfSubmit(path,buildVideoPrompt(p,ANGLES[k]));
 
-// O código fica aguardando o servidor terminar o vídeo
+// Aguarda o servidor concluir a geração.
 url=await hfWaitResult(eventId,status);
-
 break;
 
 }catch(err){
-
 const empty=friendlyError(err?.message)===ERRO_VAZIO;
 
 if(!empty||dur===FALLBACK_DURATIONS[FALLBACK_DURATIONS.length-1]){
@@ -637,14 +631,11 @@ throw err;
 }
 
 status.textContent='O servidor recusou. Tentando novamente...';
-
 await new Promise(r=>setTimeout(r,2500));
 }
 }
 
-if(!url){
-throw new Error('O servidor não retornou o vídeo.');
-}
+if(!url)throw new Error('O servidor não retornou o vídeo.');
 
 status.textContent='Baixando vídeo gerado...';
 
@@ -652,7 +643,7 @@ const blob=await fetchVideoBlob(url);
 
 status.textContent='Salvando vídeo no aparelho...';
 
-// A geração só termina depois que o arquivo for salvo
+// Só considera concluído depois que o IndexedDB confirmar o salvamento.
 await dbPut({
 id:p.id+'-clip'+k,
 productId:p.id,
@@ -664,41 +655,52 @@ createdAt:Date.now()
 
 ok=true;
 
-status.textContent='Vídeo salvo com sucesso!';
+// Conta os vídeos já salvos.
+total=(await getClips(p.id)).length;
+
+// Seleciona o mesmo produto na aba Edição.
+const editIndex=products.findIndex(item=>item.id===p.id);
+if(editIndex>=0){
+document.getElementById('editProduct').value=String(editIndex);
+}
+
+// Abre automaticamente a aba Edição após salvar o vídeo.
+show('edit');
+
+const editStatus=document.getElementById('editStatus');
+editStatus.classList.remove('hidden');
+
+if(total>=3){
+editStatus.textContent='🎉 Os 3 vídeos estão prontos! Agora você pode tocar em "Criar vídeo final" para unir os três.';
+}else{
+editStatus.textContent='Vídeo '+total+' de 3 salvo com sucesso! Os vídeos ficam guardados nesta aba. Volte para Vídeos IA quando quiser gerar o próximo.';
+}
 
 }catch(e){
-
 console.error(e);
-
 status.textContent='Não foi possível gerar: '+friendlyError(e?.message||String(e));
 
 }finally{
 
-// LIBERA A PRÓXIMA GERAÇÃO SOMENTE AQUI
-generating=false;
+/*
+  Atualiza o contador enquanto a trava ainda está ativa.
+  Só depois disso libera o seletor e o botão para a próxima geração.
+*/
+await updateVideoInfo(true);
 
 productSelect.disabled=false;
+generating=false;
 
-// Atualiza o botão após a conclusão ou erro
-await updateVideoInfo();
+// Garante o estado correto do botão após liberar a trava.
+const recsNow=await getClips(p.id);
+const usedNow=new Set(recsNow.map(slotOf));
+const next=ANGLES.findIndex((_,i)=>!usedNow.has(i));
 
+btn.disabled=next<0;
+btn.textContent=next>=0
+?'Gerar vídeo '+(recsNow.length+1)+' de 3 ('+ANGLES[next].name+')'
+:'Os 3 vídeos estão prontos';
 }
-
-if(!ok)return;
-
-// Envia o vídeo pronto para a aba Edição
-const total=(await getClips(p.id)).length;
-
-document.getElementById('editProduct').value=String(idx);
-
-show('edit');
-
-const es=document.getElementById('editStatus');
-es.classList.remove('hidden');
-
-es.textContent=total>=3
-?'Vídeo salvo! Os 3 vídeos estão prontos. Toque em "Criar vídeo final".'
-:'Vídeo '+(k+1)+' salvo ('+total+' de 3)! Volte em Vídeos IA para gerar o próximo.';
 }
 
 /* EDIÇÃO */
@@ -744,8 +746,12 @@ async function createFinal(){
 const p=products[Number(document.getElementById('editProduct').value)];
 if(!p){alert('Cadastre um produto primeiro.');return;}
 if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){alert('Este navegador não suporta a montagem de vídeo. Use o Chrome ou o Safari atualizado.');return;}
+
 const recs=await getClips(p.id);
-if(recs.length<2){alert('Gere os vídeos primeiro na aba Vídeos IA.');return;}
+if(recs.length<3){
+alert('Você precisa gerar os 3 vídeos antes de criar o vídeo final. No momento há '+recs.length+' de 3 prontos.');
+return;
+}
 
 const btn=document.getElementById('finalBtn');
 const status=document.getElementById('editStatus');
@@ -756,6 +762,7 @@ status.textContent='Carregando os vídeos...';
 try{
 const els=[];
 for(const r of recs)els.push(await loadClipVideo(r.blob));
+
 const vw=els[0].videoWidth,vh=els[0].videoHeight;
 const sc=Math.min(1,1080/Math.max(vw,vh));
 const W=Math.max(2,Math.round(vw*sc/2)*2),H=Math.max(2,Math.round(vh*sc/2)*2);
@@ -770,7 +777,8 @@ durs.forEach((d,i)=>{starts.push(total);total+=d-(i<durs.length-1?FADE:0);});
 
 const GRADE='contrast(1.08) saturate(1.14) brightness(1.02)';
 const vig=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.45,W/2,H/2,Math.max(W,H)*.75);
-vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,.38)');
+vig.addColorStop(0,'rgba(0,0,0,0)');
+vig.addColorStop(1,'rgba(0,0,0,.38)');
 
 function frame(now){
 ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
@@ -787,13 +795,15 @@ ctx.drawImage(v,-W/2,-H/2,W,H);
 ctx.restore();
 });
 ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+
 if(now<2.4){
 const ta=Math.min(1,now/.5,(2.4-now)/.5);
 const fs=Math.round(W*.055);
 ctx.save();
 ctx.globalAlpha=Math.max(0,ta);
 const g=ctx.createLinearGradient(0,H*.72,0,H);
-g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.6)');
+g.addColorStop(0,'rgba(0,0,0,0)');
+g.addColorStop(1,'rgba(0,0,0,.6)');
 ctx.fillStyle=g;ctx.fillRect(0,H*.72,W,H*.28);
 ctx.fillStyle='#fff';
 ctx.font='700 '+fs+'px Manrope, Arial, sans-serif';
@@ -802,8 +812,12 @@ ctx.shadowColor='rgba(0,0,0,.6)';ctx.shadowBlur=12;
 ctx.fillText(p.name.length>34?p.name.slice(0,33)+'…':p.name,W/2,H*.9);
 ctx.restore();
 }
+
 const left=total-now;
-if(left<.7){ctx.fillStyle='rgba(0,0,0,'+Math.min(1,(.7-left)/.7)+')';ctx.fillRect(0,0,W,H);}
+if(left<.7){
+ctx.fillStyle='rgba(0,0,0,'+Math.min(1,(.7-left)/.7)+')';
+ctx.fillRect(0,0,W,H);
+}
 }
 
 const mime=pickMime();
@@ -815,29 +829,52 @@ rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
 const finalBlob=await new Promise((resolve,reject)=>{
 rec.onstop=()=>resolve(new Blob(chunks,{type:rec.mimeType||mime||'video/webm'}));
 rec.onerror=()=>reject(new Error('Falha ao gravar o vídeo final.'));
+
 const started=new Set();
 rec.start(250);
 const t0=performance.now();
+
 function tick(){
 const now=(performance.now()-t0)/1000;
-els.forEach((v,i)=>{if(now>=starts[i]&&!started.has(i)){started.add(i);v.currentTime=0;v.play().catch(()=>{});}});
+els.forEach((v,i)=>{
+if(now>=starts[i]&&!started.has(i)){
+started.add(i);
+v.currentTime=0;
+v.play().catch(()=>{});
+}
+});
 frame(Math.min(now,total));
 status.textContent='Montando o vídeo final... '+Math.min(100,Math.round(now/total*100))+'%. Mantenha a tela aberta.';
-if(now<total)requestAnimationFrame(tick);else{els.forEach(v=>v.pause());rec.stop();}
+if(now<total)requestAnimationFrame(tick);
+else{
+els.forEach(v=>v.pause());
+rec.stop();
+}
 }
 requestAnimationFrame(tick);
 });
 
 els.forEach(v=>URL.revokeObjectURL(v.src));
 const ext=(finalBlob.type||'').includes('mp4')?'mp4':'webm';
-await dbPut({id:p.id+'-final',productId:p.id,kind:'final',ext,blob:finalBlob,createdAt:Date.now()});
+
+await dbPut({
+id:p.id+'-final',
+productId:p.id,
+kind:'final',
+ext,
+blob:finalBlob,
+createdAt:Date.now()
+});
+
 showFinal(finalBlob,ext);
 status.textContent='Pronto! Vídeo final criado e salvo na Biblioteca.';
+
 }catch(e){
 console.error(e);
 status.textContent='Não foi possível montar o vídeo: '+(e?.message||e);
 }finally{
-btn.disabled=false;btn.textContent='Criar vídeo final';
+btn.disabled=false;
+btn.textContent='Criar vídeo final';
 }
 }
 
