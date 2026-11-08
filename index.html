@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -97,7 +98,7 @@ video{display:block}
 <p class="muted">Crie 3 vídeos do produto, um de cada vez, cada um com um ângulo de câmera diferente.</p>
 
 <div class="notice">
-<b>Wan 2.2:</b> cada toque gera 1 vídeo (4,5 s, 6 steps) com um ângulo de câmera diferente. Ao terminar, ele é salvo e já aparece na aba Edição. Volte aqui para gerar o próximo, até completar 3. Cada vídeo leva de 1 a 2 minutos. Não feche a página enquanto gera.
+<b>Wan 2.2:</b> cada toque gera 1 vídeo (3,5 s, 6 steps) com um ângulo de câmera diferente. Ao terminar, ele é salvo e já aparece na aba Edição. Volte aqui para gerar o próximo, até completar 3. Cada vídeo leva de 1 a 2 minutos. Não feche a página enquanto gera.
 </div>
 
 <div class="video-layout">
@@ -171,12 +172,11 @@ video{display:block}
 </main>
 
 <script>
-const WORKER_URL='https://motoria-video.antarx.workers.dev';
 const HF_SPACE_BASE='https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space';
 const HF_FN='generate_video';
-const VIDEO_DURATION=4.5;
+const VIDEO_DURATION=3.5;
 const INFERENCE_STEPS=6;
-const FALLBACK_DURATIONS=[4.5,3.5];
+const FALLBACK_DURATIONS=[3.5];
 const NEG_PROMPT='色调艳丽, 过曝, 静态, 细节模糊不清, 字幕, 风格, 作品, 画作, 画面, 静止, 整体发灰, 最差质量, 低质量, JPEG压缩残留, 丑陋的, 残缺的, 多余的手指, 畸形的, 毁容的, 形态畸形的肢体, 杂乱的背景, 水印';
 const ERRO_VAZIO='O servidor de vídeo recusou o pedido sem explicar o motivo. Pode ser fila cheia, limite de tempo ou cota. Tente de novo em instantes.';
 
@@ -192,7 +192,6 @@ let captions=readStore('motor_captions',[]);
 let currentCaption='';
 let objectURLs={};
 
-/* garante id em produtos antigos */
 let migrated=false;
 products.forEach((p,i)=>{if(!p.id){p.id='p'+Date.now()+'-'+i;migrated=true;}});
 if(migrated){try{localStorage.setItem('motor_products',JSON.stringify(products));}catch(e){}}
@@ -203,7 +202,7 @@ localStorage.setItem('motor_captions',JSON.stringify(captions));
 update();
 }
 
-/* ARMAZENAMENTO DOS VÍDEOS (IndexedDB) */
+/* ARMAZENAMENTO DOS VÍDEOS */
 function openDB(){
 return new Promise((res,rej)=>{
 const r=indexedDB.open('motoria-videos',1);
@@ -258,8 +257,6 @@ el.innerHTML=opts;
 if(old!==''&&products[Number(old)])el.value=old;
 });
 
-if(!document.getElementById('library').classList.contains('hidden'))renderLibrary();
-
 updateProductPreview();
 }
 
@@ -275,6 +272,7 @@ preview.appendChild(img);
 }
 
 function onVideoProductChange(){
+if(generating)return;
 updateProductPreview();
 updateVideoInfo();
 }
@@ -327,6 +325,10 @@ alert('Produto cadastrado!');
 }
 
 async function removeProduct(i){
+if(generating){
+alert('Aguarde o vídeo atual terminar antes de excluir produtos.');
+return;
+}
 if(!confirm('Excluir este produto e seus vídeos?'))return;
 const p=products[i];
 products.splice(i,1);
@@ -351,25 +353,31 @@ try{document.execCommand('copy');alert('Copiado!');}catch(e){alert('Não foi pos
 t.remove();
 }
 
-/* FOTO DO PRODUTO PARA A IA (inteira, sem fundo nem moldura) */
+/* FOTO DO PRODUTO PARA A IA */
 async function makeProductReference(p){
 if(!p.photo)throw new Error('Este produto não tem foto cadastrada.');
 const img=await loadImage(p.photo);
-const scale=Math.min(1,832/Math.max(img.width,img.height));
-const w=Math.max(16,Math.round(img.width*scale/16)*16);
-const h=Math.max(16,Math.round(img.height*scale/16)*16);
 const canvas=document.createElement('canvas');
-canvas.width=w;canvas.height=h;
-canvas.getContext('2d').drawImage(img,0,0,w,h);
+canvas.width=832;canvas.height=1472;
+const ctx=canvas.getContext('2d');
+const g=ctx.createLinearGradient(0,0,0,1472);
+g.addColorStop(0,'#e8e9e4');g.addColorStop(1,'#aeb5a5');
+ctx.fillStyle=g;ctx.fillRect(0,0,832,1472);
+const sc=Math.min(760/img.width,1320/img.height);
+const pw=img.width*sc,ph=img.height*sc;
+ctx.save();
+ctx.shadowColor='rgba(0,0,0,.16)';ctx.shadowBlur=28;ctx.shadowOffsetY=10;
+ctx.drawImage(img,(832-pw)/2,(1472-ph)/2,pw,ph);
+ctx.restore();
 const blob=await new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error('Não foi possível preparar a imagem.')),'image/jpeg',.92));
 return new File([blob],'motoria-product.jpg',{type:'image/jpeg'});
 }
 
 function buildVideoPrompt(p,angle){
-return `Premium commercial product ad. The product (${p.name}) stays sharp and unchanged: same shape, colors, logo and details. ${angle.motion}. Soft natural motion, realistic lighting and shadows, clean attractive background that fills the whole frame. No borders, no frames, no letterbox bars, no text, no watermark, no extra objects.`;
+return `Premium commercial product ad. The product (${p.name}) stays sharp and unchanged: same shape, colors, logo and details. ${angle.motion}. Soft natural motion, realistic lighting and shadows, clean attractive background. No text, no watermark, no extra objects.`;
 }
 
-/* CHAMADA AO SPACE (direto do navegador) */
+/* CHAMADA AO SPACE */
 function friendlyError(v){
 const t=String(v??'').trim();
 if(!t||t==='null'||t==='undefined'||t==='[object Object]'||t===ERRO_VAZIO)return ERRO_VAZIO;
@@ -378,17 +386,46 @@ if(/failed to fetch|networkerror|load failed/i.test(t))return 'Não foi possíve
 return t;
 }
 
-async function workerGenerate(file,prompt,dur,statusEl){
+async function hfUpload(file){
 const form=new FormData();
-form.append('image',file,'motoria-product.jpg');
-form.append('params',JSON.stringify({prompt,duration_seconds:dur,steps:INFERENCE_STEPS}));
-const r=await fetch(WORKER_URL+'/generate',{method:'POST',body:form});
-if(!r.ok){
-let m='';
-try{const j=await r.json();m=j.error||'';}catch(e){}
-throw new Error(m||'O serviço de geração respondeu com erro ('+r.status+').');
+form.append('files',file,file.name||'motoria-product.jpg');
+const r=await fetch(HF_SPACE_BASE+'/gradio_api/upload',{method:'POST',body:form});
+if(!r.ok)throw new Error('Falha no envio da imagem ('+r.status+').');
+const paths=await r.json();
+if(!Array.isArray(paths)||!paths[0])throw new Error('O servidor não retornou o caminho da imagem.');
+return paths[0];
 }
-return readSSE(r,statusEl);
+
+async function hfParameters(){
+try{
+const r=await fetch(HF_SPACE_BASE+'/gradio_api/info');
+if(!r.ok)return null;
+const info=await r.json();
+const ep=info?.named_endpoints?.['/'+HF_FN]||info?.named_endpoints?.[HF_FN];
+return ep?.parameters||null;
+}catch(e){return null;}
+}
+
+function hfBuildData(parameters,imageData,prompt){
+if(!parameters||!parameters.length){
+return [imageData,null,prompt,INFERENCE_STEPS,NEG_PROMPT,VIDEO_DURATION,1,1,42,true,6,'UniPCMultistep',3.0,16,false];
+}
+const o={input_image:imageData,image:imageData,last_image:null,prompt:prompt,steps:INFERENCE_STEPS,negative_prompt:NEG_PROMPT,duration_seconds:VIDEO_DURATION,randomize_seed:true};
+return parameters.map(p=>{
+const n=p.parameter_name;
+if(n in o)return o[n];
+return p.parameter_has_default?p.parameter_default:null;
+});
+}
+
+async function hfSubmit(imagePath,prompt){
+const imageData={path:imagePath,url:HF_SPACE_BASE+'/gradio_api/file='+imagePath,orig_name:'motoria-product.jpg',size:null,mime_type:'image/jpeg',meta:{_type:'gradio.FileData'}};
+const data=hfBuildData(await hfParameters(),imageData,prompt);
+const r=await fetch(HF_SPACE_BASE+'/gradio_api/call/'+HF_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data})});
+if(!r.ok){const d=await r.text();throw new Error('Falha ao iniciar a geração ('+r.status+'): '+d.slice(0,300));}
+const res=await r.json();
+if(!res.event_id)throw new Error('O servidor não retornou o identificador da geração.');
+return res.event_id;
 }
 
 function findVideoUrl(v){
@@ -404,8 +441,9 @@ for(const k of Object.keys(v)){const f=findVideoUrl(v[k]);if(f)return f;}
 return null;
 }
 
-async function readSSE(r,statusEl){
-if(!r.body)throw new Error('O navegador não conseguiu ler a resposta da geração.');
+async function hfWaitResult(eventId,statusEl){
+const r=await fetch(HF_SPACE_BASE+'/gradio_api/call/'+HF_FN+'/'+encodeURIComponent(eventId),{headers:{Accept:'text/event-stream'}});
+if(!r.ok||!r.body)throw new Error('Não foi possível acompanhar a geração ('+r.status+').');
 const reader=r.body.getReader();
 const dec=new TextDecoder();
 let buf='',result=null,error=null,failed=false;
@@ -440,13 +478,13 @@ return url;
 }
 
 async function fetchVideoBlob(url){
-const r=await fetch(WORKER_URL+'/proxy?url='+encodeURIComponent(url));
+const r=await fetch(url);
 if(!r.ok)throw new Error('Não foi possível baixar o vídeo gerado ('+r.status+').');
 const b=await r.blob();
 return b.type.startsWith('video/')?b:new Blob([b],{type:'video/mp4'});
 }
 
-/* LISTAGEM DOS VÍDEOS SALVOS */
+/* LISTAGEM DOS VÍDEOS */
 async function getClips(productId){
 const out=[];
 for(let k=0;k<ANGLES.length;k++){
@@ -476,92 +514,194 @@ return clipCardHTML(containerId+'-'+k,title,`<video src="${u}" controls playsinl
 }
 
 async function deleteClip(k){
+if(generating){
+alert('Aguarde o vídeo atual terminar antes de excluir vídeos.');
+return;
+}
 const pid=currentProductId('editProduct');
 if(!pid||!confirm('Excluir este vídeo? Depois você pode gerar outro no lugar dele.'))return;
 try{await dbDel(pid+'-clip'+k);}catch(e){}
 loadEdit();
 }
 
-/* VÍDEOS IA: um vídeo por vez, enviado direto para a Edição */
+/* VÍDEOS IA: GERAÇÃO EXCLUSIVA DE UM POR VEZ */
 let generating=false;
 const slotOf=r=>Number(r.id.slice(r.id.lastIndexOf('-clip')+5));
 
 async function updateVideoInfo(){
 if(generating)return;
+
 const pid=currentProductId('videoProduct');
 const info=document.getElementById('videoCount');
 const btn=document.getElementById('generateVideoBtn');
 const goEdit=document.getElementById('goEdit');
-if(!pid){info.textContent='Cadastre um produto para começar.';btn.disabled=true;goEdit.classList.add('hidden');return;}
+
+if(!pid){
+info.textContent='Cadastre um produto para começar.';
+btn.disabled=true;
+goEdit.classList.add('hidden');
+return;
+}
+
 const recs=await getClips(pid);
+
+// Não altera o botão enquanto uma geração estiver acontecendo
+if(generating)return;
+
 const n=recs.length;
 const used=new Set(recs.map(slotOf));
 const k=ANGLES.findIndex((_,i)=>!used.has(i));
+
 info.innerHTML='<b>Vídeos prontos: '+n+' de 3.</b>'+(k>=0?' Próximo ângulo: '+esc(ANGLES[k].name)+'.':' Todos prontos! Vá para a aba Edição.');
+
 btn.disabled=k<0;
 btn.textContent=k>=0?'Gerar vídeo '+(n+1)+' de 3 ('+ANGLES[k].name+')':'Os 3 vídeos estão prontos';
+
 goEdit.classList.toggle('hidden',n<1);
 }
 
+/* GERAÇÃO SEQUENCIAL COM TRAVA IMEDIATA */
 async function generateNext(){
+
+// A trava é ativada ANTES de qualquer operação assíncrona
 if(generating)return;
+
 const idx=Number(document.getElementById('videoProduct').value);
 const p=products[idx];
-if(!p){alert('Cadastre um produto primeiro.');return;}
-if(!p.photo){alert('Este produto não tem foto cadastrada.');return;}
 
-const recs=await getClips(p.id);
-const used=new Set(recs.map(slotOf));
-const k=ANGLES.findIndex((_,i)=>!used.has(i));
-if(k<0){alert('Este produto já tem os 3 vídeos. Na aba Edição você pode criar o vídeo final ou excluir algum para gerar outro.');return;}
+if(!p){
+alert('Cadastre um produto primeiro.');
+return;
+}
 
+if(!p.photo){
+alert('Este produto não tem foto cadastrada.');
+return;
+}
+
+// BLOQUEIO IMEDIATO
 generating=true;
+
 const btn=document.getElementById('generateVideoBtn');
 const status=document.getElementById('videoStatus');
+const productSelect=document.getElementById('videoProduct');
+
 btn.disabled=true;
-btn.textContent='Gerando...';
+btn.textContent='Gerando vídeo...';
+productSelect.disabled=true;
+
 status.classList.remove('hidden');
+status.textContent='Preparando a geração...';
+
 let ok=false;
+let k=-1;
+
 try{
+
+// Consulta os vídeos já existentes somente depois de ativar a trava
+const recs=await getClips(p.id);
+
+const used=new Set(recs.map(slotOf));
+k=ANGLES.findIndex((_,i)=>!used.has(i));
+
+if(k<0){
+status.textContent='Os 3 vídeos deste produto já estão prontos!';
+return;
+}
+
 status.textContent='Preparando a foto do produto...';
+
 const ref=await makeProductReference(p);
 let url=null;
+
 for(const dur of FALLBACK_DURATIONS){
+
 try{
-status.textContent='Gerando o vídeo '+(recs.length+1)+' de 3 ('+ANGLES[k].name+') com '+String(dur).replace('.',',')+' s... Pode levar 1 a 2 minutos. Não feche a página.';
-url=await workerGenerate(ref,buildVideoPrompt(p,ANGLES[k]),dur,status);
+
+status.textContent='Gerando vídeo '+(recs.length+1)+' de 3 ('+ANGLES[k].name+'). Aguarde até terminar. Não feche a página.';
+
+const path=await hfUpload(ref);
+const eventId=await hfSubmit(path,buildVideoPrompt(p,ANGLES[k]));
+
+// O código fica aguardando o servidor terminar o vídeo
+url=await hfWaitResult(eventId,status);
+
 break;
+
 }catch(err){
+
 const empty=friendlyError(err?.message)===ERRO_VAZIO;
-if(!empty||dur===FALLBACK_DURATIONS[FALLBACK_DURATIONS.length-1])throw err;
-status.textContent='O servidor recusou com '+String(dur).replace('.',',')+' s. Tentando de novo com menos tempo...';
+
+if(!empty||dur===FALLBACK_DURATIONS[FALLBACK_DURATIONS.length-1]){
+throw err;
+}
+
+status.textContent='O servidor recusou. Tentando novamente...';
+
 await new Promise(r=>setTimeout(r,2500));
 }
 }
-status.textContent='Salvando no site...';
-const blob=await fetchVideoBlob(url);
-await dbPut({id:p.id+'-clip'+k,productId:p.id,kind:'clip',angle:ANGLES[k].name,blob,createdAt:Date.now()});
-ok=true;
-}catch(e){
-console.error(e);
-status.textContent='Não foi possível gerar: '+friendlyError(e?.message||String(e));
-}finally{
-generating=false;
-}
-if(!ok){updateVideoInfo();return;}
 
-/* envia automaticamente para a aba Edição */
+if(!url){
+throw new Error('O servidor não retornou o vídeo.');
+}
+
+status.textContent='Baixando vídeo gerado...';
+
+const blob=await fetchVideoBlob(url);
+
+status.textContent='Salvando vídeo no aparelho...';
+
+// A geração só termina depois que o arquivo for salvo
+await dbPut({
+id:p.id+'-clip'+k,
+productId:p.id,
+kind:'clip',
+angle:ANGLES[k].name,
+blob,
+createdAt:Date.now()
+});
+
+ok=true;
+
+status.textContent='Vídeo salvo com sucesso!';
+
+}catch(e){
+
+console.error(e);
+
+status.textContent='Não foi possível gerar: '+friendlyError(e?.message||String(e));
+
+}finally{
+
+// LIBERA A PRÓXIMA GERAÇÃO SOMENTE AQUI
+generating=false;
+
+productSelect.disabled=false;
+
+// Atualiza o botão após a conclusão ou erro
+await updateVideoInfo();
+
+}
+
+if(!ok)return;
+
+// Envia o vídeo pronto para a aba Edição
 const total=(await getClips(p.id)).length;
+
 document.getElementById('editProduct').value=String(idx);
+
 show('edit');
+
 const es=document.getElementById('editStatus');
 es.classList.remove('hidden');
+
 es.textContent=total>=3
-?'Vídeo '+(k+1)+' salvo! Os 3 vídeos estão prontos. Toque em "Criar vídeo final".'
+?'Vídeo salvo! Os 3 vídeos estão prontos. Toque em "Criar vídeo final".'
 :'Vídeo '+(k+1)+' salvo ('+total+' de 3)! Volte em Vídeos IA para gerar o próximo.';
 }
 
-/* EDIÇÃO: junta os vídeos em um só */
+/* EDIÇÃO */
 async function loadEdit(){
 const pid=currentProductId('editProduct');
 await renderClips('editClips',pid);
@@ -701,20 +841,24 @@ btn.disabled=false;btn.textContent='Criar vídeo final';
 }
 }
 
-/* BIBLIOTECA: vídeo final + legenda de cada produto */
+/* BIBLIOTECA */
 async function renderLibrary(){
 const box=document.getElementById('libraryList');
 (objectURLs.lib||[]).forEach(u=>URL.revokeObjectURL(u));
 objectURLs.lib=[];
 let html='';
 const used=new Set();
+
 for(const p of products){
 let rec=null;
 try{rec=await dbGet(p.id+'-final');}catch(e){}
 const caps=captions.map((c,i)=>({c,i})).filter(x=>x.c.productId===p.id||(!x.c.productId&&x.c.productName===p.name));
 caps.forEach(x=>used.add(x.i));
+
 if(!(rec&&rec.blob)&&!caps.length)continue;
+
 let vid='<p class="small">Vídeo final ainda não criado. Crie na aba Edição.</p>';
+
 if(rec&&rec.blob){
 const u=URL.createObjectURL(rec.blob);
 objectURLs.lib.push(u);
@@ -722,11 +866,14 @@ vid=`<video src="${u}" controls playsinline style="width:100%;max-height:520px;o
 <a class="btn secondary" href="${u}" download="motoria-${esc(p.name).replace(/\s+/g,'-')}.${rec.ext||'mp4'}" style="display:inline-block;text-decoration:none">Baixar vídeo</a>
 <button class="btn danger" onclick="removeFinal('${p.id}')">Excluir vídeo</button>`;
 }
+
 const capHtml=caps.map(x=>`<div class="result">${esc(x.c.text)}</div>
 <button class="btn secondary" onclick="copyCaptionAt(${x.i})">Copiar legenda</button>
 <button class="btn danger" onclick="removeCaption(${x.i})">Excluir legenda</button>`).join('')||'<p class="small">Sem legenda salva. Gere na aba Legendas.</p>';
+
 html+=`<div class="card"><b>${esc(p.name)}</b>${vid}${capHtml}</div>`;
 }
+
 captions.forEach((c,i)=>{
 if(used.has(i))return;
 html+=`<div class="card"><b>${esc(c.productName)}</b>
@@ -734,6 +881,7 @@ html+=`<div class="card"><b>${esc(c.productName)}</b>
 <button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar legenda</button>
 <button class="btn danger" onclick="removeCaption(${i})">Excluir legenda</button></div>`;
 });
+
 box.innerHTML=html||'<div class="empty">Nada salvo ainda. Crie o vídeo final na aba Edição e salve a legenda.</div>';
 }
 
@@ -768,19 +916,25 @@ oferta:`🛍️ Está de olho em ${p.name}? Confira esta opção!`,
 curioso:`👀 Já conhece ${p.name}? Veja os detalhes!`,
 elegante:`Conheça ${p.name}. ✨`
 };
+
 const affiliate=p.link?`\n\n🔗 Confira aqui: ${p.link}`:'\n\n🔗 Adicione seu link de afiliado no cadastro do produto para incluí-lo aqui.';
+
 currentCaption=`${intro[tone]}
 
 💚 Confira os detalhes e veja se combina com você!
 
 ${hashtagsFor(p)}${affiliate}`;
+
 const el=document.getElementById('captionResult');
 el.value=currentCaption;
 el.classList.remove('hidden');
 document.getElementById('captionActions').classList.remove('hidden');
 }
 
-function copyCaption(){currentCaption=document.getElementById('captionResult').value;copy(currentCaption);}
+function copyCaption(){
+currentCaption=document.getElementById('captionResult').value;
+copy(currentCaption);
+}
 
 function saveCaption(){
 const text=document.getElementById('captionResult').value;
@@ -790,8 +944,14 @@ captions.push({productId:p?.id,productName:p?.name||'Produto',text,createdAt:Dat
 persist();
 alert('Legenda salva na biblioteca!');
 }
+
 function copyCaptionAt(i){copy(captions[i].text);}
-function removeCaption(i){if(!confirm('Excluir esta legenda?'))return;captions.splice(i,1);persist();}
+
+function removeCaption(i){
+if(!confirm('Excluir esta legenda?'))return;
+captions.splice(i,1);
+persist();
+}
 
 update();
 show('products');
