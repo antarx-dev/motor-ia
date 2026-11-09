@@ -54,6 +54,19 @@ video{display:block}
 .clip{background:#151b13;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:12px}
 .clip video{width:100%;aspect-ratio:auto;margin:8px 0 4px;border-radius:8px;background:transparent}
 .clip a{color:var(--sage)}
+
+/* PRUNA AI — janela sobreposta */
+#pruna-launch{position:fixed;right:16px;bottom:18px;z-index:9000;border:1px solid #81936f;background:linear-gradient(135deg,#526347,#293324);color:#fff;border-radius:999px;padding:13px 18px;font-weight:800;box-shadow:0 8px 28px #0009}
+#pruna-overlay{display:none;position:fixed;inset:0;z-index:10000;background:#050705ed;padding:12px}
+#pruna-overlay.open{display:flex;flex-direction:column}
+.pruna-top{display:flex;align-items:center;gap:10px;padding:8px 4px 12px;color:#eef0e9}
+.pruna-top strong{font-size:15px}.pruna-top span{font-size:11px;color:#aab59a;flex:1}
+.pruna-close{background:#293324;color:#fff;border:1px solid #526247;border-radius:9px;padding:9px 13px;font-weight:700}
+#pruna-frame{width:100%;flex:1;min-height:0;border:1px solid #35412f;border-radius:12px;background:#111510}
+.pruna-fallback{font-size:12px;color:#cbd4c1;padding:9px 3px;line-height:1.5}
+.pruna-fallback a{color:#d5e6c4;font-weight:700}
+@media(max-width:600px){#pruna-overlay{padding:6px}.pruna-top{padding:6px 2px 9px}#pruna-launch{right:12px;bottom:12px}}
+
 </style>
 </head>
 <body>
@@ -166,6 +179,18 @@ video{display:block}
 <p class="muted">Vídeos finais editados e legendas salvos neste aparelho.</p>
 <div id="libraryList"></div>
 </section>
+
+
+<button id="pruna-launch" type="button" onclick="openPrunaOverlay()">✦ Abrir Pruna AI</button>
+<div id="pruna-overlay" role="dialog" aria-modal="true" aria-label="Gerador Pruna AI">
+  <div class="pruna-top">
+    <strong>Pruna AI · Gerador de vídeos</strong>
+    <span>Área externa incorporada ao MotorIA</span>
+    <button class="pruna-close" type="button" onclick="closePrunaOverlay()">Fechar ✕</button>
+  </div>
+  <iframe id="pruna-frame" title="Pruna AI" src="about:blank" allow="clipboard-read; clipboard-write; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <div class="pruna-fallback">Se a Pruna não aparecer aqui, é porque o site pode bloquear incorporação em janelas externas. Nesse caso, <a href="https://demo.pruna.ai/p-video-workflows" target="_blank" rel="noopener noreferrer">abra o gerador oficial da Pruna em outra aba</a>. O login, os limites e eventuais cobranças continuam sendo controlados pela Pruna.</div>
+</div>
 
 <footer>MotorIA · Seu estúdio criativo</footer>
 </main>
@@ -829,6 +854,20 @@ alert('Legenda salva na biblioteca!');
 }
 function copyCaptionAt(i){copy(captions[i].text);}
 function removeCaption(i){if(!confirm('Excluir esta legenda?'))return;captions.splice(i,1);persist();}
+
+
+function openPrunaOverlay(){
+  const overlay=document.getElementById('pruna-overlay');
+  const frame=document.getElementById('pruna-frame');
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+  if(frame.src==='about:blank') frame.src='https://demo.pruna.ai/p-video-workflows';
+}
+function closePrunaOverlay(){
+  document.getElementById('pruna-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePrunaOverlay();});
 
 update();
 show('products');
