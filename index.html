@@ -2,653 +2,862 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080a08">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#211a16">
 <title>MotorIA — Estúdio de Afiliados</title>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-:root{--bg:#080a08;--panel:#111510;--line:#2a3426;--moss:#252d20;--sage:#aab59a;--text:#eef0e9;--muted:#a3aa9b}
+:root{--bg:#f5f0e9;--panel:#fffaf4;--ink:#352820;--muted:#88796e;--line:#e6d9cc;--coffee:#765440;--coffee2:#50382b;--pink:#ead7d0}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;line-height:1.5}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,Arial}
 button,input,textarea,select{font:inherit}
-header{padding:24px 18px 20px;background:linear-gradient(135deg,#141b12,#080a08 72%);border-bottom:1px solid var(--line)}
-.header-inner,main{max-width:980px;margin:auto}
-.brand{display:flex;align-items:center;gap:11px}
-.logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#526347,#252d20);display:grid;place-items:center;font-size:21px}
-.brand-name{font-weight:800;font-size:23px}
-.tagline{color:var(--muted);font-size:12px}
-.header-note{margin:22px 0 0;font-size:clamp(22px,5vw,32px);font-weight:800;line-height:1.2}
-.header-note span{color:var(--sage)}
-main{padding:18px 14px 50px}
-nav{display:flex;gap:8px;overflow-x:auto;padding:3px 1px 14px;margin-bottom:8px}
-.nav-btn{white-space:nowrap;background:transparent;border:1px solid var(--line);color:var(--muted);padding:10px 13px;border-radius:999px;font-size:12px;font-weight:700}
-.nav-btn.active{background:var(--moss);border-color:#526247;color:white}
-.panel{background:var(--panel);border:1px solid var(--line);padding:19px;border-radius:18px;margin-bottom:16px}
+header{padding:22px 18px;background:linear-gradient(120deg,#3e2c22,#765440);color:white}
+.head,main{max-width:1050px;margin:auto}
+.brand{font-weight:800;font-size:25px;letter-spacing:.3px}
+.tag{font-size:11px;letter-spacing:2px;opacity:.8}
+header p{margin:12px 0 0;font-size:clamp(19px,4vw,27px);font-weight:700}
+main{padding:18px 13px 60px}
+nav{display:flex;gap:8px;overflow:auto;padding:3px 0 14px}
+.nav{white-space:nowrap;border:1px solid var(--line);border-radius:30px;background:var(--panel);padding:10px 14px;color:var(--muted);font-weight:700;font-size:12px}
+.nav.active{background:var(--coffee);color:white;border-color:var(--coffee)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:19px;margin-bottom:15px;box-shadow:0 5px 18px #60442a0a}
 .hidden{display:none!important}
-h2{font-size:19px;margin:0 0 7px}
-p{margin:7px 0;color:#d5d9cf}
-.muted,.small{color:var(--muted);font-size:12px}
-label{display:block;font-size:12px;font-weight:600;color:#c5cdbd;margin:13px 0 6px}
-input,textarea,select{width:100%;padding:13px 14px;background:#0c100b;border:1px solid #35412f;border-radius:11px;color:var(--text);font-size:14px;outline:none}
-textarea{min-height:110px;resize:vertical}
-button{cursor:pointer}
-.btn{display:inline-block;text-decoration:none;border:1px solid #526247;background:linear-gradient(135deg,#45543a,#293324);color:white;padding:12px 16px;border-radius:11px;font-weight:700;font-size:13px;margin:9px 5px 0 0}
-.btn.secondary{background:#171e15;border-color:#394634}
-.btn.danger{background:#241614;border-color:#5b302c;color:#e5b4ae}
-.notice{background:#1b2118;border:1px solid #46533d;color:#cbd4c1;padding:13px;border-radius:12px;font-size:12px;line-height:1.6;margin:13px 0}
-.card{background:#151b13;border:1px solid var(--line);padding:13px;border-radius:14px;margin:11px 0;overflow-wrap:anywhere}
-.card img{width:100%;max-height:220px;object-fit:contain;border-radius:9px;background:#0b0e09}
-.empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}
-.preview{min-height:150px;border:1px dashed #46533d;border-radius:13px;display:grid;place-items:center;color:var(--muted);overflow:hidden;padding:8px;text-align:center}
-.preview img{max-width:100%;max-height:220px;object-fit:contain}
-.clips video,.card video{width:100%;max-height:460px;background:#000;border-radius:10px;margin-top:8px}
-#vg-launch{position:fixed;right:16px;bottom:18px;z-index:20;border:1px solid #81936f;background:#34432c;color:white;border-radius:999px;padding:14px 19px;font-weight:800;box-shadow:0 5px 25px #0009}
-#vg-overlay{display:none;position:fixed;inset:0;z-index:50;background:#080a08;flex-direction:column}
-#vg-overlay.open{display:flex}
-.vg-top{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#151b13;border-bottom:1px solid var(--line)}
-.vg-top strong{font-size:14px}
-.vg-top span{font-size:11px;color:var(--muted);flex:1}
-.vg-close{border:1px solid #526247;background:#252d20;color:white;padding:9px 12px;border-radius:9px}
-#vg-frame{border:0;width:100%;flex:1;background:#fff}
-.vg-fallback{padding:10px 14px;background:#151b13;font-size:11px;color:var(--muted)}
-.vg-fallback a{color:#c6d8b6}
+h2{font-size:20px;margin:0 0 5px}
+h3{font-size:15px;margin:14px 0 5px}
+p,.muted{color:var(--muted)}
+.muted{font-size:12px}
+label{display:block;font-size:12px;font-weight:700;margin:12px 0 5px}
+input,textarea,select{width:100%;border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px;color:var(--ink)}
+textarea{min-height:125px;resize:vertical}
+.btn{display:inline-block;border:0;border-radius:10px;padding:11px 15px;margin:8px 5px 0 0;background:var(--coffee);color:white;font-weight:700;font-size:13px;cursor:pointer}
+.btn.alt{background:#eee3d9;color:var(--coffee2)}
+.btn.red{background:#8b443d}
+.btn:disabled{opacity:.5}
+.notice{padding:12px;background:#f1e7dc;border:1px solid var(--line);border-radius:11px;font-size:12px;margin:12px 0;color:#614b3d}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.slot,.card{border:1px solid var(--line);border-radius:13px;padding:10px;background:#fff}
+.slot img,.card img{width:100%;aspect-ratio:9/16;object-fit:contain;background:#f2ece5;border-radius:9px}
+.slot video,.card video{width:100%;max-height:350px;background:#211a16;border-radius:9px}
+.small{font-size:11px;color:var(--muted)}
+.result{white-space:pre-wrap;overflow-wrap:anywhere;background:#f5eee7;border-radius:10px;padding:12px;font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1;min-width:180px}
+.modal{position:fixed;inset:0;background:#170f0de8;z-index:20;padding:12px;display:flex;align-items:center;justify-content:center}
+.modalbox{width:min(1100px,100%);height:min(94vh,1000px);background:var(--panel);border-radius:15px;padding:10px;display:flex;flex-direction:column}
+.modalhead{display:flex;align-items:center;justify-content:space-between;padding:5px 3px 10px}
+.modal iframe{border:0;width:100%;height:100%;border-radius:10px;background:#111}
+.status{font-size:12px;color:var(--coffee);margin-top:8px}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
-@media(max-width:620px){main{padding:14px 12px 40px}.panel{padding:16px}}
+@media(max-width:600px){
+.panel{padding:15px}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 </style>
 </head>
+
 <body>
 
+<div id="login" class="modal">
+  <div class="panel" style="width:min(390px,100%);margin:0">
+    <div class="brand" style="color:var(--coffee)">✦ MotorIA</div>
+    <p class="muted">Acesso ao estúdio</p>
+
+    <label>Usuário</label>
+    <input id="userLogin" autocomplete="username" placeholder="Usuário">
+
+    <label>Senha</label>
+    <input id="passLogin" type="password" autocomplete="current-password" placeholder="Senha">
+
+    <button class="btn" style="width:100%" onclick="login()">Entrar</button>
+    <div id="loginError" class="status"></div>
+
+    <p class="small">Atenção: esta trava é local, no navegador. Não substitui autenticação segura em servidor.</p>
+  </div>
+</div>
+
 <header>
-<div class="header-inner">
-<div class="brand">
-<div class="logo">✦</div>
-<div>
-<div class="brand-name">MotorIA</div>
-<div class="tagline">Estúdio de Afiliados</div>
-</div>
-</div>
-<div class="header-note">
-Seu produto. Sua criatividade.<br>
-<span>Conteúdo pronto para vender.</span>
-</div>
-</div>
+  <div class="head">
+    <div class="brand">✦ MotorIA</div>
+    <div class="tag">ESTÚDIO INTELIGENTE DE AFILIADOS</div>
+    <p>Seu produto. Sua criatividade.<br>Conteúdo pronto para vender.</p>
+  </div>
 </header>
 
 <main>
 
 <nav>
-<button class="nav-btn active" data-page="products" onclick="show('products')">Produtos</button>
-<button class="nav-btn" data-page="videos" onclick="show('videos')">Vídeos IA</button>
-<button class="nav-btn" data-page="edit" onclick="show('edit')">Edição</button>
-<button class="nav-btn" data-page="captions" onclick="show('captions')">Legendas</button>
-<button class="nav-btn" data-page="library" onclick="show('library')">Biblioteca</button>
+  <button class="nav active" data-page="products" onclick="show('products')">Produtos</button>
+  <button class="nav" data-page="photos" onclick="show('photos')">Estúdio de Fotos</button>
+  <button class="nav" data-page="videos" onclick="show('videos')">Vídeos IA</button>
+  <button class="nav" data-page="edit" onclick="show('edit')">Edição</button>
+  <button class="nav" data-page="captions" onclick="show('captions')">Legendas</button>
+  <button class="nav" data-page="library" onclick="show('library')">Biblioteca</button>
 </nav>
 
-<!-- PRODUTOS -->
 <section id="products" class="panel">
-<h2>Cadastro de produtos</h2>
-<p class="muted">Cadastre os produtos que serão usados nos vídeos e nas legendas.</p>
+  <h2>Produtos</h2>
+  <p class="muted">Cadastre o produto, a foto de referência e seu link de afiliado.</p>
 
-<label>Nome do produto</label>
-<input id="name" placeholder="Ex.: Bolsa feminina transversal">
+  <label>Nome do produto</label>
+  <input id="prodName" placeholder="Ex.: Conjunto feminino">
 
-<label>Link de afiliado</label>
-<input id="link" type="url" placeholder="Cole seu link de afiliado">
+  <label>Link de afiliado</label>
+  <input id="prodLink" placeholder="https://...">
 
-<label>Foto do produto</label>
-<input id="photo" type="file" accept="image/*">
+  <label>Foto do produto</label>
+  <input id="prodPhoto" type="file" accept="image/*">
 
-<button class="btn" onclick="addProduct()">Salvar produto</button>
-
-<div id="productList"></div>
+  <button class="btn" onclick="addProduct()">Salvar produto</button>
+  <div id="productList"></div>
 </section>
 
-<!-- VÍDEOS IA -->
+<section id="photos" class="panel hidden">
+  <h2>Estúdio de Fotos</h2>
+  <p class="muted">Importe as quatro imagens produzidas pela Meta AI. Elas ficarão disponíveis na aba Vídeos IA.</p>
+
+  <label>Produto</label>
+  <select id="photoProduct" onchange="renderPhotos()"></select>
+
+  <label>Importar as 4 fotos</label>
+  <input id="photoFiles" type="file" accept="image/*" multiple onchange="importPhotos(event)">
+
+  <div class="notice">Selecione até quatro imagens. Se importar novamente, as quatro posições serão substituídas pelas novas imagens.</div>
+
+  <div id="photoGrid" class="grid"></div>
+
+  <h3>Prompt padrão para criar as quatro fotos na Meta AI</h3>
+
+  <textarea id="photoPrompt" readonly>Use a foto 1 como referência exata da roupa e a foto 2 como referência da modelo e do cenário. Vista a modelo com a roupa completa da foto 1, reproduzindo fielmente todas as peças, cores, tecidos, estampas, caimento, costuras, botões, zíperes e acessórios, sem inventar ou modificar detalhes. Preserve a mesma modelo, corpo, cabelo, cenário, iluminação e enquadramento da foto 2. O celular cinza deve continuar cobrindo completamente o rosto da modelo em todas as imagens. Se houver bolsa, reproduza exatamente o formato, cor, material, ferragens, tamanho e comprimento/posição da alça. Gere quatro imagens adicionais com poses naturais e diferentes ângulos, estética fashion internacional/Pinterest, incluindo fotos de corpo inteiro e closes elegantes dos detalhes do look. Resultado fotorrealista, vertical 9:16. Não revelar o rosto, não adicionar tatuagens ou piercings, não alterar a roupa.</textarea>
+
+  <button class="btn alt" onclick="copyText('photoPrompt')">Copiar prompt</button>
+</section>
+
 <section id="videos" class="panel hidden">
-<h2>Estúdio de vídeos IA</h2>
-<p class="muted">Crie vídeos com o Grok pelo VidoGrid e importe o resultado para o MotorIA.</p>
+  <h2>Vídeos IA — Muse AI</h2>
+  <p class="muted">As quatro fotos importadas aparecem aqui. Abra o Muse, gere um vídeo para cada imagem e depois importe os quatro arquivos de vídeo para o MotorIA.</p>
 
-<div class="notice">
-<b>Como utilizar:</b><br>
-1. Abra o VidoGrid/Grok pelo botão abaixo.<br>
-2. Faça sua geração de vídeo no VidoGrid.<br>
-3. Baixe o vídeo gerado para o seu aparelho.<br>
-4. Volte ao MotorIA e selecione o arquivo baixado.<br>
-5. O vídeo será salvo na área Edição e na Biblioteca.
-</div>
+  <label>Produto</label>
+  <select id="videoProduct" onchange="renderVideoPhotos()"></select>
 
-<label>Produto relacionado ao vídeo</label>
-<select id="videoProduct"></select>
+  <div id="videoPhotos" class="grid"></div>
 
-<div class="preview" id="videoPreview">
-A foto do produto aparecerá aqui.
-</div>
+  <h3>Prompt padrão de vídeo</h3>
+  <textarea id="videoPrompt" readonly></textarea>
 
-<button class="btn" onclick="openVidoGrid()">✦ Abrir VidoGrid — Grok</button>
+  <div class="row">
+    <button class="btn alt" onclick="copyText('videoPrompt')">Copiar prompt de vídeo</button>
+    <button class="btn" onclick="openMuse()">Abrir Muse AI nesta janela</button>
+  </div>
 
-<label>Importar vídeo gerado</label>
-<input id="vidoGridVideoFile" type="file" accept="video/*">
+  <div class="notice">
+    <b>Importante:</b> o site do VidoGrid não permite que uma página externa controle seus botões ou capture automaticamente o resultado por iframe. Por isso, depois de gerar e baixar os vídeos no Muse, importe os quatro arquivos aqui. Assim eles entram na Edição sem fingir uma integração automática que o navegador bloqueia.
+  </div>
 
-<div id="videoStatus" class="notice hidden"></div>
+  <label>Importar os vídeos gerados no Muse (até 4)</label>
+  <input id="videoFiles" type="file" accept="video/*" multiple onchange="importVideos(event)">
 
-<button class="btn secondary" onclick="show('edit')">Ir para Edição</button>
+  <div id="videoStatus" class="status"></div>
+  <div id="videoList" class="grid"></div>
 </section>
 
-<!-- EDIÇÃO -->
 <section id="edit" class="panel hidden">
-<h2>Edição</h2>
-<p class="muted">Os vídeos importados ficam salvos neste aparelho. Selecione um produto para visualizar os arquivos.</p>
+  <h2>Edição</h2>
+  <p class="muted">Organize os quatro vídeos e monte um único vídeo vertical.</p>
 
-<label>Produto</label>
-<select id="editProduct" onchange="loadEdit()"></select>
+  <label>Produto</label>
+  <select id="editProduct" onchange="renderEdit()"></select>
 
-<div id="editClips" class="clips"></div>
+  <div id="editClips" class="grid"></div>
 
-<div class="notice">
-Os vídeos importados podem ser assistidos e baixados por aqui. A montagem de vários vídeos em um único arquivo exige uma ferramenta de edição adicional.
-</div>
+  <div class="notice">A montagem é feita neste navegador, com cortes e transições suaves. O resultado depende dos formatos de vídeo suportados pelo aparelho. O navegador pode exportar WebM em vez de MP4.</div>
+
+  <button class="btn" onclick="createFinal()">Montar vídeo final</button>
+  <div id="editStatus" class="status"></div>
+  <div id="finalArea"></div>
 </section>
 
-<!-- LEGENDAS -->
 <section id="captions" class="panel hidden">
-<h2>Legenda para publicação</h2>
-<p class="muted">Crie uma legenda com emojis, hashtags e seu link de afiliado.</p>
+  <h2>Legendas</h2>
+  <p class="muted">Crie uma legenda editável com chamada, hashtags e link de afiliado. O texto é uma sugestão baseada no cadastro do produto, não uma análise automática do conteúdo visual do vídeo.</p>
 
-<label>Produto</label>
-<select id="captionProduct"></select>
+  <label>Produto</label>
+  <select id="captionProduct"></select>
 
-<label>Tom da legenda</label>
-<select id="captionTone">
-<option value="natural">Natural e próximo</option>
-<option value="oferta">Oferta e urgência moderada</option>
-<option value="curioso">Curioso e chamativo</option>
-<option value="elegante">Elegante e direto</option>
-</select>
+  <label>Estilo</label>
+  <select id="captionTone">
+    <option value="natural">Natural e próximo</option>
+    <option value="chic">Elegante e fashion</option>
+    <option value="offer">Oferta e chamada</option>
+  </select>
 
-<button class="btn" onclick="generateCaption()">Gerar legenda</button>
+  <button class="btn" onclick="generateCaption()">Criar legenda</button>
 
-<label>Edite sua legenda</label>
-<textarea id="captionResult" placeholder="Sua legenda aparecerá aqui..."></textarea>
+  <label>Editar legenda</label>
+  <textarea id="captionText" placeholder="Sua legenda aparecerá aqui"></textarea>
 
-<button class="btn" onclick="copyCaption()">Copiar legenda</button>
-<button class="btn secondary" onclick="saveCaption()">Salvar na biblioteca</button>
+  <button class="btn alt" onclick="copyText('captionText')">Copiar</button>
+  <button class="btn" onclick="saveCaption()">Salvar na biblioteca</button>
 </section>
 
-<!-- BIBLIOTECA -->
 <section id="library" class="panel hidden">
-<h2>Sua biblioteca</h2>
-<p class="muted">Vídeos e legendas salvos neste aparelho.</p>
-<div id="libraryList"></div>
+  <h2>Biblioteca</h2>
+  <p class="muted">Fotos, vídeos, montagens e legendas salvos neste navegador.</p>
+  <div id="libraryList"></div>
+  <div class="notice">Os arquivos ficam no armazenamento deste navegador/aparelho (IndexedDB). Para biblioteca permanente na nuvem, acessível em outros aparelhos e protegida por conta, é necessário conectar um servidor e banco de dados.</div>
 </section>
-
-<!-- BOTÃO FLUTUANTE -->
-<button id="vg-launch" type="button" onclick="openVidoGrid()">✦ Abrir VidoGrid</button>
-
-<!-- JANELA SOBREPOSTA DO VIDOGRID -->
-<div id="vg-overlay" role="dialog" aria-modal="true" aria-label="VidoGrid Grok">
-<div class="vg-top">
-<strong>VidoGrid · Grok</strong>
-<span>MotorIA</span>
-<button class="vg-close" type="button" onclick="closeVidoGrid()">Fechar ✕</button>
-</div>
-
-<iframe
-id="vg-frame"
-title="VidoGrid Grok"
-src="about:blank"
-allow="clipboard-read;clipboard-write;fullscreen"
-referrerpolicy="strict-origin-when-cross-origin">
-</iframe>
-
-<div class="vg-fallback">
-Se o VidoGrid não aparecer nesta janela, ele pode estar bloqueando a incorporação. 
-<a href="https://vidogrid.ai/app/video-gen/grok?mode=create-new" target="_blank" rel="noopener noreferrer">Abrir VidoGrid/Grok em outra aba</a>.
-Depois, volte ao MotorIA para importar o vídeo baixado.
-</div>
-</div>
 
 <footer>MotorIA · Seu estúdio criativo</footer>
 </main>
 
+<div id="museModal" class="modal hidden">
+  <div class="modalbox">
+    <div class="modalhead">
+      <b>Muse AI — VidoGrid</b>
+      <button class="btn red" onclick="closeMuse()">Fechar</button>
+    </div>
+    <iframe id="museFrame" title="VidoGrid Muse AI" src="about:blank" allow="clipboard-read; clipboard-write; fullscreen" allowfullscreen></iframe>
+  </div>
+</div>
+
 <script>
-const VIDOGRID_URL = 'https://vidogrid.ai/app/video-gen/grok?mode=create-new';
+const DB='motoria-estudio-v3',STORE='records';
+let products=[],captions=[],selectedFinal=null;
 
-const readStore = (key,fallback) => {
-try {
-return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
-} catch(e) {
-return fallback;
+const PROMPT_VIDEO=`Create a realistic video from the reference image of a woman standing in front of a mirror recording herself, the smartphone must remain covering her entire face from beginning to end and her face must never be revealed, the model has no belly button piercing, no navel piercing and no tattoos on any part of the body, keep the skin clean and completely free of tattoos and piercings and do not add any, use the reference image as absolute ground truth and preserve the outfit, bags, shoes, accessories and all clothing details 100% identical to the original without any flaws, always keep the fabric of each clothing piece completely faithful to the reference preserving exact fabric type, weave, weight, thickness, transparency, texture, drape and natural fall, keeping every detail, color, material, fit, stitching, buttons, zippers, prints, patterns, logos, embroidery and hardware exactly the same, for bags keep identical model, color, material, hardware, size, shape and strap position, for shoes keep identical model, color, material, heel and sole, for accessories keep identical jewelry, sunglasses, hats, belts and watches without adding, removing or changing anything, do not change the woman's body proportions, anatomy, hairstyle or the environment, background, mirror and lighting, do not generate distorted hands, extra fingers, extra limbs, body deformations, flickering or unrealistic fabric movements, avoid stiff, frozen, robotic, exaggerated or unnatural movements, allow only subtle, continuous, fluid, realistic human micro-movements with natural breathing and slight weight shifts, no sudden movements, no exaggerated posing, no walking away, no full spins and no camera movement with static locked camera, the final video must look like authentic footage of a real woman casually showing her outfit in front of a mirror, photorealistic and high detail.`;
+
+document.getElementById('videoPrompt').value=PROMPT_VIDEO;
+
+function login(){
+  if(
+    document.getElementById('userLogin').value==='lorena' &&
+    document.getElementById('passLogin').value==='motoria2026'
+  ){
+    sessionStorage.setItem('motoria-open','1');
+    document.getElementById('login').classList.add('hidden');
+  }else{
+    document.getElementById('loginError').textContent='Usuário ou senha incorretos.';
+  }
 }
+
+if(sessionStorage.getItem('motoria-open')==='1'){
+  document.getElementById('login').classList.add('hidden');
+}
+
+function db(){
+  return new Promise((ok,no)=>{
+    let r=indexedDB.open(DB,1);
+    r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:'id'});
+    r.onsuccess=()=>ok(r.result);
+    r.onerror=()=>no(r.error);
+  });
+}
+
+async function put(x){
+  let d=await db();
+  return new Promise((ok,no)=>{
+    let t=d.transaction(STORE,'readwrite');
+    t.objectStore(STORE).put(x);
+    t.oncomplete=ok;
+    t.onerror=()=>no(t.error);
+  });
+}
+
+async function get(id){
+  let d=await db();
+  return new Promise((ok,no)=>{
+    let r=d.transaction(STORE).objectStore(STORE).get(id);
+    r.onsuccess=()=>ok(r.result);
+    r.onerror=()=>no(r.error);
+  });
+}
+
+async function all(){
+  let d=await db();
+  return new Promise((ok,no)=>{
+    let r=d.transaction(STORE).objectStore(STORE).getAll();
+    r.onsuccess=()=>ok(r.result);
+    r.onerror=()=>no(r.error);
+  });
+}
+
+async function del(id){
+  let d=await db();
+  return new Promise((ok,no)=>{
+    let t=d.transaction(STORE,'readwrite');
+    t.objectStore(STORE).delete(id);
+    t.oncomplete=ok;
+    t.onerror=()=>no(t.error);
+  });
+}
+
+function uid(){
+  return 'm'+Date.now()+Math.random().toString(16).slice(2);
+}
+
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
+}
+
+function show(id){
+  document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+
+  document.querySelectorAll('.nav').forEach(x=>{
+    x.classList.toggle('active',x.dataset.page===id);
+  });
+
+  refreshSelects();
+
+  if(id==='photos')renderPhotos();
+
+  if(id==='videos'){
+    renderVideoPhotos();
+    renderVideoList();
+  }
+
+  if(id==='edit')renderEdit();
+  if(id==='library')renderLibrary();
+}
+
+function refreshSelects(){
+  for(let id of ['photoProduct','videoProduct','editProduct','captionProduct']){
+    let el=document.getElementById(id);
+    let old=el.value;
+
+    el.innerHTML=products.map(p=>
+      `<option value="${p.id}">${esc(p.name)}</option>`
+    ).join('')||'<option value="">Cadastre um produto</option>';
+
+    if(products.some(p=>p.id===old))el.value=old;
+  }
+}
+
+async function addProduct(){
+  let name=document.getElementById('prodName').value.trim();
+  let file=document.getElementById('prodPhoto').files[0];
+
+  if(!name)return alert('Informe o nome do produto.');
+
+  let p={
+    id:uid(),
+    name,
+    link:document.getElementById('prodLink').value.trim(),
+    photo:file||null,
+    photos:[],
+    videos:[],
+    final:null
+  };
+
+  products.push(p);
+  await put(p);
+
+  document.getElementById('prodName').value='';
+  document.getElementById('prodLink').value='';
+  document.getElementById('prodPhoto').value='';
+
+  refreshAll();
+  alert('Produto salvo!');
+}
+
+async function refreshAll(){
+  products=await all();
+  products=products.filter(x=>x.type==='product');
+  refreshSelects();
+  renderProducts();
+}
+
+async function renderProducts(){
+  let box=document.getElementById('productList');
+  box.innerHTML='';
+
+  for(let p of products){
+    let d=document.createElement('div');
+    d.className='card';
+
+    d.innerHTML=`
+      <b>${esc(p.name)}</b>
+      <div class="small">${p.link?'Link de afiliado cadastrado':'Sem link de afiliado'}</div>
+      <button class="btn red">Excluir</button>
+    `;
+
+    d.querySelector('button').onclick=()=>removeProduct(p.id);
+    box.append(d);
+  }
+}
+
+async function removeProduct(id){
+  if(!confirm('Excluir o produto e todos os arquivos dele?'))return;
+
+  for(let x of await all()){
+    if(x.productId===id||x.id===id)await del(x.id);
+  }
+
+  products=products.filter(p=>p.id!==id);
+  refreshAll();
+}
+
+async function importPhotos(e){
+  let p=products.find(x=>x.id===document.getElementById('photoProduct').value);
+  let files=[...e.target.files].slice(0,4);
+
+  if(!p)return alert('Cadastre/selecione um produto.');
+  if(!files.length)return;
+
+  for(let x of await all()){
+    if(x.productId===p.id&&x.kind==='photo')await del(x.id);
+  }
+
+  for(let i=0;i<files.length;i++){
+    await put({
+      id:p.id+'-photo-'+i,
+      productId:p.id,
+      kind:'photo',
+      index:i,
+      blob:files[i],
+      name:files[i].name
+    });
+  }
+
+  renderPhotos();
+  e.target.value='';
+}
+
+async function renderPhotos(){
+  let p=products.find(x=>x.id===document.getElementById('photoProduct').value);
+  let box=document.getElementById('photoGrid');
+  box.innerHTML='';
+
+  if(!p)return;
+
+  let arr=(await all())
+    .filter(x=>x.productId===p.id&&x.kind==='photo')
+    .sort((a,b)=>a.index-b.index);
+
+  for(let i=0;i<4;i++){
+    let r=arr[i];
+    let d=document.createElement('div');
+    d.className='slot';
+    d.innerHTML=`<b>Foto ${i+1}</b>`;
+
+    if(r){
+      let im=document.createElement('img');
+      im.src=URL.createObjectURL(r.blob);
+      d.append(im);
+    }else{
+      d.insertAdjacentHTML('beforeend','<div class="notice">Aguardando foto</div>');
+    }
+
+    box.append(d);
+  }
+}
+
+async function renderVideoPhotos(){
+  let p=products.find(x=>x.id===document.getElementById('videoProduct').value);
+  let box=document.getElementById('videoPhotos');
+  box.innerHTML='';
+
+  if(!p)return;
+
+  let arr=(await all())
+    .filter(x=>x.productId===p.id&&x.kind==='photo')
+    .sort((a,b)=>a.index-b.index);
+
+  for(let i=0;i<4;i++){
+    let r=arr[i];
+    let d=document.createElement('div');
+    d.className='slot';
+    d.innerHTML=`<b>Foto ${i+1}</b>`;
+
+    if(r){
+      let im=document.createElement('img');
+      im.src=URL.createObjectURL(r.blob);
+      d.append(im);
+    }else{
+      d.insertAdjacentHTML('beforeend','<div class="notice">Importe esta foto na aba Estúdio de Fotos.</div>');
+    }
+
+    box.append(d);
+  }
+}
+
+function openMuse(){
+  document.getElementById('museFrame').src='https://vidogrid.ai/app/video-gen/muse?mode=create-new';
+  document.getElementById('museModal').classList.remove('hidden');
+}
+
+function closeMuse(){
+  document.getElementById('museModal').classList.add('hidden');
+  document.getElementById('museFrame').src='about:blank';
+}
+
+async function importVideos(e){
+  let p=products.find(x=>x.id===document.getElementById('videoProduct').value);
+  let files=[...e.target.files].slice(0,4);
+
+  if(!p)return alert('Selecione um produto.');
+  if(!files.length)return;
+
+  for(let f of files){
+    if(!f.type.startsWith('video/'))continue;
+
+    let existing=(await all()).filter(x=>x.productId===p.id&&x.kind==='video');
+    let idx=existing.length;
+
+    if(idx>=4)break;
+
+    await put({
+      id:p.id+'-video-'+idx,
+      productId:p.id,
+      kind:'video',
+      index:idx,
+      blob:f,
+      name:f.name
+    });
+  }
+
+  document.getElementById('videoStatus').textContent='Vídeos importados e salvos. Eles já estão disponíveis na aba Edição.';
+  e.target.value='';
+
+  renderVideoList();
+  renderEdit();
+}
+
+async function renderVideoList(){
+  let p=products.find(x=>x.id===document.getElementById('videoProduct').value);
+  let box=document.getElementById('videoList');
+  box.innerHTML='';
+
+  if(!p)return;
+
+  let arr=(await all())
+    .filter(x=>x.productId===p.id&&x.kind==='video')
+    .sort((a,b)=>a.index-b.index);
+
+  for(let r of arr){
+    let d=document.createElement('div');
+    d.className='slot';
+    d.innerHTML=`<b>Vídeo ${r.index+1}</b>`;
+
+    let v=document.createElement('video');
+    v.controls=true;
+    v.playsInline=true;
+    v.src=URL.createObjectURL(r.blob);
+
+    d.append(v);
+    box.append(d);
+  }
+}
+
+async function renderEdit(){
+  let p=products.find(x=>x.id===document.getElementById('editProduct').value);
+  let box=document.getElementById('editClips');
+  box.innerHTML='';
+
+  if(!p)return;
+
+  let arr=(await all())
+    .filter(x=>x.productId===p.id&&x.kind==='video')
+    .sort((a,b)=>a.index-b.index);
+
+  for(let i=0;i<4;i++){
+    let r=arr[i];
+    let d=document.createElement('div');
+    d.className='slot';
+    d.innerHTML=`<b>Clipe ${i+1}</b>`;
+
+    if(r){
+      let v=document.createElement('video');
+      v.controls=true;
+      v.src=URL.createObjectURL(r.blob);
+      d.append(v);
+    }else{
+      d.insertAdjacentHTML('beforeend','<div class="notice">Vídeo ainda não importado</div>');
+    }
+
+    box.append(d);
+  }
+}
+
+async function createFinal(){
+  let p=products.find(x=>x.id===document.getElementById('editProduct').value);
+  if(!p)return;
+
+  let clips=(await all())
+    .filter(x=>x.productId===p.id&&x.kind==='video')
+    .sort((a,b)=>a.index-b.index);
+
+  if(clips.length<2)return alert('Importe pelo menos dois vídeos para montar.');
+
+  if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){
+    return alert('Seu navegador não suporta montagem local. Tente no Chrome atualizado.');
+  }
+
+  let status=document.getElementById('editStatus');
+  status.textContent='Preparando clipes...';
+
+  try{
+    let els=[];
+
+    for(let r of clips){
+      let v=document.createElement('video');
+      v.muted=true;
+      v.playsInline=true;
+      v.src=URL.createObjectURL(r.blob);
+
+      await new Promise((ok,no)=>{
+        v.onloadedmetadata=ok;
+        v.onerror=no;
+      });
+
+      els.push(v);
+    }
+
+    let W=720,H=1280;
+    let c=document.createElement('canvas');
+    c.width=W;
+    c.height=H;
+
+    let ctx=c.getContext('2d');
+    let stream=c.captureStream(25);
+
+    let mime=MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+      ?'video/webm;codecs=vp9'
+      :'video/webm';
+
+    let rec=new MediaRecorder(stream,{mimeType:mime});
+    let chunks=[];
+
+    rec.ondataavailable=e=>{
+      if(e.data.size)chunks.push(e.data);
+    };
+
+    let blobPromise=new Promise(ok=>{
+      rec.onstop=()=>ok(new Blob(chunks,{type:mime}));
+    });
+
+    rec.start();
+
+    for(let i=0;i<els.length;i++){
+      let v=els[i];
+      v.currentTime=0;
+      await v.play();
+
+      await new Promise(resolve=>{
+        function draw(){
+          ctx.fillStyle='#17120f';
+          ctx.fillRect(0,0,W,H);
+
+          let scale=Math.max(W/v.videoWidth,H/v.videoHeight);
+          let w=v.videoWidth*scale;
+          let h=v.videoHeight*scale;
+
+          ctx.drawImage(v,(W-w)/2,(H-h)/2,w,h);
+
+          status.textContent=`Montando clipe ${i+1} de ${els.length}…`;
+
+          if(!v.paused&&!v.ended){
+            requestAnimationFrame(draw);
+          }else{
+            resolve();
+          }
+        }
+
+        draw();
+      });
+
+      v.pause();
+    }
+
+    rec.stop();
+
+    let final=await blobPromise;
+
+    for(let v of els){
+      URL.revokeObjectURL(v.src);
+    }
+
+    await put({
+      id:p.id+'-final',
+      productId:p.id,
+      kind:'final',
+      blob:final,
+      name:'motoria-final.webm'
+    });
+
+    let url=URL.createObjectURL(final);
+    let area=document.getElementById('finalArea');
+    area.innerHTML='';
+
+    let video=document.createElement('video');
+    video.controls=true;
+    video.src=url;
+    video.style='width:100%;max-height:600px;margin-top:12px';
+
+    let a=document.createElement('a');
+    a.href=url;
+    a.download='motoria-video-final.webm';
+    a.className='btn';
+    a.textContent='Baixar vídeo final';
+
+    area.append(video,a);
+
+    status.textContent='Montagem concluída e salva na biblioteca.';
+
+  }catch(err){
+    console.error(err);
+    status.textContent='Não foi possível montar: '+(err.message||err);
+  }
+}
+
+function generateCaption(){
+  let p=products.find(x=>x.id===document.getElementById('captionProduct').value);
+
+  if(!p)return alert('Cadastre um produto.');
+
+  let tone=document.getElementById('captionTone').value;
+
+  let first=tone==='chic'
+    ?`Um achado para deixar a produção ainda mais especial: ${p.name}. ✨`
+    :tone==='offer'
+      ?`Amiga, olha essa opção de ${p.name}! 🛍️`
+      :`Olha esse achadinho: ${p.name}! 💗`;
+
+  let tags=p.name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase()
+    .split(/\W+/)
+    .filter(x=>x.length>3)
+    .slice(0,3)
+    .map(x=>'#'+x)
+    .join(' ');
+
+  document.getElementById('captionText').value=
+    first+
+    '\n\nUma escolha linda para quem ama unir estilo e praticidade. Confira os detalhes!\n\n'+
+    tags+' #ModaFeminina #Achadinhos #LookDoDia'+
+    (p.link?'\n\n🔗 Encontre aqui: '+p.link:'');
+}
+
+async function saveCaption(){
+  let p=products.find(x=>x.id===document.getElementById('captionProduct').value);
+  let txt=document.getElementById('captionText').value.trim();
+
+  if(!p||!txt)return alert('Selecione um produto e crie a legenda.');
+
+  await put({
+    id:uid(),
+    productId:p.id,
+    kind:'caption',
+    text:txt,
+    createdAt:Date.now()
+  });
+
+  alert('Legenda salva!');
+  renderLibrary();
+}
+
+async function renderLibrary(){
+  let box=document.getElementById('libraryList');
+  box.innerHTML='';
+
+  let arr=await all();
+
+  for(let r of arr){
+    if(!['photo','video','final','caption'].includes(r.kind))continue;
+
+    let p=products.find(x=>x.id===r.productId);
+    let d=document.createElement('div');
+    d.className='card';
+
+    d.innerHTML=`
+      <b>${esc(p?.name||'Produto')} — ${
+        r.kind==='photo'?'Foto '+(r.index+1):
+        r.kind==='video'?'Vídeo '+(r.index+1):
+        r.kind==='final'?'Vídeo final':'Legenda'
+      }</b>
+    `;
+
+    if(r.blob&&r.kind==='photo'){
+      let im=document.createElement('img');
+      im.src=URL.createObjectURL(r.blob);
+      d.append(im);
+    }
+
+    if(r.blob&&['video','final'].includes(r.kind)){
+      let v=document.createElement('video');
+      v.controls=true;
+      v.src=URL.createObjectURL(r.blob);
+      d.append(v);
+
+      let a=document.createElement('a');
+      a.href=v.src;
+      a.download=r.name||'motoria-video.webm';
+      a.className='btn';
+      a.textContent='Baixar';
+      d.append(a);
+    }
+
+    if(r.kind==='caption'){
+      let t=document.createElement('div');
+      t.className='result';
+      t.textContent=r.text;
+      d.append(t);
+    }
+
+    let b=document.createElement('button');
+    b.className='btn red';
+    b.textContent='Excluir';
+
+    b.onclick=async()=>{
+      if(confirm('Excluir este item?')){
+        await del(r.id);
+        renderLibrary();
+      }
+    };
+
+    d.append(b);
+    box.append(d);
+  }
+
+  if(!box.children.length){
+    box.innerHTML='<p class="muted">Sua biblioteca ainda está vazia.</p>';
+  }
+}
+
+function copyText(id){
+  let el=document.getElementById(id);
+  el.select();
+  el.setSelectionRange(0,el.value.length);
+
+  navigator.clipboard?.writeText(el.value)
+    .then(()=>alert('Copiado!'))
+    .catch(()=>{
+      document.execCommand('copy');
+      alert('Copiado!');
+    });
+}
+
+(async()=>{
+  let records=await all();
+  products=records.filter(x=>x.type==='product');
+  refreshSelects();
+  renderProducts();
+  if(products.length){}
+})();
+
+// Persistência de cadastro com marcador para distinguir produtos dos arquivos.
+const originalPut=put;
+put=async function(x){
+  if(x.name&&x.id&&!x.kind&&!x.productId)x.type='product';
+  return originalPut(x);
 };
-
-let products = readStore('motor_products',[]);
-let captions = readStore('motor_captions',[]);
-let objectURLs = [];
-
-function esc(s) {
-return String(s ?? '').replace(/[&<>"']/g,c=>({
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-'"':'&quot;',
-"'":'&#39;'
-}[c]));
-}
-
-function persist() {
-localStorage.setItem('motor_products',JSON.stringify(products));
-localStorage.setItem('motor_captions',JSON.stringify(captions));
-update();
-}
-
-function show(id) {
-document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
-
-document.querySelectorAll('.nav-btn').forEach(b=>{
-b.classList.toggle('active',b.dataset.page===id);
-});
-
-update();
-
-if(id==='edit') loadEdit();
-if(id==='library') renderLibrary();
-}
-
-function currentProductId(selectId) {
-const p = products[Number(document.getElementById(selectId).value)];
-return p ? p.id : null;
-}
-
-function update() {
-const list = document.getElementById('productList');
-
-list.innerHTML = products.map((p,i)=>`
-<div class="card">
-${p.photo ? `<img src="${p.photo}" alt="Foto do produto">` : ''}
-<b>${esc(p.name)}</b>
-<p class="small">${p.link ? 'Link de afiliado cadastrado' : 'Sem link de afiliado'}</p>
-<button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button>
-</div>
-`).join('') || '<div class="empty">Nenhum produto cadastrado ainda.</div>';
-
-const opts = products.map((p,i)=>
-`<option value="${i}">${esc(p.name)}</option>`
-).join('') || '<option value="">Cadastre um produto primeiro</option>';
-
-['videoProduct','editProduct','captionProduct'].forEach(id=>{
-const el = document.getElementById(id);
-const old = el.value;
-el.innerHTML = opts;
-
-if(old !== '' && products[Number(old)]) {
-el.value = old;
-}
-});
-
-updateProductPreview();
-}
-
-async function addProduct() {
-const name = document.getElementById('name').value.trim();
-const link = document.getElementById('link').value.trim();
-const file = document.getElementById('photo').files[0];
-
-if(!name) {
-alert('Digite o nome do produto.');
-return;
-}
-
-let photo = '';
-
-if(file) {
-if(file.size > 12*1024*1024) {
-alert('A foto deve ter até 12 MB.');
-return;
-}
-
-try {
-photo = await fileToDataURL(file);
-} catch(e) {
-alert('Não foi possível carregar a foto.');
-return;
-}
-}
-
-products.push({
-id:'p'+Date.now()+Math.random().toString(16).slice(2),
-name,
-link,
-photo
-});
-
-document.getElementById('name').value = '';
-document.getElementById('link').value = '';
-document.getElementById('photo').value = '';
-
-persist();
-}
-
-function removeProduct(i) {
-if(!confirm('Excluir este produto?')) return;
-products.splice(i,1);
-persist();
-}
-
-function fileToDataURL(file) {
-return new Promise((resolve,reject)=>{
-const r = new FileReader();
-r.onload = ()=>resolve(r.result);
-r.onerror = reject;
-r.readAsDataURL(file);
-});
-}
-
-function updateProductPreview() {
-const p = products[Number(document.getElementById('videoProduct').value)];
-const box = document.getElementById('videoPreview');
-
-if(!p || !p.photo) {
-box.textContent = 'Selecione um produto com foto cadastrada.';
-return;
-}
-
-box.innerHTML = `<img src="${p.photo}" alt="Foto do produto">`;
-}
-
-document.getElementById('videoProduct').addEventListener('change',updateProductPreview);
-
-/* ABRIR VIDOGRID SOBREPOSTO */
-function openVidoGrid() {
-const overlay = document.getElementById('vg-overlay');
-const frame = document.getElementById('vg-frame');
-
-overlay.classList.add('open');
-document.body.style.overflow = 'hidden';
-
-if(frame.src === 'about:blank') {
-frame.src = VIDOGRID_URL;
-}
-}
-
-function closeVidoGrid() {
-document.getElementById('vg-overlay').classList.remove('open');
-document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown',e=>{
-if(e.key === 'Escape') closeVidoGrid();
-});
-
-/* BANCO LOCAL DOS VÍDEOS */
-function openDB() {
-return new Promise((resolve,reject)=>{
-const req = indexedDB.open('motoria-videos',1);
-
-req.onupgradeneeded = ()=>{
-if(!req.result.objectStoreNames.contains('videos')) {
-req.result.createObjectStore('videos',{keyPath:'id'});
-}
-};
-
-req.onsuccess = ()=>resolve(req.result);
-req.onerror = ()=>reject(req.error);
-});
-}
-
-async function dbPut(record) {
-const db = await openDB();
-
-return new Promise((resolve,reject)=>{
-const tx = db.transaction('videos','readwrite');
-tx.objectStore('videos').put(record);
-
-tx.oncomplete = ()=>resolve();
-tx.onerror = ()=>reject(tx.error);
-});
-}
-
-async function dbGetAll() {
-const db = await openDB();
-
-return new Promise((resolve,reject)=>{
-const tx = db.transaction('videos','readonly');
-const req = tx.objectStore('videos').getAll();
-
-req.onsuccess = ()=>resolve(req.result || []);
-req.onerror = ()=>reject(req.error);
-});
-}
-
-async function dbDelete(id) {
-const db = await openDB();
-
-return new Promise((resolve,reject)=>{
-const tx = db.transaction('videos','readwrite');
-tx.objectStore('videos').delete(id);
-
-tx.oncomplete = ()=>resolve();
-tx.onerror = ()=>reject(tx.error);
-});
-}
-
-/* IMPORTAR VÍDEO DO VIDOGRID */
-async function importVidoGridVideo() {
-const input = document.getElementById('vidoGridVideoFile');
-const file = input.files[0];
-const status = document.getElementById('videoStatus');
-const pid = currentProductId('videoProduct');
-
-if(!pid) {
-alert('Cadastre e selecione um produto primeiro.');
-input.value = '';
-return;
-}
-
-if(!file) return;
-
-if(!file.type.startsWith('video/')) {
-alert('O arquivo selecionado não parece ser um vídeo.');
-input.value = '';
-return;
-}
-
-status.classList.remove('hidden');
-status.textContent = 'Salvando vídeo no MotorIA...';
-
-try {
-const product = products.find(p=>p.id===pid);
-
-const record = {
-id:'video-'+Date.now()+'-'+Math.random().toString(16).slice(2),
-productId:pid,
-productName:product ? product.name : 'Produto',
-name:file.name,
-blob:file,
-type:file.type,
-createdAt:Date.now()
-};
-
-await dbPut(record);
-
-status.textContent = 'Vídeo salvo com sucesso! Ele já está disponível na aba Edição e na Biblioteca.';
-
-input.value = '';
-
-await loadEdit();
-
-} catch(e) {
-console.error(e);
-status.textContent = 'Não foi possível salvar o vídeo. Verifique o espaço disponível no aparelho.';
-}
-}
-
-document.getElementById('vidoGridVideoFile').addEventListener('change',importVidoGridVideo);
-
-/* ÁREA DE EDIÇÃO */
-async function loadEdit() {
-const pid = currentProductId('editProduct');
-const area = document.getElementById('editClips');
-
-objectURLs.forEach(u=>URL.revokeObjectURL(u));
-objectURLs = [];
-
-if(!pid) {
-area.innerHTML = '<div class="empty">Cadastre e selecione um produto primeiro.</div>';
-return;
-}
-
-try {
-const all = await dbGetAll();
-
-const clips = all
-.filter(v=>v.productId===pid)
-.sort((a,b)=>b.createdAt-a.createdAt);
-
-if(!clips.length) {
-area.innerHTML = '<div class="empty">Ainda não há vídeos importados para este produto. Vá à aba Vídeos IA para importar um.</div>';
-return;
-}
-
-area.innerHTML = clips.map(v=>{
-const url = URL.createObjectURL(v.blob);
-objectURLs.push(url);
-
-return `
-<div class="card">
-<b>${esc(v.name || 'Vídeo importado')}</b>
-<p class="small">${new Date(v.createdAt).toLocaleString('pt-BR')}</p>
-<video src="${url}" controls playsinline></video>
-<a class="btn secondary" href="${url}" download="${esc(v.name || 'motoria-video.mp4')}">Baixar vídeo</a>
-<button class="btn danger" onclick="deleteVideo('${v.id}')">Excluir</button>
-</div>
-`;
-}).join('');
-
-} catch(e) {
-console.error(e);
-area.innerHTML = '<div class="empty">Não foi possível carregar os vídeos salvos.</div>';
-}
-}
-
-async function deleteVideo(id) {
-if(!confirm('Excluir este vídeo salvo?')) return;
-
-await dbDelete(id);
-await loadEdit();
-await renderLibrary();
-}
-
-/* GERADOR DE LEGENDAS */
-function generateCaption() {
-const p = products[Number(document.getElementById('captionProduct').value)];
-
-if(!p) {
-alert('Cadastre um produto primeiro.');
-return;
-}
-
-const tone = document.getElementById('captionTone').value;
-
-const intros = {
-natural:`Olha só esse ${p.name}! 😍 Um achadinho que merece sua atenção.`,
-oferta:`✨ Você já viu esse ${p.name}? Aproveite para conferir os detalhes!`,
-curioso:`Será que você também vai se apaixonar por esse ${p.name}? 👀`,
-elegante:`Praticidade e estilo em um só produto: conheça ${p.name}.`
-};
-
-const link = p.link ? `\n\n🛍️ Confira aqui: ${p.link}` : '';
-
-document.getElementById('captionResult').value =
-intros[tone] + link + '\n\n#achadinhos #ofertas #comprasonline';
-}
-
-async function copyCaption() {
-const value = document.getElementById('captionResult').value;
-
-if(!value.trim()) {
-alert('Escreva ou gere uma legenda primeiro.');
-return;
-}
-
-try {
-await navigator.clipboard.writeText(value);
-alert('Legenda copiada!');
-} catch(e) {
-const field = document.getElementById('captionResult');
-field.select();
-document.execCommand('copy');
-alert('Legenda copiada!');
-}
-}
-
-function saveCaption() {
-const text = document.getElementById('captionResult').value.trim();
-
-if(!text) {
-alert('Escreva uma legenda primeiro.');
-return;
-}
-
-const p = products[Number(document.getElementById('captionProduct').value)];
-
-captions.push({
-text,
-productName:p ? p.name : 'Produto',
-createdAt:Date.now()
-});
-
-localStorage.setItem('motor_captions',JSON.stringify(captions));
-
-alert('Legenda salva na biblioteca!');
-}
-
-/* BIBLIOTECA */
-async function renderLibrary() {
-const area = document.getElementById('libraryList');
-
-try {
-const all = await dbGetAll();
-const videos = all.sort((a,b)=>b.createdAt-a.createdAt);
-
-const videoHTML = videos.map(v=>`
-<div class="card">
-<b>🎬 ${esc(v.name || 'Vídeo')}</b>
-<p class="small">${esc(v.productName || 'Produto')} · ${new Date(v.createdAt).toLocaleString('pt-BR')}</p>
-</div>
-`).join('');
-
-const captionHTML = captions.slice().reverse().map((c,i)=>`
-<div class="card">
-<b>📝 ${esc(c.productName)}</b>
-<p>${esc(c.text).replace(/\n/g,'<br>')}</p>
-<button class="btn secondary" onclick="copySavedCaption(${captions.length-1-i})">Copiar</button>
-</div>
-`).join('');
-
-area.innerHTML = (videoHTML + captionHTML) ||
-'<div class="empty">Sua biblioteca ainda está vazia.</div>';
-
-} catch(e) {
-console.error(e);
-area.innerHTML = '<div class="empty">Não foi possível carregar a biblioteca.</div>';
-}
-}
-
-async function copySavedCaption(index) {
-const item = captions[index];
-
-if(!item) return;
-
-try {
-await navigator.clipboard.writeText(item.text);
-alert('Legenda copiada!');
-} catch(e) {
-alert('Não foi possível copiar automaticamente.');
-}
-}
-
-update();
 </script>
 </body>
 </html>
