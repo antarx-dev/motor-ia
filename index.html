@@ -7,7 +7,7 @@
 <title>MotorIA — Estúdio de Afiliados</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-:root{--bg:#080a08;--panel:#111510;--panel2:#171d15;--line:#2a3426;--moss:#252d20;--sage:#aab59a;--text:#eef0e9;--muted:#a3aa9b}
+:root{--bg:#080a08;--panel:#111510;--line:#2a3426;--moss:#252d20;--sage:#aab59a;--text:#eef0e9;--muted:#a3aa9b}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;line-height:1.5}
 button,input,textarea,select{font:inherit}
@@ -32,42 +32,50 @@ label{display:block;font-size:12px;font-weight:600;color:#c5cdbd;margin:13px 0 6
 input,textarea,select{width:100%;padding:13px 14px;background:#0c100b;border:1px solid #35412f;border-radius:11px;color:var(--text);font-size:14px;outline:none}
 textarea{min-height:110px;resize:vertical}
 button{cursor:pointer}
-.btn{border:1px solid #526247;background:linear-gradient(135deg,#45543a,#293324);color:white;padding:12px 16px;border-radius:11px;font-weight:700;font-size:13px;margin:9px 5px 0 0}
+.btn{display:inline-block;text-decoration:none;border:1px solid #526247;background:linear-gradient(135deg,#45543a,#293324);color:white;padding:12px 16px;border-radius:11px;font-weight:700;font-size:13px;margin:9px 5px 0 0}
 .btn.secondary{background:#171e15;border-color:#394634}
 .btn.danger{background:#241614;border-color:#5b302c;color:#e5b4ae}
 .notice{background:#1b2118;border:1px solid #46533d;color:#cbd4c1;padding:13px;border-radius:12px;font-size:12px;line-height:1.6;margin:13px 0}
-.card{background:#151b13;border:1px solid var(--line);padding:13px;border-radius:14px;margin:11px 0}
+.card{background:#151b13;border:1px solid var(--line);padding:13px;border-radius:14px;margin:11px 0;overflow-wrap:anywhere}
 .card img{width:100%;max-height:220px;object-fit:contain;border-radius:9px;background:#0b0e09}
 .empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}
 .preview{min-height:150px;border:1px dashed #46533d;border-radius:13px;display:grid;place-items:center;color:var(--muted);overflow:hidden;padding:8px;text-align:center}
 .preview img{max-width:100%;max-height:220px;object-fit:contain}
 .clips video,.card video{width:100%;max-height:460px;background:#000;border-radius:10px;margin-top:8px}
-#pruna-launch{position:fixed;right:16px;bottom:18px;z-index:20;border:1px solid #81936f;background:#34432c;color:white;border-radius:999px;padding:14px 19px;font-weight:800;box-shadow:0 5px 25px #0009}
-#pruna-overlay{display:none;position:fixed;inset:0;z-index:50;background:#080a08;flex-direction:column}
-#pruna-overlay.open{display:flex}
-.pruna-top{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#151b13;border-bottom:1px solid var(--line)}
-.pruna-top strong{font-size:14px}
-.pruna-top span{font-size:11px;color:var(--muted);flex:1}
-.pruna-close{border:1px solid #526247;background:#252d20;color:white;padding:9px 12px;border-radius:9px}
-#pruna-frame{border:0;width:100%;flex:1;background:#fff}
-.pruna-fallback{padding:10px 14px;background:#151b13;font-size:11px;color:var(--muted)}
-a{color:#c6d8b6}
+#vg-launch{position:fixed;right:16px;bottom:18px;z-index:20;border:1px solid #81936f;background:#34432c;color:white;border-radius:999px;padding:14px 19px;font-weight:800;box-shadow:0 5px 25px #0009}
+#vg-overlay{display:none;position:fixed;inset:0;z-index:50;background:#080a08;flex-direction:column}
+#vg-overlay.open{display:flex}
+.vg-top{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#151b13;border-bottom:1px solid var(--line)}
+.vg-top strong{font-size:14px}
+.vg-top span{font-size:11px;color:var(--muted);flex:1}
+.vg-close{border:1px solid #526247;background:#252d20;color:white;padding:9px 12px;border-radius:9px}
+#vg-frame{border:0;width:100%;flex:1;background:#fff}
+.vg-fallback{padding:10px 14px;background:#151b13;font-size:11px;color:var(--muted)}
+.vg-fallback a{color:#c6d8b6}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 @media(max-width:620px){main{padding:14px 12px 40px}.panel{padding:16px}}
 </style>
 </head>
 <body>
+
 <header>
 <div class="header-inner">
 <div class="brand">
 <div class="logo">✦</div>
-<div><div class="brand-name">MotorIA</div><div class="tagline">Estúdio de Afiliados</div></div>
+<div>
+<div class="brand-name">MotorIA</div>
+<div class="tagline">Estúdio de Afiliados</div>
 </div>
-<div class="header-note">Seu produto. Sua criatividade.<br><span>Conteúdo pronto para vender.</span></div>
+</div>
+<div class="header-note">
+Seu produto. Sua criatividade.<br>
+<span>Conteúdo pronto para vender.</span>
+</div>
 </div>
 </header>
 
 <main>
+
 <nav>
 <button class="nav-btn active" data-page="products" onclick="show('products')">Produtos</button>
 <button class="nav-btn" data-page="videos" onclick="show('videos')">Vídeos IA</button>
@@ -76,53 +84,79 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 <button class="nav-btn" data-page="library" onclick="show('library')">Biblioteca</button>
 </nav>
 
+<!-- PRODUTOS -->
 <section id="products" class="panel">
 <h2>Cadastro de produtos</h2>
-<p class="muted">Cadastre o produto que será usado nos vídeos e legendas.</p>
+<p class="muted">Cadastre os produtos que serão usados nos vídeos e nas legendas.</p>
+
 <label>Nome do produto</label>
 <input id="name" placeholder="Ex.: Bolsa feminina transversal">
+
 <label>Link de afiliado</label>
 <input id="link" type="url" placeholder="Cole seu link de afiliado">
+
 <label>Foto do produto</label>
 <input id="photo" type="file" accept="image/*">
+
 <button class="btn" onclick="addProduct()">Salvar produto</button>
+
 <div id="productList"></div>
 </section>
 
+<!-- VÍDEOS IA -->
 <section id="videos" class="panel hidden">
 <h2>Estúdio de vídeos IA</h2>
-<p class="muted">Gere seus vídeos usando a Pruna AI e depois importe o arquivo para o MotorIA.</p>
+<p class="muted">Crie vídeos com o Grok pelo VidoGrid e importe o resultado para o MotorIA.</p>
+
 <div class="notice">
-<b>Como funciona:</b><br>
-1. Abra a Pruna AI pelo botão abaixo.<br>
-2. Gere seu vídeo e faça o download no dispositivo.<br>
-3. Volte ao MotorIA e selecione o arquivo baixado.<br>
-4. O vídeo será salvo na área Edição e na Biblioteca do MotorIA.
+<b>Como utilizar:</b><br>
+1. Abra o VidoGrid/Grok pelo botão abaixo.<br>
+2. Faça sua geração de vídeo no VidoGrid.<br>
+3. Baixe o vídeo gerado para o seu aparelho.<br>
+4. Volte ao MotorIA e selecione o arquivo baixado.<br>
+5. O vídeo será salvo na área Edição e na Biblioteca.
 </div>
+
 <label>Produto relacionado ao vídeo</label>
 <select id="videoProduct"></select>
-<div class="preview" id="videoPreview">A foto do produto aparecerá aqui.</div>
-<button class="btn" onclick="openPrunaOverlay()">✦ Abrir Pruna AI</button>
-<label>Importar vídeo baixado da Pruna</label>
-<input id="prunaVideoFile" type="file" accept="video/*">
+
+<div class="preview" id="videoPreview">
+A foto do produto aparecerá aqui.
+</div>
+
+<button class="btn" onclick="openVidoGrid()">✦ Abrir VidoGrid — Grok</button>
+
+<label>Importar vídeo gerado</label>
+<input id="vidoGridVideoFile" type="file" accept="video/*">
+
 <div id="videoStatus" class="notice hidden"></div>
+
 <button class="btn secondary" onclick="show('edit')">Ir para Edição</button>
 </section>
 
+<!-- EDIÇÃO -->
 <section id="edit" class="panel hidden">
 <h2>Edição</h2>
-<p class="muted">Seus vídeos importados ficam salvos neste aparelho. Selecione um produto para visualizar os arquivos.</p>
+<p class="muted">Os vídeos importados ficam salvos neste aparelho. Selecione um produto para visualizar os arquivos.</p>
+
 <label>Produto</label>
 <select id="editProduct" onchange="loadEdit()"></select>
+
 <div id="editClips" class="clips"></div>
-<div class="notice">Você pode assistir, baixar ou excluir os vídeos importados. A montagem de vários vídeos em um único arquivo depende de uma ferramenta de edição adicional.</div>
+
+<div class="notice">
+Os vídeos importados podem ser assistidos e baixados por aqui. A montagem de vários vídeos em um único arquivo exige uma ferramenta de edição adicional.
+</div>
 </section>
 
+<!-- LEGENDAS -->
 <section id="captions" class="panel hidden">
 <h2>Legenda para publicação</h2>
 <p class="muted">Crie uma legenda com emojis, hashtags e seu link de afiliado.</p>
+
 <label>Produto</label>
 <select id="captionProduct"></select>
+
 <label>Tom da legenda</label>
 <select id="captionTone">
 <option value="natural">Natural e próximo</option>
@@ -130,229 +164,490 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 <option value="curioso">Curioso e chamativo</option>
 <option value="elegante">Elegante e direto</option>
 </select>
+
 <button class="btn" onclick="generateCaption()">Gerar legenda</button>
+
 <label>Edite sua legenda</label>
 <textarea id="captionResult" placeholder="Sua legenda aparecerá aqui..."></textarea>
+
 <button class="btn" onclick="copyCaption()">Copiar legenda</button>
 <button class="btn secondary" onclick="saveCaption()">Salvar na biblioteca</button>
 </section>
 
+<!-- BIBLIOTECA -->
 <section id="library" class="panel hidden">
 <h2>Sua biblioteca</h2>
 <p class="muted">Vídeos e legendas salvos neste aparelho.</p>
 <div id="libraryList"></div>
 </section>
 
-<button id="pruna-launch" type="button" onclick="openPrunaOverlay()">✦ Abrir Pruna AI</button>
-<div id="pruna-overlay" role="dialog" aria-modal="true" aria-label="Gerador Pruna AI">
-<div class="pruna-top">
-<strong>Pruna AI · Gerador de vídeos</strong>
+<!-- BOTÃO FLUTUANTE -->
+<button id="vg-launch" type="button" onclick="openVidoGrid()">✦ Abrir VidoGrid</button>
+
+<!-- JANELA SOBREPOSTA DO VIDOGRID -->
+<div id="vg-overlay" role="dialog" aria-modal="true" aria-label="VidoGrid Grok">
+<div class="vg-top">
+<strong>VidoGrid · Grok</strong>
 <span>MotorIA</span>
-<button class="pruna-close" type="button" onclick="closePrunaOverlay()">Fechar ✕</button>
+<button class="vg-close" type="button" onclick="closeVidoGrid()">Fechar ✕</button>
 </div>
-<iframe id="pruna-frame" title="Pruna AI" src="about:blank" allow="clipboard-read;clipboard-write;fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-<div class="pruna-fallback">Se a Pruna não aparecer aqui, o site pode bloquear a incorporação. <a href="https://demo.pruna.ai/p-video-workflows" target="_blank" rel="noopener noreferrer">Abrir a Pruna em outra aba</a>. O login, os limites e eventuais cobranças são controlados pela Pruna.</div>
+
+<iframe
+id="vg-frame"
+title="VidoGrid Grok"
+src="about:blank"
+allow="clipboard-read;clipboard-write;fullscreen"
+referrerpolicy="strict-origin-when-cross-origin">
+</iframe>
+
+<div class="vg-fallback">
+Se o VidoGrid não aparecer nesta janela, ele pode estar bloqueando a incorporação. 
+<a href="https://vidogrid.ai/app/video-gen/grok?mode=create-new" target="_blank" rel="noopener noreferrer">Abrir VidoGrid/Grok em outra aba</a>.
+Depois, volte ao MotorIA para importar o vídeo baixado.
+</div>
 </div>
 
 <footer>MotorIA · Seu estúdio criativo</footer>
 </main>
 
 <script>
-const readStore=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}catch(e){return fallback}};
-let products=readStore('motor_products',[]);
-let captions=readStore('motor_captions',[]);
-let objectURLs=[];
+const VIDOGRID_URL = 'https://vidogrid.ai/app/video-gen/grok?mode=create-new';
 
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function persist(){
+const readStore = (key,fallback) => {
+try {
+return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+} catch(e) {
+return fallback;
+}
+};
+
+let products = readStore('motor_products',[]);
+let captions = readStore('motor_captions',[]);
+let objectURLs = [];
+
+function esc(s) {
+return String(s ?? '').replace(/[&<>"']/g,c=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+}[c]));
+}
+
+function persist() {
 localStorage.setItem('motor_products',JSON.stringify(products));
 localStorage.setItem('motor_captions',JSON.stringify(captions));
 update();
 }
-function show(id){
+
+function show(id) {
 document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
 document.getElementById(id).classList.remove('hidden');
-document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
-update();
-if(id==='edit')loadEdit();
-if(id==='library')renderLibrary();
-}
-function currentProductId(selectId){
-const p=products[Number(document.getElementById(selectId).value)];
-return p?p.id:null;
-}
-function update(){
-const list=document.getElementById('productList');
-list.innerHTML=products.map((p,i)=>`<div class="card">${p.photo?`<img src="${p.photo}" alt="Foto do produto">`:''}<b>${esc(p.name)}</b><p class="small">${p.link?'Link de afiliado cadastrado':'Sem link de afiliado'}</p><button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button></div>`).join('')||'<div class="empty">Nenhum produto cadastrado ainda.</div>';
-const opts=products.map((p,i)=>`<option value="${i}">${esc(p.name)}</option>`).join('')||'<option value="">Cadastre um produto primeiro</option>';
-['videoProduct','editProduct','captionProduct'].forEach(id=>{
-const el=document.getElementById(id),old=el.value;
-el.innerHTML=opts;
-if(old!==''&&products[Number(old)])el.value=old;
+
+document.querySelectorAll('.nav-btn').forEach(b=>{
+b.classList.toggle('active',b.dataset.page===id);
 });
+
+update();
+
+if(id==='edit') loadEdit();
+if(id==='library') renderLibrary();
+}
+
+function currentProductId(selectId) {
+const p = products[Number(document.getElementById(selectId).value)];
+return p ? p.id : null;
+}
+
+function update() {
+const list = document.getElementById('productList');
+
+list.innerHTML = products.map((p,i)=>`
+<div class="card">
+${p.photo ? `<img src="${p.photo}" alt="Foto do produto">` : ''}
+<b>${esc(p.name)}</b>
+<p class="small">${p.link ? 'Link de afiliado cadastrado' : 'Sem link de afiliado'}</p>
+<button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button>
+</div>
+`).join('') || '<div class="empty">Nenhum produto cadastrado ainda.</div>';
+
+const opts = products.map((p,i)=>
+`<option value="${i}">${esc(p.name)}</option>`
+).join('') || '<option value="">Cadastre um produto primeiro</option>';
+
+['videoProduct','editProduct','captionProduct'].forEach(id=>{
+const el = document.getElementById(id);
+const old = el.value;
+el.innerHTML = opts;
+
+if(old !== '' && products[Number(old)]) {
+el.value = old;
+}
+});
+
 updateProductPreview();
 }
-async function addProduct(){
-const name=document.getElementById('name').value.trim();
-const link=document.getElementById('link').value.trim();
-const file=document.getElementById('photo').files[0];
-if(!name){alert('Digite o nome do produto.');return;}
-let photo='';
-if(file){
-if(file.size>12*1024*1024){alert('A foto deve ter até 12 MB.');return;}
-photo=await fileToDataURL(file);
+
+async function addProduct() {
+const name = document.getElementById('name').value.trim();
+const link = document.getElementById('link').value.trim();
+const file = document.getElementById('photo').files[0];
+
+if(!name) {
+alert('Digite o nome do produto.');
+return;
 }
-products.push({id:'p'+Date.now()+Math.random().toString(16).slice(2),name,link,photo});
-document.getElementById('name').value='';
-document.getElementById('link').value='';
-document.getElementById('photo').value='';
+
+let photo = '';
+
+if(file) {
+if(file.size > 12*1024*1024) {
+alert('A foto deve ter até 12 MB.');
+return;
+}
+
+try {
+photo = await fileToDataURL(file);
+} catch(e) {
+alert('Não foi possível carregar a foto.');
+return;
+}
+}
+
+products.push({
+id:'p'+Date.now()+Math.random().toString(16).slice(2),
+name,
+link,
+photo
+});
+
+document.getElementById('name').value = '';
+document.getElementById('link').value = '';
+document.getElementById('photo').value = '';
+
 persist();
 }
-function removeProduct(i){
-if(!confirm('Excluir este produto?'))return;
-products.splice(i,1);persist();
-}
-function fileToDataURL(file){
-return new Promise((resolve,reject)=>{
-const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file);
-});
-}
-function updateProductPreview(){
-const p=products[Number(document.getElementById('videoProduct').value)];
-const box=document.getElementById('videoPreview');
-if(!p||!p.photo){box.textContent='Selecione um produto com foto cadastrada.';return;}
-box.innerHTML=`<img src="${p.photo}" alt="Foto do produto">`;
+
+function removeProduct(i) {
+if(!confirm('Excluir este produto?')) return;
+products.splice(i,1);
+persist();
 }
 
-/* BANCO LOCAL DOS VÍDEOS */
-function openDB(){
+function fileToDataURL(file) {
 return new Promise((resolve,reject)=>{
-const req=indexedDB.open('motoria-videos',1);
-req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('videos'))req.result.createObjectStore('videos',{keyPath:'id'});};
-req.onsuccess=()=>resolve(req.result);
-req.onerror=()=>reject(req.error);
+const r = new FileReader();
+r.onload = ()=>resolve(r.result);
+r.onerror = reject;
+r.readAsDataURL(file);
 });
 }
-async function dbPut(record){
-const db=await openDB();
-return new Promise((resolve,reject)=>{
-const tx=db.transaction('videos','readwrite');
-tx.objectStore('videos').put(record);
-tx.oncomplete=()=>resolve();
-tx.onerror=()=>reject(tx.error);
-});
+
+function updateProductPreview() {
+const p = products[Number(document.getElementById('videoProduct').value)];
+const box = document.getElementById('videoPreview');
+
+if(!p || !p.photo) {
+box.textContent = 'Selecione um produto com foto cadastrada.';
+return;
 }
-async function dbGetAll(){
-const db=await openDB();
-return new Promise((resolve,reject)=>{
-const tx=db.transaction('videos','readonly');
-const req=tx.objectStore('videos').getAll();
-req.onsuccess=()=>resolve(req.result||[]);
-req.onerror=()=>reject(req.error);
-});
+
+box.innerHTML = `<img src="${p.photo}" alt="Foto do produto">`;
 }
-async function dbDelete(id){
-const db=await openDB();
-return new Promise((resolve,reject)=>{
-const tx=db.transaction('videos','readwrite');
-tx.objectStore('videos').delete(id);
-tx.oncomplete=()=>resolve();
-tx.onerror=()=>reject(tx.error);
-});
-}
-async function importPrunaVideo(){
-const input=document.getElementById('prunaVideoFile');
-const file=input.files[0];
-const status=document.getElementById('videoStatus');
-const pid=currentProductId('videoProduct');
-if(!pid){alert('Cadastre e selecione um produto primeiro.');return;}
-if(!file){alert('Selecione o vídeo que você baixou da Pruna.');return;}
-if(!file.type.startsWith('video/')){alert('O arquivo selecionado não parece ser um vídeo.');return;}
-status.classList.remove('hidden');
-status.textContent='Salvando vídeo no MotorIA...';
-try{
-const product=products.find(p=>p.id===pid);
-const record={id:'video-'+Date.now()+'-'+Math.random().toString(16).slice(2),productId:pid,productName:product?.name||'Produto',name:file.name,blob:file,type:file.type,createdAt:Date.now()};
-await dbPut(record);
-status.textContent='Vídeo salvo com sucesso! Ele já está disponível na aba Edição.';
-input.value='';
-await loadEdit();
-}catch(e){
-console.error(e);
-status.textContent='Não foi possível salvar o vídeo. Verifique o espaço disponível no aparelho.';
-}
-}
-document.getElementById('prunaVideoFile').addEventListener('change',importPrunaVideo);
+
 document.getElementById('videoProduct').addEventListener('change',updateProductPreview);
 
-async function loadEdit(){
-const pid=currentProductId('editProduct');
-const area=document.getElementById('editClips');
-objectURLs.forEach(u=>URL.revokeObjectURL(u));objectURLs=[];
-if(!pid){area.innerHTML='<div class="empty">Cadastre e selecione um produto primeiro.</div>';return;}
-const all=await dbGetAll();
-const clips=all.filter(v=>v.productId===pid).sort((a,b)=>b.createdAt-a.createdAt);
-if(!clips.length){area.innerHTML='<div class="empty">Ainda não há vídeos importados para este produto. Vá à aba Vídeos IA para importar um.</div>';return;}
-area.innerHTML=clips.map(v=>{
-const url=URL.createObjectURL(v.blob);objectURLs.push(url);
-return `<div class="card"><b>${esc(v.name||'Vídeo importado')}</b><p class="small">${new Date(v.createdAt).toLocaleString('pt-BR')}</p><video src="${url}" controls playsinline></video><a class="btn secondary" href="${url}" download="${esc(v.name||'motoria-video.mp4')}">Baixar vídeo</a><button class="btn danger" onclick="deleteVideo('${v.id}')">Excluir</button></div>`;
+/* ABRIR VIDOGRID SOBREPOSTO */
+function openVidoGrid() {
+const overlay = document.getElementById('vg-overlay');
+const frame = document.getElementById('vg-frame');
+
+overlay.classList.add('open');
+document.body.style.overflow = 'hidden';
+
+if(frame.src === 'about:blank') {
+frame.src = VIDOGRID_URL;
+}
+}
+
+function closeVidoGrid() {
+document.getElementById('vg-overlay').classList.remove('open');
+document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown',e=>{
+if(e.key === 'Escape') closeVidoGrid();
+});
+
+/* BANCO LOCAL DOS VÍDEOS */
+function openDB() {
+return new Promise((resolve,reject)=>{
+const req = indexedDB.open('motoria-videos',1);
+
+req.onupgradeneeded = ()=>{
+if(!req.result.objectStoreNames.contains('videos')) {
+req.result.createObjectStore('videos',{keyPath:'id'});
+}
+};
+
+req.onsuccess = ()=>resolve(req.result);
+req.onerror = ()=>reject(req.error);
+});
+}
+
+async function dbPut(record) {
+const db = await openDB();
+
+return new Promise((resolve,reject)=>{
+const tx = db.transaction('videos','readwrite');
+tx.objectStore('videos').put(record);
+
+tx.oncomplete = ()=>resolve();
+tx.onerror = ()=>reject(tx.error);
+});
+}
+
+async function dbGetAll() {
+const db = await openDB();
+
+return new Promise((resolve,reject)=>{
+const tx = db.transaction('videos','readonly');
+const req = tx.objectStore('videos').getAll();
+
+req.onsuccess = ()=>resolve(req.result || []);
+req.onerror = ()=>reject(req.error);
+});
+}
+
+async function dbDelete(id) {
+const db = await openDB();
+
+return new Promise((resolve,reject)=>{
+const tx = db.transaction('videos','readwrite');
+tx.objectStore('videos').delete(id);
+
+tx.oncomplete = ()=>resolve();
+tx.onerror = ()=>reject(tx.error);
+});
+}
+
+/* IMPORTAR VÍDEO DO VIDOGRID */
+async function importVidoGridVideo() {
+const input = document.getElementById('vidoGridVideoFile');
+const file = input.files[0];
+const status = document.getElementById('videoStatus');
+const pid = currentProductId('videoProduct');
+
+if(!pid) {
+alert('Cadastre e selecione um produto primeiro.');
+input.value = '';
+return;
+}
+
+if(!file) return;
+
+if(!file.type.startsWith('video/')) {
+alert('O arquivo selecionado não parece ser um vídeo.');
+input.value = '';
+return;
+}
+
+status.classList.remove('hidden');
+status.textContent = 'Salvando vídeo no MotorIA...';
+
+try {
+const product = products.find(p=>p.id===pid);
+
+const record = {
+id:'video-'+Date.now()+'-'+Math.random().toString(16).slice(2),
+productId:pid,
+productName:product ? product.name : 'Produto',
+name:file.name,
+blob:file,
+type:file.type,
+createdAt:Date.now()
+};
+
+await dbPut(record);
+
+status.textContent = 'Vídeo salvo com sucesso! Ele já está disponível na aba Edição e na Biblioteca.';
+
+input.value = '';
+
+await loadEdit();
+
+} catch(e) {
+console.error(e);
+status.textContent = 'Não foi possível salvar o vídeo. Verifique o espaço disponível no aparelho.';
+}
+}
+
+document.getElementById('vidoGridVideoFile').addEventListener('change',importVidoGridVideo);
+
+/* ÁREA DE EDIÇÃO */
+async function loadEdit() {
+const pid = currentProductId('editProduct');
+const area = document.getElementById('editClips');
+
+objectURLs.forEach(u=>URL.revokeObjectURL(u));
+objectURLs = [];
+
+if(!pid) {
+area.innerHTML = '<div class="empty">Cadastre e selecione um produto primeiro.</div>';
+return;
+}
+
+try {
+const all = await dbGetAll();
+
+const clips = all
+.filter(v=>v.productId===pid)
+.sort((a,b)=>b.createdAt-a.createdAt);
+
+if(!clips.length) {
+area.innerHTML = '<div class="empty">Ainda não há vídeos importados para este produto. Vá à aba Vídeos IA para importar um.</div>';
+return;
+}
+
+area.innerHTML = clips.map(v=>{
+const url = URL.createObjectURL(v.blob);
+objectURLs.push(url);
+
+return `
+<div class="card">
+<b>${esc(v.name || 'Vídeo importado')}</b>
+<p class="small">${new Date(v.createdAt).toLocaleString('pt-BR')}</p>
+<video src="${url}" controls playsinline></video>
+<a class="btn secondary" href="${url}" download="${esc(v.name || 'motoria-video.mp4')}">Baixar vídeo</a>
+<button class="btn danger" onclick="deleteVideo('${v.id}')">Excluir</button>
+</div>
+`;
 }).join('');
+
+} catch(e) {
+console.error(e);
+area.innerHTML = '<div class="empty">Não foi possível carregar os vídeos salvos.</div>';
 }
-async function deleteVideo(id){
-if(!confirm('Excluir este vídeo salvo?'))return;
-await dbDelete(id);await loadEdit();await renderLibrary();
 }
-function generateCaption(){
-const p=products[Number(document.getElementById('captionProduct').value)];
-if(!p){alert('Cadastre um produto primeiro.');return;}
-const tone=document.getElementById('captionTone').value;
-const intros={
+
+async function deleteVideo(id) {
+if(!confirm('Excluir este vídeo salvo?')) return;
+
+await dbDelete(id);
+await loadEdit();
+await renderLibrary();
+}
+
+/* GERADOR DE LEGENDAS */
+function generateCaption() {
+const p = products[Number(document.getElementById('captionProduct').value)];
+
+if(!p) {
+alert('Cadastre um produto primeiro.');
+return;
+}
+
+const tone = document.getElementById('captionTone').value;
+
+const intros = {
 natural:`Olha só esse ${p.name}! 😍 Um achadinho que merece sua atenção.`,
 oferta:`✨ Você já viu esse ${p.name}? Aproveite para conferir os detalhes!`,
 curioso:`Será que você também vai se apaixonar por esse ${p.name}? 👀`,
 elegante:`Praticidade e estilo em um só produto: conheça ${p.name}.`
 };
-const link=p.link?`\n\n🛍️ Confira aqui: ${p.link}`:'';
-document.getElementById('captionResult').value=intros[tone]+link+'\n\n#achadinhos #ofertas #comprasonline';
+
+const link = p.link ? `\n\n🛍️ Confira aqui: ${p.link}` : '';
+
+document.getElementById('captionResult').value =
+intros[tone] + link + '\n\n#achadinhos #ofertas #comprasonline';
 }
-async function copyCaption(){
-const value=document.getElementById('captionResult').value;
-if(!value.trim()){alert('Escreva ou gere uma legenda primeiro.');return;}
-try{await navigator.clipboard.writeText(value);alert('Legenda copiada!');}
-catch(e){document.getElementById('captionResult').select();document.execCommand('copy');alert('Legenda copiada!');}
+
+async function copyCaption() {
+const value = document.getElementById('captionResult').value;
+
+if(!value.trim()) {
+alert('Escreva ou gere uma legenda primeiro.');
+return;
 }
-function saveCaption(){
-const text=document.getElementById('captionResult').value.trim();
-if(!text){alert('Escreva uma legenda primeiro.');return;}
-const p=products[Number(document.getElementById('captionProduct').value)];
-captions.push({text,productName:p?.name||'Produto',createdAt:Date.now()});
+
+try {
+await navigator.clipboard.writeText(value);
+alert('Legenda copiada!');
+} catch(e) {
+const field = document.getElementById('captionResult');
+field.select();
+document.execCommand('copy');
+alert('Legenda copiada!');
+}
+}
+
+function saveCaption() {
+const text = document.getElementById('captionResult').value.trim();
+
+if(!text) {
+alert('Escreva uma legenda primeiro.');
+return;
+}
+
+const p = products[Number(document.getElementById('captionProduct').value)];
+
+captions.push({
+text,
+productName:p ? p.name : 'Produto',
+createdAt:Date.now()
+});
+
 localStorage.setItem('motor_captions',JSON.stringify(captions));
+
 alert('Legenda salva na biblioteca!');
 }
-async function renderLibrary(){
-const area=document.getElementById('libraryList');
-const all=await dbGetAll();
-const videos=all.sort((a,b)=>b.createdAt-a.createdAt);
-const videoHTML=videos.map(v=>`<div class="card"><b>🎬 ${esc(v.name||'Vídeo')}</b><p class="small">${esc(v.productName||'Produto')} · ${new Date(v.createdAt).toLocaleString('pt-BR')}</p></div>`).join('');
-const captionHTML=captions.slice().reverse().map(c=>`<div class="card"><b>📝 ${esc(c.productName)}</b><p>${esc(c.text).replace(/\n/g,'<br>')}</p><button class="btn secondary" onclick="copyText(${JSON.stringify(c.text).replace(/"/g,'&quot;')})">Copiar</button></div>`).join('');
-area.innerHTML=(videoHTML+captionHTML)||'<div class="empty">Sua biblioteca ainda está vazia.</div>';
+
+/* BIBLIOTECA */
+async function renderLibrary() {
+const area = document.getElementById('libraryList');
+
+try {
+const all = await dbGetAll();
+const videos = all.sort((a,b)=>b.createdAt-a.createdAt);
+
+const videoHTML = videos.map(v=>`
+<div class="card">
+<b>🎬 ${esc(v.name || 'Vídeo')}</b>
+<p class="small">${esc(v.productName || 'Produto')} · ${new Date(v.createdAt).toLocaleString('pt-BR')}</p>
+</div>
+`).join('');
+
+const captionHTML = captions.slice().reverse().map((c,i)=>`
+<div class="card">
+<b>📝 ${esc(c.productName)}</b>
+<p>${esc(c.text).replace(/\n/g,'<br>')}</p>
+<button class="btn secondary" onclick="copySavedCaption(${captions.length-1-i})">Copiar</button>
+</div>
+`).join('');
+
+area.innerHTML = (videoHTML + captionHTML) ||
+'<div class="empty">Sua biblioteca ainda está vazia.</div>';
+
+} catch(e) {
+console.error(e);
+area.innerHTML = '<div class="empty">Não foi possível carregar a biblioteca.</div>';
 }
-async function copyText(text){
-try{await navigator.clipboard.writeText(text);alert('Copiado!');}
-catch(e){alert('Não foi possível copiar automaticamente.');}
 }
-function openPrunaOverlay(){
-const overlay=document.getElementById('pruna-overlay');
-const frame=document.getElementById('pruna-frame');
-overlay.classList.add('open');
-document.body.style.overflow='hidden';
-if(frame.src==='about:blank')frame.src='https://demo.pruna.ai/p-video-workflows';
+
+async function copySavedCaption(index) {
+const item = captions[index];
+
+if(!item) return;
+
+try {
+await navigator.clipboard.writeText(item.text);
+alert('Legenda copiada!');
+} catch(e) {
+alert('Não foi possível copiar automaticamente.');
 }
-function closePrunaOverlay(){
-document.getElementById('pruna-overlay').classList.remove('open');
-document.body.style.overflow='';
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closePrunaOverlay();});
+
 update();
 </script>
 </body>
