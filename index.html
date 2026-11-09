@@ -2,71 +2,58 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080a08">
 <title>MotorIA — Estúdio de Afiliados</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 :root{--bg:#080a08;--panel:#111510;--panel2:#171d15;--line:#2a3426;--moss:#252d20;--sage:#aab59a;--text:#eef0e9;--muted:#a3aa9b}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;line-height:1.5}
 button,input,textarea,select{font:inherit}
-header{padding:25px 18px 20px;background:linear-gradient(135deg,#141b12,#080a08 72%);border-bottom:1px solid var(--line)}
+header{padding:24px 18px 20px;background:linear-gradient(135deg,#141b12,#080a08 72%);border-bottom:1px solid var(--line)}
 .header-inner,main{max-width:980px;margin:auto}
 .brand{display:flex;align-items:center;gap:11px}
 .logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#526347,#252d20);display:grid;place-items:center;font-size:21px}
 .brand-name{font-weight:800;font-size:23px}
 .tagline{color:var(--muted);font-size:12px}
-.header-note{margin:22px 0 0;font:700 clamp(22px,5vw,32px)/1.2 Manrope;max-width:620px}
+.header-note{margin:22px 0 0;font-size:clamp(22px,5vw,32px);font-weight:800;line-height:1.2}
 .header-note span{color:var(--sage)}
 main{padding:18px 14px 50px}
-nav{display:flex;gap:8px;overflow-x:auto;padding:3px 1px 14px;margin-bottom:8px;scrollbar-width:none}
+nav{display:flex;gap:8px;overflow-x:auto;padding:3px 1px 14px;margin-bottom:8px}
 .nav-btn{white-space:nowrap;background:transparent;border:1px solid var(--line);color:var(--muted);padding:10px 13px;border-radius:999px;font-size:12px;font-weight:700}
 .nav-btn.active{background:var(--moss);border-color:#526247;color:white}
-section.panel{background:var(--panel);border:1px solid var(--line);padding:19px;border-radius:18px;margin-bottom:16px}
+.panel{background:var(--panel);border:1px solid var(--line);padding:19px;border-radius:18px;margin-bottom:16px}
+.hidden{display:none!important}
 h2{font-size:19px;margin:0 0 7px}
 p{margin:7px 0;color:#d5d9cf}
 .muted,.small{color:var(--muted);font-size:12px}
 label{display:block;font-size:12px;font-weight:600;color:#c5cdbd;margin:13px 0 6px}
 input,textarea,select{width:100%;padding:13px 14px;background:#0c100b;border:1px solid #35412f;border-radius:11px;color:var(--text);font-size:14px;outline:none}
-input:focus,textarea:focus,select:focus{border-color:#81936f}
-textarea{min-height:100px;resize:vertical}
+textarea{min-height:110px;resize:vertical}
 button{cursor:pointer}
 .btn{border:1px solid #526247;background:linear-gradient(135deg,#45543a,#293324);color:white;padding:12px 16px;border-radius:11px;font-weight:700;font-size:13px;margin:9px 5px 0 0}
 .btn.secondary{background:#171e15;border-color:#394634}
 .btn.danger{background:#241614;border-color:#5b302c;color:#e5b4ae}
-.btn:disabled{opacity:.55;cursor:not-allowed}
 .notice{background:#1b2118;border:1px solid #46533d;color:#cbd4c1;padding:13px;border-radius:12px;font-size:12px;line-height:1.6;margin:13px 0}
 .card{background:#151b13;border:1px solid var(--line);padding:13px;border-radius:14px;margin:11px 0}
-.card img{width:100%;max-height:190px;object-fit:contain;border-radius:10px;background:#0b0e0a}
-.result{white-space:pre-wrap;line-height:1.7;background:#0b0f0a;border:1px solid #303b2b;padding:15px;border-radius:12px;margin-top:12px;font-size:13px;overflow-wrap:anywhere}
-.hidden{display:none!important}
-.video-layout{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:18px;align-items:start}
-.preview-wrap{display:flex;justify-content:center;background:#0b0e0a;border:1px solid var(--line);border-radius:14px;padding:10px}
-.preview{width:100%;max-width:180px;aspect-ratio:9/16;border:1px dashed #69785c;border-radius:11px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);background:#171d15;padding:10px;font-size:12px}
-.preview img{width:100%;height:100%;object-fit:contain}
-.empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
-footer{text-align:center;color:#788071;font-size:11px;padding:20px}
-video{display:block}
-#downloadVideo{display:inline-block;text-decoration:none;margin-top:10px}
-@media(max-width:620px){main{padding:14px 12px 40px}.video-layout{grid-template-columns:1fr}.preview{max-width:160px}.panel{padding:16px!important}}
-.clips{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
-.clip{background:#151b13;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:12px}
-.clip video{width:100%;aspect-ratio:auto;margin:8px 0 4px;border-radius:8px;background:transparent}
-.clip a{color:var(--sage)}
-
-/* PRUNA AI — janela sobreposta */
-#pruna-launch{position:fixed;right:16px;bottom:18px;z-index:9000;border:1px solid #81936f;background:linear-gradient(135deg,#526347,#293324);color:#fff;border-radius:999px;padding:13px 18px;font-weight:800;box-shadow:0 8px 28px #0009}
-#pruna-overlay{display:none;position:fixed;inset:0;z-index:10000;background:#050705ed;padding:12px}
-#pruna-overlay.open{display:flex;flex-direction:column}
-.pruna-top{display:flex;align-items:center;gap:10px;padding:8px 4px 12px;color:#eef0e9}
-.pruna-top strong{font-size:15px}.pruna-top span{font-size:11px;color:#aab59a;flex:1}
-.pruna-close{background:#293324;color:#fff;border:1px solid #526247;border-radius:9px;padding:9px 13px;font-weight:700}
-#pruna-frame{width:100%;flex:1;min-height:0;border:1px solid #35412f;border-radius:12px;background:#111510}
-.pruna-fallback{font-size:12px;color:#cbd4c1;padding:9px 3px;line-height:1.5}
-.pruna-fallback a{color:#d5e6c4;font-weight:700}
-@media(max-width:600px){#pruna-overlay{padding:6px}.pruna-top{padding:6px 2px 9px}#pruna-launch{right:12px;bottom:12px}}
-
+.card img{width:100%;max-height:220px;object-fit:contain;border-radius:9px;background:#0b0e09}
+.empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}
+.preview{min-height:150px;border:1px dashed #46533d;border-radius:13px;display:grid;place-items:center;color:var(--muted);overflow:hidden;padding:8px;text-align:center}
+.preview img{max-width:100%;max-height:220px;object-fit:contain}
+.clips video,.card video{width:100%;max-height:460px;background:#000;border-radius:10px;margin-top:8px}
+#pruna-launch{position:fixed;right:16px;bottom:18px;z-index:20;border:1px solid #81936f;background:#34432c;color:white;border-radius:999px;padding:14px 19px;font-weight:800;box-shadow:0 5px 25px #0009}
+#pruna-overlay{display:none;position:fixed;inset:0;z-index:50;background:#080a08;flex-direction:column}
+#pruna-overlay.open{display:flex}
+.pruna-top{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#151b13;border-bottom:1px solid var(--line)}
+.pruna-top strong{font-size:14px}
+.pruna-top span{font-size:11px;color:var(--muted);flex:1}
+.pruna-close{border:1px solid #526247;background:#252d20;color:white;padding:9px 12px;border-radius:9px}
+#pruna-frame{border:0;width:100%;flex:1;background:#fff}
+.pruna-fallback{padding:10px 14px;background:#151b13;font-size:11px;color:var(--muted)}
+a{color:#c6d8b6}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
+@media(max-width:620px){main{padding:14px 12px 40px}.panel{padding:16px}}
 </style>
 </head>
 <body>
@@ -74,10 +61,7 @@ video{display:block}
 <div class="header-inner">
 <div class="brand">
 <div class="logo">✦</div>
-<div>
-<div class="brand-name">MotorIA</div>
-<div class="tagline">ESTÚDIO INTELIGENTE DE AFILIADOS</div>
-</div>
+<div><div class="brand-name">MotorIA</div><div class="tagline">Estúdio de Afiliados</div></div>
 </div>
 <div class="header-note">Seu produto. Sua criatividade.<br><span>Conteúdo pronto para vender.</span></div>
 </div>
@@ -99,7 +83,7 @@ video{display:block}
 <input id="name" placeholder="Ex.: Bolsa feminina transversal">
 <label>Link de afiliado</label>
 <input id="link" type="url" placeholder="Cole seu link de afiliado">
-<label>Foto do produto (JPG, PNG ou WebP; até 12 MB)</label>
+<label>Foto do produto</label>
 <input id="photo" type="file" accept="image/*">
 <button class="btn" onclick="addProduct()">Salvar produto</button>
 <div id="productList"></div>
@@ -107,54 +91,36 @@ video{display:block}
 
 <section id="videos" class="panel hidden">
 <h2>Estúdio de vídeos IA</h2>
-<p class="muted">Crie 3 vídeos do produto, um de cada vez, cada um com um ângulo de câmera diferente.</p>
-
+<p class="muted">Gere seus vídeos usando a Pruna AI e depois importe o arquivo para o MotorIA.</p>
 <div class="notice">
-<b>Geração gratuita — Hugging Face ZeroGPU:</b> cada toque gera 1 vídeo de 3,5 s com um ângulo de câmera diferente. Ao terminar, ele é salvo e aparece automaticamente na aba Edição. Volte aqui para gerar os próximos, até completar 3. Não precisa de chave de API nem de cartão. Como o servidor é compartilhado, pode haver fila, limite diário gratuito ou indisponibilidade temporária. Mantenha esta página aberta durante a geração.
+<b>Como funciona:</b><br>
+1. Abra a Pruna AI pelo botão abaixo.<br>
+2. Gere seu vídeo e faça o download no dispositivo.<br>
+3. Volte ao MotorIA e selecione o arquivo baixado.<br>
+4. O vídeo será salvo na área Edição e na Biblioteca do MotorIA.
 </div>
-
-<div class="video-layout">
-<div>
-<label>Produto</label>
-<select id="videoProduct" onchange="onVideoProductChange()"></select>
-<div id="videoCount" class="notice"></div>
-<button class="btn" id="generateVideoBtn" onclick="generateNext()">Gerar vídeo</button>
-<div id="videoStatus" class="notice hidden" role="status" aria-live="polite"></div>
-<button id="goEdit" class="btn secondary hidden" onclick="show('edit')">Ir para Edição</button>
-</div>
-
-<div>
-<label>Foto do produto</label>
-<div class="preview-wrap">
+<label>Produto relacionado ao vídeo</label>
+<select id="videoProduct"></select>
 <div class="preview" id="videoPreview">A foto do produto aparecerá aqui.</div>
-</div>
-<p class="small">Esta é a única imagem enviada à IA. A geração usa a cota gratuita compartilhada do Hugging Face.</p>
-</div>
-</div>
+<button class="btn" onclick="openPrunaOverlay()">✦ Abrir Pruna AI</button>
+<label>Importar vídeo baixado da Pruna</label>
+<input id="prunaVideoFile" type="file" accept="video/*">
+<div id="videoStatus" class="notice hidden"></div>
+<button class="btn secondary" onclick="show('edit')">Ir para Edição</button>
 </section>
 
 <section id="edit" class="panel hidden">
 <h2>Edição</h2>
-<p class="muted">Os vídeos que você gera chegam aqui automaticamente. Com 2 ou 3 prontos, crie um único vídeo final unindo todos.</p>
+<p class="muted">Seus vídeos importados ficam salvos neste aparelho. Selecione um produto para visualizar os arquivos.</p>
 <label>Produto</label>
 <select id="editProduct" onchange="loadEdit()"></select>
 <div id="editClips" class="clips"></div>
-<div class="notice">
-<b>Montagem automática:</b> transições suaves entre os 3 ângulos, correção de cor, zoom lento, vinheta e o nome do produto na abertura. A montagem acontece no navegador e leva cerca de 15 segundos. Mantenha a tela aberta durante o processo.
-</div>
-<button class="btn" id="finalBtn" onclick="createFinal()">Criar vídeo final</button>
-<div id="editStatus" class="notice hidden" role="status" aria-live="polite"></div>
-<div id="finalWrap" class="hidden" style="margin:12px 0">
-<b style="font-size:13px">Vídeo final</b>
-<video id="finalVideo" controls playsinline style="width:100%;max-height:560px;object-fit:contain;background:transparent;margin-top:8px"></video>
-<a id="finalDownload" class="btn secondary" style="display:inline-block;text-decoration:none">Baixar vídeo final</a>
-<button class="btn secondary" onclick="makeCaptionFromVideo()">Gerar legenda</button>
-</div>
+<div class="notice">Você pode assistir, baixar ou excluir os vídeos importados. A montagem de vários vídeos em um único arquivo depende de uma ferramenta de edição adicional.</div>
 </section>
 
 <section id="captions" class="panel hidden">
 <h2>Legenda para publicação</h2>
-<p class="muted">Gere uma legenda com emojis, hashtags e o seu link de afiliado.</p>
+<p class="muted">Crie uma legenda com emojis, hashtags e seu link de afiliado.</p>
 <label>Produto</label>
 <select id="captionProduct"></select>
 <label>Tom da legenda</label>
@@ -164,713 +130,230 @@ video{display:block}
 <option value="curioso">Curioso e chamativo</option>
 <option value="elegante">Elegante e direto</option>
 </select>
-<button class="btn" onclick="generateCaption()">Gerar legenda automática</button>
+<button class="btn" onclick="generateCaption()">Gerar legenda</button>
 <label>Edite sua legenda</label>
-<textarea id="captionResult" class="hidden" rows="10"></textarea>
-<div id="captionActions" class="hidden">
+<textarea id="captionResult" placeholder="Sua legenda aparecerá aqui..."></textarea>
 <button class="btn" onclick="copyCaption()">Copiar legenda</button>
 <button class="btn secondary" onclick="saveCaption()">Salvar na biblioteca</button>
-</div>
-<div class="notice">Confira o link antes de publicar.</div>
 </section>
 
 <section id="library" class="panel hidden">
 <h2>Sua biblioteca</h2>
-<p class="muted">Vídeos finais editados e legendas salvos neste aparelho.</p>
+<p class="muted">Vídeos e legendas salvos neste aparelho.</p>
 <div id="libraryList"></div>
 </section>
 
-
 <button id="pruna-launch" type="button" onclick="openPrunaOverlay()">✦ Abrir Pruna AI</button>
 <div id="pruna-overlay" role="dialog" aria-modal="true" aria-label="Gerador Pruna AI">
-  <div class="pruna-top">
-    <strong>Pruna AI · Gerador de vídeos</strong>
-    <span>Área externa incorporada ao MotorIA</span>
-    <button class="pruna-close" type="button" onclick="closePrunaOverlay()">Fechar ✕</button>
-  </div>
-  <iframe id="pruna-frame" title="Pruna AI" src="about:blank" allow="clipboard-read; clipboard-write; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-  <div class="pruna-fallback">Se a Pruna não aparecer aqui, é porque o site pode bloquear incorporação em janelas externas. Nesse caso, <a href="https://demo.pruna.ai/p-video-workflows" target="_blank" rel="noopener noreferrer">abra o gerador oficial da Pruna em outra aba</a>. O login, os limites e eventuais cobranças continuam sendo controlados pela Pruna.</div>
+<div class="pruna-top">
+<strong>Pruna AI · Gerador de vídeos</strong>
+<span>MotorIA</span>
+<button class="pruna-close" type="button" onclick="closePrunaOverlay()">Fechar ✕</button>
+</div>
+<iframe id="pruna-frame" title="Pruna AI" src="about:blank" allow="clipboard-read;clipboard-write;fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<div class="pruna-fallback">Se a Pruna não aparecer aqui, o site pode bloquear a incorporação. <a href="https://demo.pruna.ai/p-video-workflows" target="_blank" rel="noopener noreferrer">Abrir a Pruna em outra aba</a>. O login, os limites e eventuais cobranças são controlados pela Pruna.</div>
 </div>
 
 <footer>MotorIA · Seu estúdio criativo</footer>
 </main>
 
 <script>
-const HF_SPACE_BASE='https://cbensimon-wan2-2-fp8da-aoti-preview2.hf.space';
-const HF_FN='generate_video';
-const VIDEO_DURATION=3.5;
-const INFERENCE_STEPS=6;
-const FALLBACK_DURATIONS=[3.5];
-const NEG_PROMPT='色调艳丽, 过曝, 静态, 细节模糊不清, 字幕, 风格, 作品, 画作, 画面, 静止, 整体发灰, 最差质量, 低质量, JPEG压缩残留, 丑陋的, 残缺的, 多余的手指, 畸形的, 毁容的, 形态畸形的肢体, 杂乱的背景, 水印';
-const ERRO_VAZIO='O servidor de vídeo recusou o pedido sem explicar o motivo. Pode ser fila cheia, limite de tempo ou cota. Tente de novo em instantes.';
-
-const ANGLES=[
-{name:'Giro ao redor',motion:'the camera slowly orbits around the product, three-quarter side angle'},
-{name:'Close nos detalhes',motion:'low-angle macro close-up, the camera glides slowly across the product details and textures'},
-{name:'Revelação ampla',motion:'high-angle wide shot, the camera slowly pulls back and rises to reveal the whole product'}
-];
-
-const readStore=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))}catch(e){return f}};
+const readStore=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}catch(e){return fallback}};
 let products=readStore('motor_products',[]);
 let captions=readStore('motor_captions',[]);
-let currentCaption='';
-let objectURLs={};
+let objectURLs=[];
 
-/* garante id em produtos antigos */
-let migrated=false;
-products.forEach((p,i)=>{if(!p.id){p.id='p'+Date.now()+'-'+i;migrated=true;}});
-if(migrated){try{localStorage.setItem('motor_products',JSON.stringify(products));}catch(e){}}
-
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function persist(){
 localStorage.setItem('motor_products',JSON.stringify(products));
 localStorage.setItem('motor_captions',JSON.stringify(captions));
 update();
 }
-
-/* ARMAZENAMENTO DOS VÍDEOS (IndexedDB) */
-function openDB(){
-return new Promise((res,rej)=>{
-const r=indexedDB.open('motoria-videos',1);
-r.onupgradeneeded=()=>r.result.createObjectStore('videos',{keyPath:'id'});
-r.onsuccess=()=>res(r.result);
-r.onerror=()=>rej(r.error);
-});
-}
-async function dbTx(mode,fn){
-const db=await openDB();
-return new Promise((res,rej)=>{
-const tx=db.transaction('videos',mode);
-const out=fn(tx.objectStore('videos'));
-tx.oncomplete=()=>res(out&&out.result);
-tx.onerror=()=>rej(tx.error);
-});
-}
-const dbPut=rec=>dbTx('readwrite',s=>s.put(rec));
-const dbGet=id=>dbTx('readonly',s=>s.get(id));
-const dbDel=id=>dbTx('readwrite',s=>s.delete(id));
-
 function show(id){
 document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
 document.getElementById(id).classList.remove('hidden');
 document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
 update();
-if(id==='videos')updateVideoInfo();
 if(id==='edit')loadEdit();
+if(id==='library')renderLibrary();
 }
-
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-
-function currentProductId(selId){
-const p=products[Number(document.getElementById(selId).value)];
+function currentProductId(selectId){
+const p=products[Number(document.getElementById(selectId).value)];
 return p?p.id:null;
 }
-
 function update(){
-document.getElementById('productList').innerHTML=products.map((p,i)=>`
-<div class="card">
-${p.photo?`<img src="${p.photo}" alt="Foto do produto">`:''}
-<b>${esc(p.name)}</b>
-<p class="small">${p.link?'Link de afiliado cadastrado':'Sem link de afiliado'}</p>
-<button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button>
-</div>`).join('')||'<div class="empty">Nenhum produto cadastrado ainda.</div>';
-
+const list=document.getElementById('productList');
+list.innerHTML=products.map((p,i)=>`<div class="card">${p.photo?`<img src="${p.photo}" alt="Foto do produto">`:''}<b>${esc(p.name)}</b><p class="small">${p.link?'Link de afiliado cadastrado':'Sem link de afiliado'}</p><button class="btn danger" onclick="removeProduct(${i})">Excluir produto</button></div>`).join('')||'<div class="empty">Nenhum produto cadastrado ainda.</div>';
 const opts=products.map((p,i)=>`<option value="${i}">${esc(p.name)}</option>`).join('')||'<option value="">Cadastre um produto primeiro</option>';
 ['videoProduct','editProduct','captionProduct'].forEach(id=>{
-const el=document.getElementById(id);
-const old=el.value;
+const el=document.getElementById(id),old=el.value;
 el.innerHTML=opts;
 if(old!==''&&products[Number(old)])el.value=old;
 });
-
-if(!document.getElementById('library').classList.contains('hidden'))renderLibrary();
-
 updateProductPreview();
 }
-
-function updateProductPreview(){
-const p=products[Number(document.getElementById('videoProduct').value)];
-const preview=document.getElementById('videoPreview');
-if(!p||!p.photo){preview.textContent='Selecione um produto com foto cadastrada.';return;}
-preview.innerHTML='';
-const img=document.createElement('img');
-img.src=p.photo;
-img.alt='Foto do produto selecionado';
-preview.appendChild(img);
-}
-
-function onVideoProductChange(){
-updateProductPreview();
-updateVideoInfo();
-}
-
-/* IMAGENS */
-async function compressImageFile(file,maxSide=1600,quality=.84){
-const bitmap=await createImageBitmap(file);
-const scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
-const canvas=document.createElement('canvas');
-canvas.width=Math.max(1,Math.round(bitmap.width*scale));
-canvas.height=Math.max(1,Math.round(bitmap.height*scale));
-const ctx=canvas.getContext('2d',{alpha:false});
-ctx.fillStyle='#fff';
-ctx.fillRect(0,0,canvas.width,canvas.height);
-ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
-bitmap.close?.();
-const blob=await new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error('Falha ao converter imagem.')),'image/jpeg',quality));
-return await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error('Falha ao ler imagem.'));r.readAsDataURL(blob);});
-}
-
-async function loadImage(src){
-const r=await fetch(src);
-const blob=await r.blob();
-const url=URL.createObjectURL(blob);
-const img=new Image();
-try{
-await new Promise((res,rej)=>{img.onload=res;img.onerror=()=>rej(new Error('Não foi possível abrir a foto do produto.'));img.src=url;});
-return img;
-}finally{URL.revokeObjectURL(url);}
-}
-
-/* PRODUTOS */
 async function addProduct(){
 const name=document.getElementById('name').value.trim();
-if(!name){alert('Digite o nome do produto.');return;}
+const link=document.getElementById('link').value.trim();
 const file=document.getElementById('photo').files[0];
-try{
+if(!name){alert('Digite o nome do produto.');return;}
 let photo='';
 if(file){
-if(!file.type.startsWith('image/'))throw new Error('Escolha um arquivo de imagem válido.');
-if(file.size>12*1024*1024)throw new Error('A foto original deve ter no máximo 12 MB.');
-photo=await compressImageFile(file,1600,.82);
+if(file.size>12*1024*1024){alert('A foto deve ter até 12 MB.');return;}
+photo=await fileToDataURL(file);
 }
-products.push({id:'p'+Date.now(),name,link:document.getElementById('link').value.trim(),photo});
-try{persist();}
-catch(e){products.pop();throw new Error('O armazenamento do navegador ficou cheio. Remova produtos ou use uma foto menor.');}
-['name','link','photo'].forEach(id=>{document.getElementById(id).value='';});
-alert('Produto cadastrado!');
-}catch(e){alert(e.message||'Não foi possível salvar o produto.');}
-}
-
-async function removeProduct(i){
-if(!confirm('Excluir este produto e seus vídeos?'))return;
-const p=products[i];
-products.splice(i,1);
-try{
-for(let k=0;k<ANGLES.length;k++)await dbDel(p.id+'-clip'+k);
-await dbDel(p.id+'-final');
-}catch(e){}
+products.push({id:'p'+Date.now()+Math.random().toString(16).slice(2),name,link,photo});
+document.getElementById('name').value='';
+document.getElementById('link').value='';
+document.getElementById('photo').value='';
 persist();
 }
-
-/* CÓPIA */
-function copy(text){
-if(navigator.clipboard&&window.isSecureContext){
-navigator.clipboard.writeText(text).then(()=>alert('Copiado!')).catch(()=>fallbackCopy(text));
-}else fallbackCopy(text);
+function removeProduct(i){
+if(!confirm('Excluir este produto?'))return;
+products.splice(i,1);persist();
 }
-function fallbackCopy(text){
-const t=document.createElement('textarea');
-t.value=text;t.style.position='fixed';t.style.opacity='0';
-document.body.appendChild(t);t.select();
-try{document.execCommand('copy');alert('Copiado!');}catch(e){alert('Não foi possível copiar automaticamente.');}
-t.remove();
-}
-
-/* FOTO DO PRODUTO PARA A IA (inteira, sem fundo nem moldura) */
-async function makeProductReference(p){
-if(!p.photo)throw new Error('Este produto não tem foto cadastrada.');
-const img=await loadImage(p.photo);
-const canvas=document.createElement('canvas');
-canvas.width=832;canvas.height=1472;
-const ctx=canvas.getContext('2d');
-const g=ctx.createLinearGradient(0,0,0,1472);
-g.addColorStop(0,'#e8e9e4');g.addColorStop(1,'#aeb5a5');
-ctx.fillStyle=g;ctx.fillRect(0,0,832,1472);
-const sc=Math.min(760/img.width,1320/img.height);
-const pw=img.width*sc,ph=img.height*sc;
-ctx.save();
-ctx.shadowColor='rgba(0,0,0,.16)';ctx.shadowBlur=28;ctx.shadowOffsetY=10;
-ctx.drawImage(img,(832-pw)/2,(1472-ph)/2,pw,ph);
-ctx.restore();
-const blob=await new Promise((res,rej)=>canvas.toBlob(b=>b?res(b):rej(new Error('Não foi possível preparar a imagem.')),'image/jpeg',.92));
-return new File([blob],'motoria-product.jpg',{type:'image/jpeg'});
-}
-
-function buildVideoPrompt(p,angle){
-return `Premium commercial product ad. The product (${p.name}) stays sharp and unchanged: same shape, colors, logo and details. ${angle.motion}. Soft natural motion, realistic lighting and shadows, clean attractive background. No text, no watermark, no extra objects.`;
-}
-
-/* CHAMADA AO SPACE (direto do navegador) */
-function friendlyError(v){
-const t=String(v??'').trim();
-if(!t||t==='null'||t==='undefined'||t==='[object Object]'||t===ERRO_VAZIO)return ERRO_VAZIO;
-if(/quota|gpu|daily limit|limit.*exceeded/i.test(t))return 'O limite gratuito de GPU do Hugging Face foi atingido ou a fila está cheia. Aguarde a renovação da cota e tente novamente. Detalhe: '+t;
-if(/failed to fetch|networkerror|load failed/i.test(t))return 'Não foi possível conectar ao servidor gratuito de vídeo. Confira sua conexão ou tente novamente mais tarde.';
-return t;
-}
-
-async function hfUpload(file){
-const form=new FormData();
-form.append('files',file,file.name||'motoria-product.jpg');
-const r=await fetch(HF_SPACE_BASE+'/gradio_api/upload',{method:'POST',body:form});
-if(!r.ok)throw new Error('Falha no envio da imagem ('+r.status+').');
-const paths=await r.json();
-if(!Array.isArray(paths)||!paths[0])throw new Error('O servidor não retornou o caminho da imagem.');
-return paths[0];
-}
-
-async function hfParameters(){
-try{
-const r=await fetch(HF_SPACE_BASE+'/gradio_api/info');
-if(!r.ok)return null;
-const info=await r.json();
-const ep=info?.named_endpoints?.['/'+HF_FN]||info?.named_endpoints?.[HF_FN];
-return ep?.parameters||null;
-}catch(e){return null;}
-}
-
-function hfBuildData(parameters,imageData,prompt){
-if(!parameters||!parameters.length){
-return [imageData,null,prompt,INFERENCE_STEPS,NEG_PROMPT,VIDEO_DURATION,1,1,42,true,6,'UniPCMultistep',3.0,16,false];
-}
-const o={input_image:imageData,image:imageData,last_image:null,prompt:prompt,steps:INFERENCE_STEPS,negative_prompt:NEG_PROMPT,duration_seconds:VIDEO_DURATION,randomize_seed:true};
-return parameters.map(p=>{
-const n=p.parameter_name;
-if(n in o)return o[n];
-return p.parameter_has_default?p.parameter_default:null;
+function fileToDataURL(file){
+return new Promise((resolve,reject)=>{
+const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file);
 });
 }
-
-async function hfSubmit(imagePath,prompt){
-const imageData={path:imagePath,url:HF_SPACE_BASE+'/gradio_api/file='+imagePath,orig_name:'motoria-product.jpg',size:null,mime_type:'image/jpeg',meta:{_type:'gradio.FileData'}};
-const data=hfBuildData(await hfParameters(),imageData,prompt);
-const r=await fetch(HF_SPACE_BASE+'/gradio_api/call/'+HF_FN,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data})});
-if(!r.ok){const d=await r.text();throw new Error('Falha ao iniciar a geração ('+r.status+'): '+d.slice(0,300));}
-const res=await r.json();
-if(!res.event_id)throw new Error('O servidor não retornou o identificador da geração.');
-return res.event_id;
+function updateProductPreview(){
+const p=products[Number(document.getElementById('videoProduct').value)];
+const box=document.getElementById('videoPreview');
+if(!p||!p.photo){box.textContent='Selecione um produto com foto cadastrada.';return;}
+box.innerHTML=`<img src="${p.photo}" alt="Foto do produto">`;
 }
 
-function findVideoUrl(v){
-if(!v)return null;
-if(typeof v==='string')return /\.(mp4|webm|mov)(\?|$)/i.test(v)?v:null;
-if(Array.isArray(v)){for(const i of v){const f=findVideoUrl(i);if(f)return f;}return null;}
-if(typeof v==='object'){
-if(v.video)return findVideoUrl(v.video);
-if(v.url)return v.url;
-if(v.path)return HF_SPACE_BASE+'/gradio_api/file='+v.path;
-for(const k of Object.keys(v)){const f=findVideoUrl(v[k]);if(f)return f;}
+/* BANCO LOCAL DOS VÍDEOS */
+function openDB(){
+return new Promise((resolve,reject)=>{
+const req=indexedDB.open('motoria-videos',1);
+req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('videos'))req.result.createObjectStore('videos',{keyPath:'id'});};
+req.onsuccess=()=>resolve(req.result);
+req.onerror=()=>reject(req.error);
+});
 }
-return null;
+async function dbPut(record){
+const db=await openDB();
+return new Promise((resolve,reject)=>{
+const tx=db.transaction('videos','readwrite');
+tx.objectStore('videos').put(record);
+tx.oncomplete=()=>resolve();
+tx.onerror=()=>reject(tx.error);
+});
 }
-
-async function hfWaitResult(eventId,statusEl){
-const r=await fetch(HF_SPACE_BASE+'/gradio_api/call/'+HF_FN+'/'+encodeURIComponent(eventId),{headers:{Accept:'text/event-stream'}});
-if(!r.ok||!r.body)throw new Error('Não foi possível acompanhar a geração ('+r.status+').');
-const reader=r.body.getReader();
-const dec=new TextDecoder();
-let buf='',result=null,error=null,failed=false;
-function handle(block){
-let ev='';const data=[];
-for(const line of block.split(/\r?\n/)){
-if(line.startsWith('event:'))ev=line.slice(6).trim();
-else if(line.startsWith('data:'))data.push(line.slice(5).trim());
+async function dbGetAll(){
+const db=await openDB();
+return new Promise((resolve,reject)=>{
+const tx=db.transaction('videos','readonly');
+const req=tx.objectStore('videos').getAll();
+req.onsuccess=()=>resolve(req.result||[]);
+req.onerror=()=>reject(req.error);
+});
 }
-const raw=data.join('\n');
-let payload=null;
-try{payload=raw?JSON.parse(raw):null;}catch(e){payload=raw;}
-if(ev==='generating'||ev==='heartbeat'){statusEl.textContent='Criando o vídeo...';}
-else if(ev==='complete'){result=payload;}
-else if(ev==='error'){failed=true;error=typeof payload==='string'?payload:(payload?.error||payload?.message||payload?.detail||null);}
+async function dbDelete(id){
+const db=await openDB();
+return new Promise((resolve,reject)=>{
+const tx=db.transaction('videos','readwrite');
+tx.objectStore('videos').delete(id);
+tx.oncomplete=()=>resolve();
+tx.onerror=()=>reject(tx.error);
+});
 }
-while(true){
-const {value,done}=await reader.read();
-if(done)break;
-buf+=dec.decode(value,{stream:true});
-const blocks=buf.split(/\r?\n\r?\n/);
-buf=blocks.pop()||'';
-for(const b of blocks)handle(b);
-}
-buf+=dec.decode();
-if(buf.trim())handle(buf);
-if(failed)throw new Error(friendlyError(error));
-if(!result)throw new Error('A conexão terminou sem o vídeo. O servidor gratuito pode ter encerrado a tarefa ou a fila pode estar ocupada. Tente novamente mais tarde.');
-const url=findVideoUrl(result);
-if(!url)throw new Error('A geração terminou, mas o vídeo não veio na resposta.');
-return url;
-}
-
-async function fetchVideoBlob(url){
-const r=await fetch(url);
-if(!r.ok)throw new Error('Não foi possível baixar o vídeo gerado ('+r.status+').');
-const b=await r.blob();
-return b.type.startsWith('video/')?b:new Blob([b],{type:'video/mp4'});
-}
-
-/* LISTAGEM DOS VÍDEOS SALVOS */
-async function getClips(productId){
-const out=[];
-for(let k=0;k<ANGLES.length;k++){
-try{const rec=await dbGet(productId+'-clip'+k);if(rec&&rec.blob)out.push(rec);}catch(e){}
-}
-return out;
-}
-
-function clipCardHTML(key,title,inner){
-return `<div class="clip" id="${key}"><b>${esc(title)}</b>${inner}</div>`;
-}
-
-async function renderClips(containerId,productId){
-const box=document.getElementById(containerId);
-(objectURLs[containerId]||[]).forEach(u=>URL.revokeObjectURL(u));
-objectURLs[containerId]=[];
-if(!productId){box.innerHTML='';return;}
-const recs=await getClips(productId);
-box.innerHTML=ANGLES.map((a,k)=>{
-const rec=recs.find(r=>r.id===productId+'-clip'+k);
-const title=(k+1)+'. '+a.name;
-if(!rec)return clipCardHTML(containerId+'-'+k,title,'<p class="small">Ainda não gerado. Gere na aba Vídeos IA.</p>');
-const u=URL.createObjectURL(rec.blob);
-objectURLs[containerId].push(u);
-return clipCardHTML(containerId+'-'+k,title,`<video src="${u}" controls playsinline loop muted></video><a class="small" href="${u}" download="motoria-angulo-${k+1}.mp4">Baixar</a><button class="btn danger" style="width:100%;margin:6px 0 0" onclick="deleteClip(${k})">Excluir</button>`);
-}).join('');
-}
-
-async function deleteClip(k){
-const pid=currentProductId('editProduct');
-if(!pid||!confirm('Excluir este vídeo? Depois você pode gerar outro no lugar dele.'))return;
-try{await dbDel(pid+'-clip'+k);}catch(e){}
-loadEdit();
-}
-
-/* VÍDEOS IA: um vídeo por vez, enviado direto para a Edição */
-let generating=false;
-const slotOf=r=>Number(r.id.slice(r.id.lastIndexOf('-clip')+5));
-
-async function updateVideoInfo(){
-if(generating)return;
-const pid=currentProductId('videoProduct');
-const info=document.getElementById('videoCount');
-const btn=document.getElementById('generateVideoBtn');
-const goEdit=document.getElementById('goEdit');
-if(!pid){info.textContent='Cadastre um produto para começar.';btn.disabled=true;goEdit.classList.add('hidden');return;}
-const recs=await getClips(pid);
-const n=recs.length;
-const used=new Set(recs.map(slotOf));
-const k=ANGLES.findIndex((_,i)=>!used.has(i));
-info.innerHTML='<b>Vídeos prontos: '+n+' de 3.</b>'+(k>=0?' Próximo ângulo: '+esc(ANGLES[k].name)+'.':' Todos prontos! Vá para a aba Edição.');
-btn.disabled=k<0;
-btn.textContent=k>=0?'Gerar vídeo '+(n+1)+' de 3 ('+ANGLES[k].name+')':'Os 3 vídeos estão prontos';
-goEdit.classList.toggle('hidden',n<1);
-}
-
-async function generateNext(){
-if(generating)return;
-const idx=Number(document.getElementById('videoProduct').value);
-const p=products[idx];
-if(!p){alert('Cadastre um produto primeiro.');return;}
-if(!p.photo){alert('Este produto não tem foto cadastrada.');return;}
-
-const recs=await getClips(p.id);
-const used=new Set(recs.map(slotOf));
-const k=ANGLES.findIndex((_,i)=>!used.has(i));
-if(k<0){alert('Este produto já tem os 3 vídeos. Na aba Edição você pode criar o vídeo final ou excluir algum para gerar outro.');return;}
-
-generating=true;
-const btn=document.getElementById('generateVideoBtn');
+async function importPrunaVideo(){
+const input=document.getElementById('prunaVideoFile');
+const file=input.files[0];
 const status=document.getElementById('videoStatus');
-btn.disabled=true;
-btn.textContent='Gerando...';
+const pid=currentProductId('videoProduct');
+if(!pid){alert('Cadastre e selecione um produto primeiro.');return;}
+if(!file){alert('Selecione o vídeo que você baixou da Pruna.');return;}
+if(!file.type.startsWith('video/')){alert('O arquivo selecionado não parece ser um vídeo.');return;}
 status.classList.remove('hidden');
-let ok=false;
+status.textContent='Salvando vídeo no MotorIA...';
 try{
-status.textContent='Preparando a foto do produto...';
-const ref=await makeProductReference(p);
-let url=null;
-for(const dur of FALLBACK_DURATIONS){
-try{
-status.textContent='Enviando ao Hugging Face ZeroGPU: vídeo '+(recs.length+1)+' de 3 ('+ANGLES[k].name+'). Pode haver fila; mantenha a página aberta.';
-const path=await hfUpload(ref);
-const eventId=await hfSubmit(path,buildVideoPrompt(p,ANGLES[k]));
-url=await hfWaitResult(eventId,status);
-break;
-}catch(err){
-const empty=friendlyError(err?.message)===ERRO_VAZIO;
-if(!empty||dur===FALLBACK_DURATIONS[FALLBACK_DURATIONS.length-1])throw err;
-status.textContent='O servidor recusou com '+String(dur).replace('.',',')+' s. Tentando de novo com menos tempo...';
-await new Promise(r=>setTimeout(r,2500));
-}
-}
-status.textContent='Salvando no site...';
-const blob=await fetchVideoBlob(url);
-await dbPut({id:p.id+'-clip'+k,productId:p.id,kind:'clip',angle:ANGLES[k].name,blob,createdAt:Date.now()});
-ok=true;
+const product=products.find(p=>p.id===pid);
+const record={id:'video-'+Date.now()+'-'+Math.random().toString(16).slice(2),productId:pid,productName:product?.name||'Produto',name:file.name,blob:file,type:file.type,createdAt:Date.now()};
+await dbPut(record);
+status.textContent='Vídeo salvo com sucesso! Ele já está disponível na aba Edição.';
+input.value='';
+await loadEdit();
 }catch(e){
 console.error(e);
-status.textContent='Não foi possível gerar: '+friendlyError(e?.message||String(e));
-}finally{
-generating=false;
+status.textContent='Não foi possível salvar o vídeo. Verifique o espaço disponível no aparelho.';
 }
-if(!ok){updateVideoInfo();return;}
-
-/* envia automaticamente para a aba Edição */
-const total=(await getClips(p.id)).length;
-document.getElementById('editProduct').value=String(idx);
-show('edit');
-const es=document.getElementById('editStatus');
-es.classList.remove('hidden');
-es.textContent=total>=3
-?'Vídeo '+(k+1)+' salvo! Os 3 vídeos estão prontos. Toque em "Criar vídeo final".'
-:'Vídeo '+(k+1)+' salvo ('+total+' de 3)! Volte em Vídeos IA para gerar o próximo.';
 }
+document.getElementById('prunaVideoFile').addEventListener('change',importPrunaVideo);
+document.getElementById('videoProduct').addEventListener('change',updateProductPreview);
 
-/* EDIÇÃO: junta os vídeos em um só */
 async function loadEdit(){
 const pid=currentProductId('editProduct');
-await renderClips('editClips',pid);
-const wrap=document.getElementById('finalWrap');
-wrap.classList.add('hidden');
-if(!pid)return;
-try{
-const rec=await dbGet(pid+'-final');
-if(rec&&rec.blob)showFinal(rec.blob,rec.ext||'mp4');
-}catch(e){}
+const area=document.getElementById('editClips');
+objectURLs.forEach(u=>URL.revokeObjectURL(u));objectURLs=[];
+if(!pid){area.innerHTML='<div class="empty">Cadastre e selecione um produto primeiro.</div>';return;}
+const all=await dbGetAll();
+const clips=all.filter(v=>v.productId===pid).sort((a,b)=>b.createdAt-a.createdAt);
+if(!clips.length){area.innerHTML='<div class="empty">Ainda não há vídeos importados para este produto. Vá à aba Vídeos IA para importar um.</div>';return;}
+area.innerHTML=clips.map(v=>{
+const url=URL.createObjectURL(v.blob);objectURLs.push(url);
+return `<div class="card"><b>${esc(v.name||'Vídeo importado')}</b><p class="small">${new Date(v.createdAt).toLocaleString('pt-BR')}</p><video src="${url}" controls playsinline></video><a class="btn secondary" href="${url}" download="${esc(v.name||'motoria-video.mp4')}">Baixar vídeo</a><button class="btn danger" onclick="deleteVideo('${v.id}')">Excluir</button></div>`;
+}).join('');
 }
-
-function showFinal(blob,ext){
-if(objectURLs.final)URL.revokeObjectURL(objectURLs.final);
-const u=URL.createObjectURL(blob);
-objectURLs.final=u;
-const v=document.getElementById('finalVideo');
-v.src=u;v.load();
-const a=document.getElementById('finalDownload');
-a.href=u;a.download='motoria-video-final.'+ext;
-document.getElementById('finalWrap').classList.remove('hidden');
+async function deleteVideo(id){
+if(!confirm('Excluir este vídeo salvo?'))return;
+await dbDelete(id);await loadEdit();await renderLibrary();
 }
-
-function pickMime(){
-const list=['video/mp4;codecs=avc1.42E01E','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
-return list.find(m=>window.MediaRecorder&&MediaRecorder.isTypeSupported(m))||'';
-}
-
-function loadClipVideo(blob){
-return new Promise((res,rej)=>{
-const v=document.createElement('video');
-v.muted=true;v.playsInline=true;v.preload='auto';
-v.src=URL.createObjectURL(blob);
-v.onloadeddata=()=>res(v);
-v.onerror=()=>rej(new Error('Não foi possível abrir um dos vídeos.'));
-});
-}
-
-async function createFinal(){
-const p=products[Number(document.getElementById('editProduct').value)];
-if(!p){alert('Cadastre um produto primeiro.');return;}
-if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){alert('Este navegador não suporta a montagem de vídeo. Use o Chrome ou o Safari atualizado.');return;}
-const recs=await getClips(p.id);
-if(recs.length<2){alert('Gere os vídeos primeiro na aba Vídeos IA.');return;}
-
-const btn=document.getElementById('finalBtn');
-const status=document.getElementById('editStatus');
-btn.disabled=true;btn.textContent='Montando...';
-status.classList.remove('hidden');
-status.textContent='Carregando os vídeos...';
-
-try{
-const els=[];
-for(const r of recs)els.push(await loadClipVideo(r.blob));
-const vw=els[0].videoWidth,vh=els[0].videoHeight;
-const sc=Math.min(1,1080/Math.max(vw,vh));
-const W=Math.max(2,Math.round(vw*sc/2)*2),H=Math.max(2,Math.round(vh*sc/2)*2);
-const canvas=document.createElement('canvas');
-canvas.width=W;canvas.height=H;
-const ctx=canvas.getContext('2d');
-
-const FADE=0.6;
-const durs=els.map(v=>isFinite(v.duration)&&v.duration>0?v.duration:VIDEO_DURATION);
-const starts=[];let total=0;
-durs.forEach((d,i)=>{starts.push(total);total+=d-(i<durs.length-1?FADE:0);});
-
-const GRADE='contrast(1.08) saturate(1.14) brightness(1.02)';
-const vig=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.45,W/2,H/2,Math.max(W,H)*.75);
-vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,.38)');
-
-function frame(now){
-ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
-els.forEach((v,i)=>{
-const lt=now-starts[i];
-if(lt<0||lt>durs[i]+.05)return;
-const a=(i>0&&lt<FADE)?lt/FADE:1;
-const z=1+.05*Math.min(1,lt/durs[i]);
-ctx.save();
-ctx.globalAlpha=a;
-ctx.filter=GRADE;
-ctx.translate(W/2,H/2);ctx.scale(z,z);
-ctx.drawImage(v,-W/2,-H/2,W,H);
-ctx.restore();
-});
-ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
-if(now<2.4){
-const ta=Math.min(1,now/.5,(2.4-now)/.5);
-const fs=Math.round(W*.055);
-ctx.save();
-ctx.globalAlpha=Math.max(0,ta);
-const g=ctx.createLinearGradient(0,H*.72,0,H);
-g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.6)');
-ctx.fillStyle=g;ctx.fillRect(0,H*.72,W,H*.28);
-ctx.fillStyle='#fff';
-ctx.font='700 '+fs+'px Manrope, Arial, sans-serif';
-ctx.textAlign='center';
-ctx.shadowColor='rgba(0,0,0,.6)';ctx.shadowBlur=12;
-ctx.fillText(p.name.length>34?p.name.slice(0,33)+'…':p.name,W/2,H*.9);
-ctx.restore();
-}
-const left=total-now;
-if(left<.7){ctx.fillStyle='rgba(0,0,0,'+Math.min(1,(.7-left)/.7)+')';ctx.fillRect(0,0,W,H);}
-}
-
-const mime=pickMime();
-const stream=canvas.captureStream(30);
-const rec=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:8000000}:{videoBitsPerSecond:8000000});
-const chunks=[];
-rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
-
-const finalBlob=await new Promise((resolve,reject)=>{
-rec.onstop=()=>resolve(new Blob(chunks,{type:rec.mimeType||mime||'video/webm'}));
-rec.onerror=()=>reject(new Error('Falha ao gravar o vídeo final.'));
-const started=new Set();
-rec.start(250);
-const t0=performance.now();
-function tick(){
-const now=(performance.now()-t0)/1000;
-els.forEach((v,i)=>{if(now>=starts[i]&&!started.has(i)){started.add(i);v.currentTime=0;v.play().catch(()=>{});}});
-frame(Math.min(now,total));
-status.textContent='Montando o vídeo final... '+Math.min(100,Math.round(now/total*100))+'%. Mantenha a tela aberta.';
-if(now<total)requestAnimationFrame(tick);else{els.forEach(v=>v.pause());rec.stop();}
-}
-requestAnimationFrame(tick);
-});
-
-els.forEach(v=>URL.revokeObjectURL(v.src));
-const ext=(finalBlob.type||'').includes('mp4')?'mp4':'webm';
-await dbPut({id:p.id+'-final',productId:p.id,kind:'final',ext,blob:finalBlob,createdAt:Date.now()});
-showFinal(finalBlob,ext);
-status.textContent='Pronto! Vídeo final criado e salvo na Biblioteca.';
-}catch(e){
-console.error(e);
-status.textContent='Não foi possível montar o vídeo: '+(e?.message||e);
-}finally{
-btn.disabled=false;btn.textContent='Criar vídeo final';
-}
-}
-
-/* BIBLIOTECA: vídeo final + legenda de cada produto */
-async function renderLibrary(){
-const box=document.getElementById('libraryList');
-(objectURLs.lib||[]).forEach(u=>URL.revokeObjectURL(u));
-objectURLs.lib=[];
-let html='';
-const used=new Set();
-for(const p of products){
-let rec=null;
-try{rec=await dbGet(p.id+'-final');}catch(e){}
-const caps=captions.map((c,i)=>({c,i})).filter(x=>x.c.productId===p.id||(!x.c.productId&&x.c.productName===p.name));
-caps.forEach(x=>used.add(x.i));
-if(!(rec&&rec.blob)&&!caps.length)continue;
-let vid='<p class="small">Vídeo final ainda não criado. Crie na aba Edição.</p>';
-if(rec&&rec.blob){
-const u=URL.createObjectURL(rec.blob);
-objectURLs.lib.push(u);
-vid=`<video src="${u}" controls playsinline style="width:100%;max-height:520px;object-fit:contain;background:transparent;margin:8px 0"></video>
-<a class="btn secondary" href="${u}" download="motoria-${esc(p.name).replace(/\s+/g,'-')}.${rec.ext||'mp4'}" style="display:inline-block;text-decoration:none">Baixar vídeo</a>
-<button class="btn danger" onclick="removeFinal('${p.id}')">Excluir vídeo</button>`;
-}
-const capHtml=caps.map(x=>`<div class="result">${esc(x.c.text)}</div>
-<button class="btn secondary" onclick="copyCaptionAt(${x.i})">Copiar legenda</button>
-<button class="btn danger" onclick="removeCaption(${x.i})">Excluir legenda</button>`).join('')||'<p class="small">Sem legenda salva. Gere na aba Legendas.</p>';
-html+=`<div class="card"><b>${esc(p.name)}</b>${vid}${capHtml}</div>`;
-}
-captions.forEach((c,i)=>{
-if(used.has(i))return;
-html+=`<div class="card"><b>${esc(c.productName)}</b>
-<div class="result">${esc(c.text)}</div>
-<button class="btn secondary" onclick="copyCaptionAt(${i})">Copiar legenda</button>
-<button class="btn danger" onclick="removeCaption(${i})">Excluir legenda</button></div>`;
-});
-box.innerHTML=html||'<div class="empty">Nada salvo ainda. Crie o vídeo final na aba Edição e salve a legenda.</div>';
-}
-
-async function removeFinal(pid){
-if(!confirm('Excluir o vídeo final deste produto?'))return;
-try{await dbDel(pid+'-final');}catch(e){}
-renderLibrary();
-}
-
-function makeCaptionFromVideo(){
-const idx=document.getElementById('editProduct').value;
-show('captions');
-document.getElementById('captionProduct').value=idx;
-generateCaption();
-}
-
-/* LEGENDAS */
-function hashtagsFor(p){
-const words=p.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().match(/[a-z0-9]+/g)||[];
-const stop=new Set(['para','com','sem','uma','uns','das','dos','que','por','the','and','de','do','da']);
-const tags=[...new Set(words.filter(w=>w.length>3&&!stop.has(w)).slice(0,4))].map(w=>'#'+w);
-return [...tags,'#Achadinhos','#Ofertas','#DicasDeCompra'].slice(0,7).join(' ');
-}
-
 function generateCaption(){
 const p=products[Number(document.getElementById('captionProduct').value)];
 if(!p){alert('Cadastre um produto primeiro.');return;}
 const tone=document.getElementById('captionTone').value;
-const intro={
-natural:`✨ Olha só este ${p.name}!`,
-oferta:`🛍️ Está de olho em ${p.name}? Confira esta opção!`,
-curioso:`👀 Já conhece ${p.name}? Veja os detalhes!`,
-elegante:`Conheça ${p.name}. ✨`
+const intros={
+natural:`Olha só esse ${p.name}! 😍 Um achadinho que merece sua atenção.`,
+oferta:`✨ Você já viu esse ${p.name}? Aproveite para conferir os detalhes!`,
+curioso:`Será que você também vai se apaixonar por esse ${p.name}? 👀`,
+elegante:`Praticidade e estilo em um só produto: conheça ${p.name}.`
 };
-const affiliate=p.link?`\n\n🔗 Confira aqui: ${p.link}`:'\n\n🔗 Adicione seu link de afiliado no cadastro do produto para incluí-lo aqui.';
-currentCaption=`${intro[tone]}
-
-💚 Confira os detalhes e veja se combina com você!
-
-${hashtagsFor(p)}${affiliate}`;
-const el=document.getElementById('captionResult');
-el.value=currentCaption;
-el.classList.remove('hidden');
-document.getElementById('captionActions').classList.remove('hidden');
+const link=p.link?`\n\n🛍️ Confira aqui: ${p.link}`:'';
+document.getElementById('captionResult').value=intros[tone]+link+'\n\n#achadinhos #ofertas #comprasonline';
 }
-
-function copyCaption(){currentCaption=document.getElementById('captionResult').value;copy(currentCaption);}
-
+async function copyCaption(){
+const value=document.getElementById('captionResult').value;
+if(!value.trim()){alert('Escreva ou gere uma legenda primeiro.');return;}
+try{await navigator.clipboard.writeText(value);alert('Legenda copiada!');}
+catch(e){document.getElementById('captionResult').select();document.execCommand('copy');alert('Legenda copiada!');}
+}
 function saveCaption(){
-const text=document.getElementById('captionResult').value;
-if(!text.trim()){alert('Gere uma legenda primeiro.');return;}
+const text=document.getElementById('captionResult').value.trim();
+if(!text){alert('Escreva uma legenda primeiro.');return;}
 const p=products[Number(document.getElementById('captionProduct').value)];
-captions.push({productId:p?.id,productName:p?.name||'Produto',text,createdAt:Date.now()});
-persist();
+captions.push({text,productName:p?.name||'Produto',createdAt:Date.now()});
+localStorage.setItem('motor_captions',JSON.stringify(captions));
 alert('Legenda salva na biblioteca!');
 }
-function copyCaptionAt(i){copy(captions[i].text);}
-function removeCaption(i){if(!confirm('Excluir esta legenda?'))return;captions.splice(i,1);persist();}
-
-
+async function renderLibrary(){
+const area=document.getElementById('libraryList');
+const all=await dbGetAll();
+const videos=all.sort((a,b)=>b.createdAt-a.createdAt);
+const videoHTML=videos.map(v=>`<div class="card"><b>🎬 ${esc(v.name||'Vídeo')}</b><p class="small">${esc(v.productName||'Produto')} · ${new Date(v.createdAt).toLocaleString('pt-BR')}</p></div>`).join('');
+const captionHTML=captions.slice().reverse().map(c=>`<div class="card"><b>📝 ${esc(c.productName)}</b><p>${esc(c.text).replace(/\n/g,'<br>')}</p><button class="btn secondary" onclick="copyText(${JSON.stringify(c.text).replace(/"/g,'&quot;')})">Copiar</button></div>`).join('');
+area.innerHTML=(videoHTML+captionHTML)||'<div class="empty">Sua biblioteca ainda está vazia.</div>';
+}
+async function copyText(text){
+try{await navigator.clipboard.writeText(text);alert('Copiado!');}
+catch(e){alert('Não foi possível copiar automaticamente.');}
+}
 function openPrunaOverlay(){
-  const overlay=document.getElementById('pruna-overlay');
-  const frame=document.getElementById('pruna-frame');
-  overlay.classList.add('open');
-  document.body.style.overflow='hidden';
-  if(frame.src==='about:blank') frame.src='https://demo.pruna.ai/p-video-workflows';
+const overlay=document.getElementById('pruna-overlay');
+const frame=document.getElementById('pruna-frame');
+overlay.classList.add('open');
+document.body.style.overflow='hidden';
+if(frame.src==='about:blank')frame.src='https://demo.pruna.ai/p-video-workflows';
 }
 function closePrunaOverlay(){
-  document.getElementById('pruna-overlay').classList.remove('open');
-  document.body.style.overflow='';
+document.getElementById('pruna-overlay').classList.remove('open');
+document.body.style.overflow='';
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closePrunaOverlay();});
-
 update();
-show('products');
 </script>
 </body>
 </html>
